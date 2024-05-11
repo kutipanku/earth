@@ -1,0 +1,38 @@
+{
+  "name": "earth",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
+    "@mui/material": "^5.15.17",
+    "@prisma/client": "^5.13.0",
+    "@yxx4c/prisma-redis-cache": "^1.0.1",
+    "async-cache-dedupe": "^2.2.0",
+    "ioredis": "^5.4.1",
+    "next": "14.2.3",
+    "next-auth": "^4.24.7",
+    "prisma": "^5.13.0",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5"
+  }
+}
