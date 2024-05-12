@@ -2,37 +2,19 @@
 
 import Head from 'next/head';
 import Button from '@mui/material/Button';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useNotificationContext } from '@/repository/state/notification';
 
 import styles from '@/styles/Home.module.css';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [notificationDispatch] = useNotificationContext();
   const doLogin = async () => {
-    console.warn('[DEBUG] session', session);
-
-    if (session === null) {
-      signIn('google', { callbackUrl: '/home' }, { prompt: 'login' });
-      return;
-    }
-
-    notificationDispatch({
-      type: 'OPEN_NOTIFICATION',
-      payload: {
-        message: `Sesi login Anda masih tersimpan, logout jika ingin menggunakan akun lain.`,
-        severity: 'success',
-      },
-    });
-
-    router.push('/home');
-  };
-
-  const doLogout = () => {
-    signOut();
+    await signIn('google', { callbackUrl: '/dashboard' }, { prompt: 'login' });
   };
 
   const doInit = () => {
@@ -68,6 +50,14 @@ const LoginPage = () => {
         });
       });
   };
+
+  useEffect(() => {
+    console.warn('[DEBUG] session', session);
+    if (session) {
+      router.push('/dashboard');
+    }
+  }, [router, session]);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -85,18 +75,11 @@ const LoginPage = () => {
           Mohon login dengan akun Google Anda yang sudah terdaftar melalui
           tombol berikut:
         </p>
-        <Button
-          variant='contained'
-          onClick={doLogin}
-          sx={{ textTransform: 'none' }}
-        >
+        <Button variant='contained' onClick={doLogin}>
           Masuk
         </Button>
-        <Button onClick={doInit} sx={{ textTransform: 'none' }}>
+        <Button onClick={doInit} sx={{ marginTop: 8 }}>
           Init
-        </Button>
-        <Button onClick={doLogout} sx={{ textTransform: 'none' }}>
-          Logout
         </Button>
       </main>
     </div>
