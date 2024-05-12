@@ -8,20 +8,23 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@fontsource/roboto": "^5.0.13",
-    "@mui/material": "^5.15.17",
+    "@mui/material-nextjs": "^5.15.11",
     "@prisma/client": "^5.13.0",
     "@yxx4c/prisma-redis-cache": "^1.0.1",
     "async-cache-dedupe": "^2.2.0",
+    "cookies-next": "^4.1.1",
     "ioredis": "^5.4.1",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
-    "prisma": "^5.13.0",
+    "next-pwa": "^5.6.0",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -33,6 +36,7 @@
     "eslint-config-next": "14.2.3",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
+    "prisma": "^5.13.0",
     "typescript": "^5"
   }
 }
