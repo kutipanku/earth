@@ -24,6 +24,7 @@ model SuperUser {
   name        String  @unique
   email       String  @unique
   picture_url String?
+  logs        Log[]
 }
 
 model Nationality {
@@ -115,4 +116,16 @@ model Media {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   product   Product? @relation(fields: [productId], references: [id])
+}
+
+model Log {
+  id            String   @id @default(uuid())
+  action        String
+  category      String
+  content_old   String
+  content_new   String
+  object        String
+  userId        String
+  user          SuperUser?  @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
 }
