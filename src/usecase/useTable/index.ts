@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { useNotificationContext } from '@/repository/state/notification';
 interface Props {
   name: string;
+  identifier: string;
 }
 
-const useTable = ({ name }: Props) => {
+const useTable = <T>({ name, identifier }: Props) => {
   const router = useRouter();
+  const [dispatch] = useNotificationContext();
+
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<T[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(10);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState<null | { row: Record<string, string> }>(null);
 
   useEffect(() => {
     fetch(`/api/${name}?page=${page}&limit=${rowPerPage}`)
@@ -24,6 +28,34 @@ const useTable = ({ name }: Props) => {
         setLoading(false);
       });
   }, [name, page, rowPerPage]);
+
+  const handleOnDelete = useCallback(() => {
+    if (selectedRow !== null) {
+      // @ts-ignore
+      fetch(`/api/${name}/${selectedRow.id}`, { method: 'DELETE' })
+        .then((res) => res.json())
+        .then(() => {
+          setDeleteDialogOpen(false);
+          dispatch({
+            type: 'OPEN_NOTIFICATION',
+            payload: {
+              message: `Successfully delete ${name} with name: ${selectedRow?.row[identifier]}`,
+              severity: 'success',
+            },
+          });
+          setSelectedRow(null);
+
+          setLoading(true);
+          fetch(`/api/${name}?page=${page}&limit=${rowPerPage}`)
+            .then((res) => res.json())
+            .then((resObject) => {
+              setData(resObject.data);
+              setCount(resObject.total);
+              setLoading(false);
+            });
+        });
+    }
+  }, [selectedRow, name, dispatch, identifier, page, rowPerPage]);
 
   const handleTriggerAction = (type: string, rowData: any) => {
     if (type === 'view') {
@@ -36,6 +68,21 @@ const useTable = ({ name }: Props) => {
     }
   };
 
+  const handleApplyFilter = (joinedFilter: string) => {
+    setLoading(true);
+    fetch(`/api/${name}?page=${page}&limit=${rowPerPage}&${joinedFilter}`)
+      .then((res) => res.json())
+      .then((resObject) => {
+        setData(resObject.data);
+        setCount(resObject.total);
+        setLoading(false);
+      });
+  };
+
+  const handleRedirectToAddPage = () => {
+    router.push(`/dashboard/${name}/add`);
+  };
+
   return {
     isLoading,
     data,
@@ -44,12 +91,14 @@ const useTable = ({ name }: Props) => {
     rowPerPage,
     deleteDialogOpen,
     selectedRow,
-    setLoading,
-    setData,
-    setCount,
     setPage,
     setRowPerPage,
+    setDeleteDialogOpen,
+    setSelectedRow,
     handleTriggerAction,
+    handleOnDelete,
+    handleRedirectToAddPage,
+    handleApplyFilter,
   };
 };
 

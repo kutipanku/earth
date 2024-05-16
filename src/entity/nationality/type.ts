@@ -1,0 +1,1 @@
+export type { Nationality } from '@prisma/client';

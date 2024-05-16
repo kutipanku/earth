@@ -3,11 +3,24 @@ import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import type { Filter } from '@/entity/ui/type';
 
-export const initialFilterState = {
-  name: '',
-  slug: '',
-};
+export const INITIAL_FILTER_STATE: Filter[] = [
+  {
+    label: 'Name',
+    key: 'name',
+    value: '',
+  },
+  {
+    label: 'Slug',
+    key: 'slug',
+    value: '',
+  }
+]
+
+export const PAGE_TYPE = 'nationality';
+export const HOME_PAGE_TITLE = 'Nationalities';
+export const HOME_PAGE_REDIRECT_ADD = 'Add Nationality';
 
 export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: any) => void

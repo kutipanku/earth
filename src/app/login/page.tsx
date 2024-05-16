@@ -52,7 +52,6 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    console.warn('[DEBUG] session', session);
     if (session) {
       router.push('/dashboard');
     }
