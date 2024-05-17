@@ -14,8 +14,12 @@ interface Props {
   onConfirm: () => void;
 }
 
-const HeaderPresentation = ({ identifier, isOpen, onClose, onConfirm }: Props) => {
-
+const DialogDeletePresentation = ({
+  identifier,
+  isOpen,
+  onClose,
+  onConfirm,
+}: Props) => {
   return (
     <Dialog
       open={isOpen}
@@ -26,10 +30,7 @@ const HeaderPresentation = ({ identifier, isOpen, onClose, onConfirm }: Props) =
       <DialogTitle id='alert-dialog-title'>Confirmation</DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
-          Are you sure to delete{' '}
-          <i style={{ fontWeight: 800 }}>
-            {identifier}
-          </i>
+          Are you sure to delete <i style={{ fontWeight: 800 }}>{identifier}</i>
           ?
         </DialogContentText>
       </DialogContent>
@@ -43,4 +44,4 @@ const HeaderPresentation = ({ identifier, isOpen, onClose, onConfirm }: Props) =
   );
 };
 
-export default HeaderPresentation;
+export default DialogDeletePresentation;

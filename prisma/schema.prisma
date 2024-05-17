@@ -119,13 +119,13 @@ model Media {
 }
 
 model Log {
-  id            String   @id @default(uuid())
-  action        String
-  category      String
-  content_old   String
-  content_new   String
-  object        String
-  userId        String
-  user          SuperUser?  @relation(fields: [userId], references: [id])
-  createdAt     DateTime @default(now())
+  id          String    @id @default(uuid())
+  action      String
+  category    String
+  content_old String
+  content_new String
+  object      String
+  userId      String
+  createdAt   DateTime  @default(now())
+  user        SuperUser @relation(fields: [userId], references: [id])
 }

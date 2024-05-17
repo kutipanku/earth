@@ -12,8 +12,12 @@ interface Props {
   actAddFunction: () => void;
 }
 
-const HeaderPresentation = ({ title, actAdd, isLoading, actAddFunction }: Props) => {
-
+const HeaderHomePresentation = ({
+  title,
+  actAdd,
+  isLoading,
+  actAddFunction,
+}: Props) => {
   return (
     <Container
       maxWidth={false}
@@ -50,4 +54,4 @@ const HeaderPresentation = ({ title, actAdd, isLoading, actAddFunction }: Props)
   );
 };
 
-export default HeaderPresentation;
+export default HeaderHomePresentation;

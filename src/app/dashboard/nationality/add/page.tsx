@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
-import UnifiedHeadTag from '@/presentation/head';
+import UnifiedHeadTag from '@/presentation/Head';
 import { useNotificationContext } from '@/repository/state/notification';
 import styles from '@/styles/Dashboard.module.css';
 import IndonesiaIcon from '@/public/icons/id.png';

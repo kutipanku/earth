@@ -4,6 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import type { Filter } from '@/entity/ui/type';
+import type { NationalityDetailField } from '@/entity/nationality/type';
 
 export const INITIAL_FILTER_STATE: Filter[] = [
   {
@@ -15,13 +16,33 @@ export const INITIAL_FILTER_STATE: Filter[] = [
     label: 'Slug',
     key: 'slug',
     value: '',
-  }
-]
-
+  },
+];
 export const PAGE_TYPE = 'nationality';
 export const HOME_PAGE_TITLE = 'Nationalities';
 export const HOME_PAGE_REDIRECT_ADD = 'Add Nationality';
-
+export const DETAIL_PAGE_TITLE = 'Nationality Detail';
+export const DETAIL_FIELDS: NationalityDetailField[] = [
+  {
+    key: 'name_en',
+    label: 'Name (EN)',
+    type: 'text',
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+  },
+  {
+    key: 'name_id',
+    label: 'Name (ID)',
+    type: 'text',
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+  },
+  {
+    key: 'slug',
+    label: 'Slug',
+    type: 'text',
+    style: { width: '100%', marginBottom: 2 },
+    prefix: '/',
+  },
+];
 export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: any) => void
 ) => [

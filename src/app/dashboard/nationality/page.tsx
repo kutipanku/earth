@@ -12,10 +12,10 @@ import {
 } from '@/entity/nationality/constant';
 import type { Nationality } from '@/entity/nationality/type';
 import useTable from '@/usecase/useTable';
-import UnifiedHeadTag from '@/presentation/head';
+import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedFilter from '@/presentation/Filter';
-import UnifiedHeader from '@/presentation/Header';
-import UnifiedDeleteDialog from '@/presentation/DeleteDialog';
+import UnifiedHeaderHome from '@/presentation/HeaderHome';
+import UnifiedDeleteDialog from '@/presentation/DialogDelete';
 import styles from '@/styles/Dashboard.module.css';
 
 const NationalityPage = () => {
@@ -41,8 +41,17 @@ const NationalityPage = () => {
       <UnifiedHeadTag title={HOME_PAGE_TITLE} />
 
       <main className={styles.main}>
-        <UnifiedHeader title={HOME_PAGE_TITLE} actAdd={HOME_PAGE_REDIRECT_ADD} isLoading={isLoading} actAddFunction={handleRedirectToAddPage} />
-        <UnifiedFilter isLoading={isLoading} initialFilterState={INITIAL_FILTER_STATE} handleApplyFilter={handleApplyFilter} />
+        <UnifiedHeaderHome
+          title={HOME_PAGE_TITLE}
+          actAdd={HOME_PAGE_REDIRECT_ADD}
+          isLoading={isLoading}
+          actAddFunction={handleRedirectToAddPage}
+        />
+        <UnifiedFilter
+          isLoading={isLoading}
+          initialFilterState={INITIAL_FILTER_STATE}
+          handleApplyFilter={handleApplyFilter}
+        />
         <Box style={{ height: 700, width: '100%' }}>
           <DataGrid
             rows={data}
@@ -60,7 +69,12 @@ const NationalityPage = () => {
             onPageSizeChange={setRowPerPage}
           />
         </Box>
-        <UnifiedDeleteDialog isOpen={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} onConfirm={handleOnDelete} identifier={selectedRow?.row.name_en || ''} />
+        <UnifiedDeleteDialog
+          isOpen={deleteDialogOpen}
+          onClose={() => setDeleteDialogOpen(false)}
+          onConfirm={handleOnDelete}
+          identifier={selectedRow?.row.name_en || ''}
+        />
       </main>
     </div>
   );
