@@ -13,8 +13,8 @@ import { signOut } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import { Container } from '@mui/material';
 
-import AppBar from '@/presentation/appbar';
-import Drawer from '@/presentation/drawer';
+import AppBar from '@/presentation/Appbar';
+import Drawer from '@/presentation/Drawer';
 
 import { DrawerHeader } from './style';
 

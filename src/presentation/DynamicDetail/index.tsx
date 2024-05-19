@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Detail } from '@/entity/ui/type';
+import { DynamicField } from '@/entity/ui/type';
 import { NodeActionTimestamps } from '@/entity/db/type';
 import { convertDateToLocaleString } from '@/lib/date';
 
@@ -16,7 +16,7 @@ interface Props<DataType, FieldType, Key extends keyof FieldType> {
 
 const DynamicDetail = <
   DataType extends NodeActionTimestamps,
-  FieldType extends Detail<keyof DataType>,
+  FieldType extends DynamicField<keyof DataType>,
   Key extends keyof FieldType,
 >({
   data,
@@ -51,7 +51,7 @@ const DynamicDetail = <
                   {field.label}:
                 </Typography>
                 <Typography variant='body1' gutterBottom>
-                  {field.prefix && field.prefix}
+                  {typeof field.prefix === 'string' && field.prefix}
                   {data && value}
                 </Typography>
               </Box>

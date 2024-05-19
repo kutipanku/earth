@@ -13,3 +13,9 @@ export interface NodeActionTimestamps {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface NodeVariables {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}

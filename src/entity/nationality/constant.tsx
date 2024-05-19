@@ -3,8 +3,14 @@ import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import IndonesiaIcon from '@/public/icons/id.png';
+import EnglishIcon from '@/public/icons/gb.png';
 import type { Filter } from '@/entity/ui/type';
-import type { NationalityDetailField } from '@/entity/nationality/type';
+import type {
+  NationalityDetailField,
+  NationalityInputFIeld,
+  NationalityVariables,
+} from '@/entity/nationality/type';
 
 export const INITIAL_FILTER_STATE: Filter[] = [
   {
@@ -22,6 +28,7 @@ export const PAGE_TYPE = 'nationality';
 export const HOME_PAGE_TITLE = 'Nationalities';
 export const HOME_PAGE_REDIRECT_ADD = 'Add Nationality';
 export const DETAIL_PAGE_TITLE = 'Nationality Detail';
+export const ADD_PAGE_TITLE = 'Add Nationality';
 export const DETAIL_FIELDS: NationalityDetailField[] = [
   {
     key: 'name_en',
@@ -43,6 +50,38 @@ export const DETAIL_FIELDS: NationalityDetailField[] = [
     prefix: '/',
   },
 ];
+
+export const INPUT_VARIABLE: NationalityVariables = {
+  name_id: '',
+  name_en: '',
+  slug: '',
+  flag: '',
+};
+
+export const INPUT_FIELDS: NationalityInputFIeld[] = [
+  {
+    key: 'name_en',
+    label: 'Name (EN)',
+    type: 'textfield',
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+    prefix: EnglishIcon,
+  },
+  {
+    key: 'name_id',
+    label: 'Name (ID)',
+    type: 'textfield',
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+    prefix: IndonesiaIcon,
+  },
+  {
+    key: 'slug',
+    label: 'Slug',
+    type: 'textfield',
+    style: { width: '100%', marginBottom: 2 },
+    prefix: '/',
+  },
+];
+
 export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: any) => void
 ) => [

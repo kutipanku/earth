@@ -1,9 +1,10 @@
 import FlagIcon from '@mui/icons-material/Flag';
-import WorkIcon from '@mui/icons-material/WorkOutline';
+import WorkIcon from '@mui/icons-material/Work';
 import OfferIcon from '@mui/icons-material/LocalOffer';
 import QuoteIcon from '@mui/icons-material/FormatQuote';
 import PaidIcon from '@mui/icons-material/Paid';
 import AccountIcon from '@mui/icons-material/AccountCircle';
+import BookIcon from '@mui/icons-material/MenuBook';
 import MMSIcon from '@mui/icons-material/mms';
 import LogIcon from '@mui/icons-material/History';
 
@@ -38,6 +39,11 @@ export const DRAWER_MENU_LIST = [
     text: 'Products',
     icon: PaidIcon,
     path: '/dashboard/product',
+  },
+  {
+    text: 'Books',
+    icon: BookIcon,
+    path: '/dashboard/book',
   },
   {
     text: 'Media',
