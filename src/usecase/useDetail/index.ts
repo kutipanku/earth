@@ -14,8 +14,8 @@ const useDetail = <T>({ id, name }: Props) => {
       fetch(`/api/${name}/${id}`)
         .then((res) => res.json())
         .then((responseObject) => {
-          setLoading(false);
           setDetail(responseObject.data);
+          setLoading(false);
         });
     }
   }, [id, name]);

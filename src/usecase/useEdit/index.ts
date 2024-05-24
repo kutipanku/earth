@@ -1,27 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/repository/state/notification';
 import { useRouter } from 'next/navigation';
 
 interface Props<K> {
+  id: string;
   name: string;
   identifier: K;
 }
 
-const useEdit = <T>({ name, identifier }: Props<keyof T>) => {
+const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
   const router = useRouter();
   const [dispatch] = useNotificationContext();
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [detail, setDetail] = useState<T>();
+
+  useEffect(() => {
+    if (id) {
+      fetch(`/api/${name}/${id}`)
+        .then((res) => res.json())
+        .then((responseObject) => {
+          setDetail(responseObject.data);
+          setLoading(false);
+        });
+    }
+  }, [id, name]);
 
   const handleSubmit = (body: T) => {
     setLoading(true);
-    fetch(`/api/${name}`, { method: 'POST', body: JSON.stringify(body) })
+    fetch(`/api/${name}/${id}`, { method: 'PUT', body: JSON.stringify(body) })
       .then((res) => res.json())
       .then((responseObject) => {
         if (responseObject.error) {
           dispatch({
             type: 'OPEN_NOTIFICATION',
             payload: {
-              message: `Failed to add ${name}, error: ${responseObject.error}`,
+              message: `Failed to edit ${name}, error: ${responseObject.error}`,
               severity: 'error',
             },
           });
@@ -33,7 +46,7 @@ const useEdit = <T>({ name, identifier }: Props<keyof T>) => {
         dispatch({
           type: 'OPEN_NOTIFICATION',
           payload: {
-            message: `Successfully added new ${name}: ${responseObject[identifier]}`,
+            message: `Successfully edited new ${name}: ${responseObject[identifier]}`,
             severity: 'success',
           },
         });
@@ -42,7 +55,7 @@ const useEdit = <T>({ name, identifier }: Props<keyof T>) => {
         dispatch({
           type: 'OPEN_NOTIFICATION',
           payload: {
-            message: `Failed to add ${name}, error: ${err}`,
+            message: `Failed to edit ${name}, error: ${err}`,
             severity: 'error',
           },
         });
@@ -51,9 +64,10 @@ const useEdit = <T>({ name, identifier }: Props<keyof T>) => {
   };
 
   return {
+    detail,
     isLoading,
     handleSubmit,
   };
 };
 
-export default useEdit;
+export default useAdd;

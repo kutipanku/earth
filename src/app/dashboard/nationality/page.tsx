@@ -34,8 +34,13 @@ const NationalityPage = () => {
     handleOnDelete,
     handleRedirectToAddPage,
     handleApplyFilter,
-  } = useTable<Nationality>({ name: PAGE_TYPE, identifier: 'name_en' });
+  } = useTable<Nationality>({
+    name: PAGE_TYPE,
+    filter: INITIAL_FILTER_STATE,
+    identifier: 'name_en',
+  });
 
+  console.warn('[DEBUG] INITIAL_FILTER_STATE', INITIAL_FILTER_STATE);
   return (
     <div className={styles.container}>
       <UnifiedHeadTag title={HOME_PAGE_TITLE} />

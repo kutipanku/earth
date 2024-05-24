@@ -1,14 +1,20 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
+import type { Filter } from '@/entity/ui/type';
 import { useNotificationContext } from '@/repository/state/notification';
 interface Props {
   name: string;
   identifier: string;
+  filter: Filter[];
 }
 
-const useTable = <T>({ name, identifier }: Props) => {
+type Row = Record<string, string>;
+
+const useTable = <T>({ name, identifier, filter }: Props) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [dispatch] = useNotificationContext();
 
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -17,17 +23,30 @@ const useTable = <T>({ name, identifier }: Props) => {
   const [page, setPage] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(10);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<null | { row: Record<string, string> }>(null);
+  const [selectedRow, setSelectedRow] = useState<null | { row: Row }>(null);
+
+  const filterString = useMemo(() => {
+    const filterArray: string[] = [];
+    filter.forEach((filterKey) => {
+      const searchParam = searchParams.get(filterKey.key);
+
+      if (searchParam) {
+        filterArray.push(filterKey.key + '=' + searchParam);
+      }
+    });
+
+    return filterArray.join('&');
+  }, [filter, searchParams]);
 
   useEffect(() => {
-    fetch(`/api/${name}?page=${page}&limit=${rowPerPage}`)
+    fetch(`/api/${name}?page=${page}&limit=${rowPerPage}&${filterString}`)
       .then((res) => res.json())
       .then((resObject) => {
         setData(resObject.data);
         setCount(resObject.total);
         setLoading(false);
       });
-  }, [name, page, rowPerPage]);
+  }, [filterString, name, page, rowPerPage]);
 
   const handleOnDelete = useCallback(() => {
     if (selectedRow !== null) {
@@ -70,6 +89,7 @@ const useTable = <T>({ name, identifier }: Props) => {
 
   const handleApplyFilter = (joinedFilter: string) => {
     setLoading(true);
+    window.history.replaceState({}, '', `?${joinedFilter}`);
     fetch(`/api/${name}?page=${page}&limit=${rowPerPage}&${joinedFilter}`)
       .then((res) => res.json())
       .then((resObject) => {

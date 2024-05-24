@@ -29,6 +29,7 @@ export const HOME_PAGE_TITLE = 'Nationalities';
 export const HOME_PAGE_REDIRECT_ADD = 'Add Nationality';
 export const DETAIL_PAGE_TITLE = 'Nationality Detail';
 export const ADD_PAGE_TITLE = 'Add Nationality';
+export const EDIT_PAGE_TITLE = 'Edit Nationality';
 export const DETAIL_FIELDS: NationalityDetailField[] = [
   {
     key: 'name_en',

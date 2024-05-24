@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -27,10 +28,22 @@ interface Props {
 const FilterPresentation = ({
   isLoading,
   initialFilterState,
-  handleApplyFilter
+  handleApplyFilter,
 }: Props) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const prefilledFilter = useMemo(() => {
+    return initialFilterState.map((filterKey) => {
+      const searchParam = searchParams.get(filterKey.key);
+
+      filterKey.value = searchParam ?? '';
+      return filterKey;
+    });
+  }, [initialFilterState, searchParams]);
+
   const [expanded, setExpanded] = useState('');
-  const [values, setValues] = useState(initialFilterState);
+  const [values, setValues] = useState(prefilledFilter);
 
   const handleChange = (expandString: string) => {
     if (expanded) {
@@ -40,29 +53,29 @@ const FilterPresentation = ({
     }
   };
 
-  const handleFilterChange = (prop: string) => (event: { target: { value: string } }) => {
-    const newValue = values.map(filterObject => {
-      if (filterObject.key === prop) {
-        return { ...filterObject, value: event.target.value };
-      }
+  const handleFilterChange =
+    (prop: string) => (event: { target: { value: string } }) => {
+      const newValue = values.map((filterObject) => {
+        if (filterObject.key === prop) {
+          return { ...filterObject, value: event.target.value };
+        }
 
-      return filterObject;
-    });
+        return filterObject;
+      });
 
-    setValues(newValue);
-  };
+      setValues(newValue);
+    };
 
   const handleResetFilter = () => {
+    window.history.replaceState({}, '', pathname);
     setValues(initialFilterState);
   };
 
   const handleSubmit = () => {
     const filterArray: string[] = [];
-    const keys: string[] = Object.keys(values);
-
-    values.forEach(filterObject => {
+    values.forEach((filterObject) => {
       if (filterObject.value) {
-        filterArray.push(`${filterObject.key}=${filterObject.value}`)
+        filterArray.push(`${filterObject.key}=${filterObject.value}`);
       }
     });
 
@@ -84,7 +97,10 @@ const FilterPresentation = ({
           id='panel1bh-header'
         >
           <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            <IconButton>{expanded === 'filter' ? <FilterHideIcon /> : <FilterShowIcon />}</IconButton> {expanded === 'filter' ? 'Hide' : 'Show'} Filter
+            <IconButton>
+              {expanded === 'filter' ? <FilterHideIcon /> : <FilterShowIcon />}
+            </IconButton>{' '}
+            {expanded === 'filter' ? 'Hide' : 'Show'} Filter
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -93,7 +109,7 @@ const FilterPresentation = ({
             disableGutters
             sx={{ width: '100%', marginTop: 2 }}
           >
-            {values.map(filter => {
+            {values.map((filter) => {
               return (
                 <Box key={filter.key} sx={{ width: '100%', marginTop: 2 }}>
                   <FormControl fullWidth>
@@ -107,7 +123,7 @@ const FilterPresentation = ({
                     />
                   </FormControl>
                 </Box>
-                )
+              );
             })}
           </Container>
           <Container
