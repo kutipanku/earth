@@ -1,23 +1,23 @@
 'use client';
 
 import type {
-  Nationality,
-  NationalityDetailField,
-} from '@/entity/nationality/type';
+  Profession,
+  ProfessionDetailField,
+} from '@/entity/profession/type';
 import {
   PAGE_TYPE,
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
-} from '@/entity/nationality/constant';
+} from '@/entity/profession/constant';
 import useDetail from '@/usecase/useDetail';
 import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedHeaderDetail from '@/presentation/HeaderDetail';
 import UnifiedDetailFields from '@/presentation/DynamicDetail';
 import styles from '@/styles/Dashboard.module.css';
 
-const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
+const ProfessionDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { detail, isLoading } = useDetail<Nationality>({ id, name: PAGE_TYPE });
+  const { detail, isLoading } = useDetail<Profession>({ id, name: PAGE_TYPE });
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -29,7 +29,7 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
         {detail && (
-          <UnifiedDetailFields<Nationality, NationalityDetailField, 'key'>
+          <UnifiedDetailFields<Profession, ProfessionDetailField, 'key'>
             data={detail}
             fields={DETAIL_FIELDS}
             property='key'
@@ -40,4 +40,4 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default NationalityDetailPage;
+export default ProfessionDetailPage;

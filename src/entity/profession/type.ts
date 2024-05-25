@@ -1,5 +1,5 @@
 import type { Profession as ProfessionOnDB } from '@/entity/db/type';
-import type { Detail } from '@/entity/ui/type';
+import type { DynamicField } from '@/entity/ui/type';
 
 export interface Profession
   extends Omit<ProfessionOnDB, 'createdAt' | 'updatedAt'> {
@@ -7,4 +7,8 @@ export interface Profession
   updatedAt: string;
 }
 
-export type ProfessionDetailField = Detail<keyof Profession>;
+export type ProfessionDetailField = DynamicField<keyof Profession>;
+export interface ProfessionVariables
+  extends Omit<ProfessionOnDB, 'id' | 'createdAt' | 'updatedAt'> {}
+
+export type ProfessionInputFIeld = DynamicField<keyof ProfessionVariables>;

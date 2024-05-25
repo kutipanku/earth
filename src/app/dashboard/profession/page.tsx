@@ -9,8 +9,8 @@ import {
   PAGE_TYPE,
   HOME_PAGE_TITLE,
   HOME_PAGE_REDIRECT_ADD,
-} from '@/entity/nationality/constant';
-import type { Nationality } from '@/entity/nationality/type';
+} from '@/entity/profession/constant';
+import type { Profession } from '@/entity/profession/type';
 import useTable from '@/usecase/useTable';
 import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedFilter from '@/presentation/Filter';
@@ -18,7 +18,7 @@ import UnifiedHeaderHome from '@/presentation/HeaderHome';
 import UnifiedDeleteDialog from '@/presentation/DialogDelete';
 import styles from '@/styles/Dashboard.module.css';
 
-const NationalityPage = () => {
+const ProfessionPage = () => {
   const {
     isLoading,
     data,
@@ -34,7 +34,7 @@ const NationalityPage = () => {
     handleOnDelete,
     handleRedirectToAddPage,
     handleApplyFilter,
-  } = useTable<Nationality>({
+  } = useTable<Profession>({
     name: PAGE_TYPE,
     filter: INITIAL_FILTER_STATE,
     identifier: 'name_en',
@@ -84,4 +84,4 @@ const NationalityPage = () => {
   );
 };
 
-export default NationalityPage;
+export default ProfessionPage;
