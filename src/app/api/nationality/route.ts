@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     skip: Number(page) * Number(limit),
     take: Number(limit),
     orderBy: {
-      createdAt: 'desc',
+      created_at: 'desc',
     },
     where: {
       ...(filterName && {

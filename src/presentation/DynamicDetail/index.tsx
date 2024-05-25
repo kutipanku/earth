@@ -74,7 +74,7 @@ const DynamicDetail = <
             Created At:
           </Typography>
           <Typography variant='body1' gutterBottom>
-            {convertDateToLocaleString(data.createdAt)}
+            {convertDateToLocaleString(data.created_at)}
           </Typography>
         </Box>
         <Box sx={{ width: '50%', marginLeft: 1 }}>
@@ -88,7 +88,7 @@ const DynamicDetail = <
             Updated At:
           </Typography>
           <Typography variant='body1' gutterBottom>
-            {convertDateToLocaleString(data.updatedAt)}
+            {convertDateToLocaleString(data.updated_at)}
           </Typography>
         </Box>
       </Box>

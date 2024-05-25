@@ -10,12 +10,12 @@ export type {
 } from '@prisma/client';
 
 export interface NodeActionTimestamps {
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface NodeVariables {
   id: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }

@@ -13,8 +13,8 @@ model User {
   name        String   @unique
   email       String   @unique
   phone       String?  @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   picture_url String?
   likes       Quote[]  @relation("QuoteToUser")
 }
@@ -28,41 +28,41 @@ model SuperUser {
 }
 
 model Nationality {
-  id        String   @id @default(uuid())
-  flag      String?
-  name_en   String   @unique
-  name_id   String   @unique
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  authors   Author[]
+  id         String   @id @default(uuid())
+  flag       String?
+  name_en    String   @unique
+  name_id    String   @unique
+  slug       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  authors    Author[]
 }
 
 model Profession {
-  id        String   @id @default(uuid())
-  icon      String?
-  name_en   String   @unique
-  name_id   String   @unique
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  authors   Author[]
+  id         String   @id @default(uuid())
+  icon       String?
+  name_en    String   @unique
+  name_id    String   @unique
+  slug       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  authors    Author[]
 }
 
 model Author {
   id             String       @id @default(uuid())
   name           String       @unique
   dob            DateTime?
-  nationalityId  String?
-  professionId   String?
+  nationality_id String?
+  profession_id  String?
   description_en String?
   description_id String?
   picture_url    String?
   slug           String       @unique
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  nationality    Nationality? @relation(fields: [nationalityId], references: [id])
-  profession     Profession?  @relation(fields: [professionId], references: [id])
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+  nationality    Nationality? @relation(fields: [nationality_id], references: [id])
+  profession     Profession?  @relation(fields: [profession_id], references: [id])
   quotes         Quote[]
 }
 
@@ -72,13 +72,13 @@ model Quote {
   content_en     String?
   image_id_url   String?
   image_en_url   String?
-  authorId       String?
+  author_id      String?
   description_en String?
   description_id String?
   slug           String   @unique
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  author         Author?  @relation(fields: [authorId], references: [id])
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  author         Author?  @relation(fields: [author_id], references: [id])
   tags           Tag[]    @relation("QuoteToTag")
   likes          User[]   @relation("QuoteToUser")
 }
@@ -90,8 +90,8 @@ model Tag {
   description_en String?
   description_id String?
   slug           String   @unique
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
   quotes         Quote[]  @relation("QuoteToTag")
 }
 
@@ -104,18 +104,18 @@ model Product {
   description_id          String?
   affiliate_tokopedia_url String?
   affiliate_shopee_url    String?
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  created_at              DateTime @default(now())
+  updated_at              DateTime @updatedAt
   media_attachments       Media[]
 }
 
 model Media {
-  id        String   @id @default(uuid())
-  url       String?
-  productId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  product   Product? @relation(fields: [productId], references: [id])
+  id         String   @id @default(uuid())
+  url        String?
+  product_id String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  product    Product? @relation(fields: [product_id], references: [id])
 }
 
 model Log {
@@ -125,7 +125,7 @@ model Log {
   content_old String
   content_new String
   object      String
-  userId      String
-  createdAt   DateTime  @default(now())
-  user        SuperUser @relation(fields: [userId], references: [id])
+  user_id     String
+  created_at  DateTime  @default(now())
+  user        SuperUser @relation(fields: [user_id], references: [id])
 }
