@@ -19,7 +19,7 @@ const HeaderDetailPresentation = ({ title }: Props) => {
         variant='outlined'
         onClick={() => router.back()}
         startIcon={<ChevronLeftIcon />}
-        sx={{ marginRight: 3, textTransform: 'none' }}
+        sx={{ marginRight: 3 }}
       >
         Back
       </Button>

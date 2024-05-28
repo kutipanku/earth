@@ -115,7 +115,6 @@ const DynamicInput = <
                 variant='contained'
                 onClick={handleSubmit}
                 disabled={isLoading}
-                sx={{ textTransform: 'none' }}
               >
                 Simpan
               </Button>

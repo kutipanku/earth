@@ -6,13 +6,19 @@ import type { Filter } from '@/entity/ui/type';
 import { useNotificationContext } from '@/repository/state/notification';
 interface Props {
   name: string;
-  identifier: string;
   filter: Filter[];
+  identifier?: string;
+  rowPerPage?: number;
 }
 
 type Row = Record<string, string>;
 
-const useTable = <T>({ name, identifier, filter }: Props) => {
+const useTable = <T>({
+  name,
+  identifier = '',
+  filter,
+  rowPerPage: defaultRowPerPage = 10,
+}: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [dispatch] = useNotificationContext();
@@ -21,7 +27,7 @@ const useTable = <T>({ name, identifier, filter }: Props) => {
   const [data, setData] = useState<T[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
-  const [rowPerPage, setRowPerPage] = useState(10);
+  const [rowPerPage, setRowPerPage] = useState(defaultRowPerPage);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<null | { row: Row }>(null);
 

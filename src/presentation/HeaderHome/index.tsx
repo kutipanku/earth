@@ -7,8 +7,8 @@ import Box from '@mui/material/Box';
 
 interface Props {
   title: string;
-  actAdd: string;
   isLoading: boolean;
+  actAdd?: string;
   actAddFunction: () => void;
 }
 
@@ -41,14 +41,16 @@ const HeaderHomePresentation = ({
           alignSelf: 'center',
         }}
       >
-        <Button
-          variant='contained'
-          onClick={actAddFunction}
-          disabled={isLoading}
-          sx={{ textTransform: 'none', marginBottom: '24px' }}
-        >
-          {actAdd}
-        </Button>
+        {actAdd && (
+          <Button
+            variant='contained'
+            onClick={actAddFunction}
+            disabled={isLoading}
+            sx={{ marginBottom: '24px' }}
+          >
+            {actAdd}
+          </Button>
+        )}
       </Box>
     </Container>
   );

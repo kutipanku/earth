@@ -99,21 +99,18 @@ export const TABLE_HEADER = (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
           onClick={() => callbackFunction('view', params)}
-          sx={{ textTransform: 'none' }}
           startIcon={<VisibilityIcon />}
         >
           Detail
         </Button>
         <Button
           onClick={() => callbackFunction('edit', params)}
-          sx={{ textTransform: 'none' }}
           startIcon={<EditIcon />}
         >
           Ubah
         </Button>
         <Button
           onClick={() => callbackFunction('delete', params)}
-          sx={{ textTransform: 'none' }}
           startIcon={<DeleteForeverIcon />}
         >
           Hapus
