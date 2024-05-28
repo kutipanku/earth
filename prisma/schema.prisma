@@ -20,11 +20,10 @@ model User {
 }
 
 model SuperUser {
-  id          String  @id @default(uuid())
-  name        String  @unique
-  email       String  @unique
-  picture_url String?
-  logs        Log[]
+  id    String @id @default(uuid())
+  name  String @unique
+  email String @unique
+  logs  Log[]
 }
 
 model Nationality {
@@ -119,13 +118,13 @@ model Media {
 }
 
 model Log {
-  id          String    @id @default(uuid())
-  action      String
-  category    String
-  content_old String
-  content_new String
-  object      String
-  user_id     String
-  created_at  DateTime  @default(now())
-  user        SuperUser @relation(fields: [user_id], references: [id])
+  id         String    @id @default(uuid())
+  action     String
+  user_id    String
+  created_at DateTime  @default(now())
+  entity     String
+  data       String
+  data_id    String
+  data_old   String
+  user       SuperUser @relation(fields: [user_id], references: [id])
 }

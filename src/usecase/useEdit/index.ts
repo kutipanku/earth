@@ -46,7 +46,7 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
         dispatch({
           type: 'OPEN_NOTIFICATION',
           payload: {
-            message: `Successfully edited new ${name}: ${responseObject[identifier]}`,
+            message: `Successfully edited new ${name}: ${responseObject.data[identifier]}`,
             severity: 'success',
           },
         });

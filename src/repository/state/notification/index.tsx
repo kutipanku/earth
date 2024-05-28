@@ -3,6 +3,7 @@
 import { createContext, useContext, useReducer, Dispatch } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Slide from '@mui/material/Slide';
 
 import { notificationStateReducer } from './reducers';
 import { INITIAL_NOTIFICATION_STATE, CONTEXT_ERROR_MESSAGE } from './constants';
@@ -39,6 +40,8 @@ export const NotificationProvider = (props: Props) => {
           open={state.isOpen}
           autoHideDuration={state.autoHideDuration}
           onClose={handleClose}
+          TransitionComponent={(props) => <Slide {...props} direction='up' />}
+          sx={{ position: 'absolute' }}
         >
           <Alert
             variant={state.variant}

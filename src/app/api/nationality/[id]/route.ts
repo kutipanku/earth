@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import useAuthorization from '@/usecase/useAuthorization';
 
 export async function GET(
   _: NextRequest,
@@ -16,6 +17,10 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const { id: currentUserId, isAuthorized } = await useAuthorization({ req });
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   const nationality = await prisma.nationality.findUnique({
     where: {
@@ -46,6 +51,16 @@ export async function PUT(
       data: payload,
     });
 
+    // Tracker
+    await prisma.log.capture({
+      action: 'edit',
+      entity: 'nationality',
+      userId: currentUserId,
+      dataId: updatedNationality.id,
+      data: JSON.stringify(updatedNationality),
+      dataOld: JSON.stringify(nationality),
+    });
+
     return NextResponse.json({ status: 200, data: updatedNationality });
   } else {
     return NextResponse.json(
@@ -60,12 +75,26 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const { id: currentUserId, isAuthorized } = await useAuthorization({ req });
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
-  const deleteOffice = await prisma.nationality.delete({
+  const deletedNationality = await prisma.nationality.delete({
     where: {
       id: id,
     },
   });
 
-  return NextResponse.json({ status: 200, data: deleteOffice });
+    // Tracker
+    await prisma.log.capture({
+      action: 'delete',
+      entity: 'nationality',
+      userId: currentUserId,
+      dataId: deletedNationality.id,
+      data: JSON.stringify(deletedNationality),
+      dataOld: JSON.stringify({}),
+    });
+
+  return NextResponse.json({ status: 200, data: deletedNationality });
 }

@@ -7,7 +7,17 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    session({ session }) {
+    async jwt({ token }) {
+      if (token.email) {
+        const email = token.email;
+        const userOnDb = await getSuperUserByEmail(email);
+
+        token.id = userOnDb?.id || '';
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.uuid = token.id as string;
       return session;
     },
     async signIn({ user }) {

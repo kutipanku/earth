@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import useAuthorization from '@/usecase/useAuthorization';
 
 export async function GET(req: NextRequest) {
   const filterName = req.nextUrl.searchParams.get('name');
@@ -44,7 +45,12 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ data: nationalities, total: count });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const { id: currentUserId, isAuthorized } = await useAuthorization({ req });
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const {
     name_en,
     name_id,
@@ -71,6 +77,16 @@ export async function POST(req: Request) {
       slug,
       flag,
     },
+  });
+
+  // Tracker
+  await prisma.log.capture({
+    action: 'add',
+    entity: 'nationality',
+    userId: currentUserId,
+    dataId: nationality.id,
+    data: JSON.stringify(nationality),
+    dataOld: JSON.stringify({}),
   });
 
   return NextResponse.json({ data: nationality });
