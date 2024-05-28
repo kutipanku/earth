@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import useAuthorization from '@/usecase/useAuthorization';
 
 export async function GET(
   _: NextRequest,
@@ -16,6 +17,10 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const { id: currentUserId, isAuthorized } = await useAuthorization({ req });
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   const profession = await prisma.profession.findUnique({
     where: {
@@ -46,6 +51,16 @@ export async function PUT(
       data: payload,
     });
 
+    // Tracker
+    await prisma.log.capture({
+      action: 'edit',
+      entity: 'profession',
+      userId: currentUserId,
+      dataId: updatedProfession.id,
+      data: JSON.stringify(updatedProfession),
+      dataOld: JSON.stringify(profession),
+    });
+
     return NextResponse.json({ status: 200, data: updatedProfession });
   } else {
     return NextResponse.json(
@@ -60,11 +75,24 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
-
+  const { id: currentUserId, isAuthorized } = await useAuthorization({ req });
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const deletedProfession = await prisma.profession.delete({
     where: {
       id: id,
     },
+  });
+
+  // Tracker
+  await prisma.log.capture({
+    action: 'delete',
+    entity: 'profession',
+    userId: currentUserId,
+    dataId: deletedProfession.id,
+    data: JSON.stringify(deletedProfession),
+    dataOld: JSON.stringify({}),
   });
 
   return NextResponse.json({ status: 200, data: deletedProfession });

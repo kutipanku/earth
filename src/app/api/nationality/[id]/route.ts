@@ -86,15 +86,15 @@ export async function DELETE(
     },
   });
 
-    // Tracker
-    await prisma.log.capture({
-      action: 'delete',
-      entity: 'nationality',
-      userId: currentUserId,
-      dataId: deletedNationality.id,
-      data: JSON.stringify(deletedNationality),
-      dataOld: JSON.stringify({}),
-    });
+  // Tracker
+  await prisma.log.capture({
+    action: 'delete',
+    entity: 'nationality',
+    userId: currentUserId,
+    dataId: deletedNationality.id,
+    data: JSON.stringify(deletedNationality),
+    dataOld: JSON.stringify({}),
+  });
 
   return NextResponse.json({ status: 200, data: deletedNationality });
 }
