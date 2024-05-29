@@ -30,6 +30,7 @@ const DynamicInput = <
   onSubmit,
 }: Props<DataType, FieldType, Key>) => {
   const values = useRef<DataType>(data);
+  values.current = data; // Somehow the above default value doesn't work on edit
 
   const handleInputChange = (inputKey: string, value: string) => {
     values.current = {
@@ -40,7 +41,6 @@ const DynamicInput = <
 
   const handleSubmit = () => {
     onSubmit(values.current);
-    console.warn('[CHECK] values', values.current);
   };
 
   return (

@@ -24,8 +24,6 @@ const EditNationalityPage = ({ params }: { params: { id: string } }) => {
     identifier: 'name_en',
   });
 
-  if (isLoading) return <p>Loading...</p>;
-
   return (
     <div className={styles.container}>
       <UnifiedHeadTag title={EDIT_PAGE_TITLE} />
