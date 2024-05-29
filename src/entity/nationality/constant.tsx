@@ -92,7 +92,7 @@ export const TABLE_HEADER = (
   { field: 'flag', headerName: 'Flag', width: 200, sortable: false },
   {
     field: 'action',
-    headerName: 'Tindakan',
+    headerName: 'Actions',
     sortable: false,
     width: 370,
     renderCell: (params: any) => (

@@ -23,7 +23,7 @@ export const DRAWER_MENU_LIST = [
   {
     text: 'Authors',
     icon: AccountIcon,
-    path: '/dashboard/employee',
+    path: '/dashboard/author',
   },
   {
     text: 'Tags',

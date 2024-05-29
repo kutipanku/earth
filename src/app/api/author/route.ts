@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import useAuthorization from '@/usecase/useAuthorization';
 
 export async function GET(req: NextRequest) {
   const filterName = req.nextUrl.searchParams.get('name');
@@ -38,7 +39,12 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ data: authors, total: count });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const { id: currentUserId, isAuthorized } = await useAuthorization({ req });
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const {
     name,
     slug,
@@ -89,6 +95,16 @@ export async function POST(req: Request) {
 
   const author = await prisma.author.create({
     data: payload,
+  });
+
+  // Tracker
+  await prisma.log.capture({
+    action: 'add',
+    entity: 'author',
+    userId: currentUserId,
+    dataId: author.id,
+    data: JSON.stringify(author),
+    dataOld: JSON.stringify({}),
   });
 
   return NextResponse.json({ data: author });
