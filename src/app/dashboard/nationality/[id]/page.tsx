@@ -19,8 +19,6 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const { detail, isLoading } = useDetail<Nationality>({ id, name: PAGE_TYPE });
 
-  if (isLoading) return <p>Loading...</p>;
-
   return (
     <div className={styles.container}>
       <UnifiedHeadTag title={DETAIL_PAGE_TITLE} />
@@ -33,6 +31,7 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
             data={detail}
             fields={DETAIL_FIELDS}
             property='key'
+            isLoading={isLoading}
           />
         )}
       </main>

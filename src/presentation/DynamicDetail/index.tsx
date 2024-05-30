@@ -7,11 +7,13 @@ import Box from '@mui/material/Box';
 import { DynamicField } from '@/entity/ui/type';
 import { NodeActionTimestamps } from '@/entity/db/type';
 import { convertDateToLocaleString } from '@/lib/date';
+import DetailText from '@/presentation/DetailText';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
   fields: FieldType[];
   property: Key;
+  isLoading: boolean;
 }
 
 const DynamicDetail = <
@@ -22,6 +24,7 @@ const DynamicDetail = <
   data,
   fields,
   property,
+  isLoading,
 }: Props<DataType, FieldType, Key>) => {
   return (
     <Container maxWidth={false} disableGutters>
@@ -40,21 +43,15 @@ const DynamicDetail = <
           const value: string = (data as any)[key];
           if (field.type === 'text') {
             return (
-              <Box key={index} sx={field.style}>
-                <Typography
-                  sx={{ paddingBottom: 0 }}
-                  variant='caption'
-                  display='block'
-                  color='primary'
-                  gutterBottom
-                >
-                  {field.label}:
-                </Typography>
-                <Typography variant='body1' gutterBottom>
-                  {typeof field.prefix === 'string' && field.prefix}
-                  {data && value}
-                </Typography>
-              </Box>
+              <DetailText
+                key={index}
+                index={index}
+                isLoading={isLoading}
+                label={field.label}
+                value={value}
+                prefix={field.prefix}
+                style={field.style}
+              />
             );
           }
 
