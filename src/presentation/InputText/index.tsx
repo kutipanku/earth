@@ -12,10 +12,12 @@ interface Props {
   index: number;
   isLoading: boolean;
   isError: boolean;
+  isRequired: boolean;
   label: string;
   keyName: string;
   value?: string;
   prefix?: string | StaticImageData;
+  style?: Record<string, unknown>;
   handleInputChange: (keyName: string, value: string) => void;
 }
 
@@ -23,10 +25,12 @@ const InputText = ({
   index,
   isLoading,
   isError,
+  isRequired,
   label,
   keyName,
   value,
   prefix,
+  style,
   handleInputChange,
 }: Props) => {
   const [currentValue, setCurrentValue] = useState(value || '');
@@ -44,10 +48,11 @@ const InputText = ({
   }, [isLoading, value]);
 
   return (
-    <Box key={index} sx={{ width: '50%', marginBottom: 2, paddingRight: 1 }}>
+    <Box key={index} sx={style}>
       {!isLoading ? (
         <TextField
           fullWidth
+          required={isRequired}
           id={`${keyName}_input`}
           label={label}
           name={keyName}

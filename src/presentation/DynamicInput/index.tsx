@@ -69,10 +69,12 @@ const DynamicInput = <
                   key={key}
                   keyName={key}
                   index={index}
+                  isRequired={!!field.required}
                   isLoading={isLoading}
                   label={field.label}
                   value={value}
                   prefix={prefix}
+                  style={field.style}
                   isError={errors.includes(key)}
                   handleInputChange={handleInputChange}
                 />
@@ -83,10 +85,12 @@ const DynamicInput = <
               return (
                 <InputAutocomplete
                   key={key}
+                  keyName={key}
                   index={index}
                   isLoading={isLoading}
                   label={field.label}
                   value={value}
+                  style={field.style}
                   entity={field.optionProps ? field.optionProps?.entity : ''}
                   optionLabel={
                     field.optionProps ? field.optionProps?.label : ''

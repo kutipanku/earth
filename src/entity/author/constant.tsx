@@ -60,26 +60,22 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
     key: 'name',
     label: 'Name',
     type: 'textfield',
+    required: true,
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'slug',
     label: 'Slug',
     type: 'textfield',
-    style: { width: '100%', marginBottom: 2 },
-    prefix: '/',
-  },
-  {
-    key: 'picture_url',
-    label: 'Picture',
-    type: 'textfield',
+    required: true,
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+    prefix: '/',
   },
   {
     key: 'nationality_id',
     label: 'Nationality',
     type: 'autocomplete',
-    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
     optionProps: {
       entity: 'nationality',
       label: 'name_en',
@@ -88,20 +84,30 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
   {
     key: 'profession_id',
     label: 'Profession',
-    type: 'textfield',
+    type: 'autocomplete',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+    optionProps: {
+      entity: 'profession',
+      label: 'name_en',
+    },
+  },
+  {
+    key: 'picture_url',
+    label: 'Picture',
+    type: 'textfield',
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'description_en',
     label: 'Description in English (EN)',
     type: 'textfield',
-    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+    style: { width: '100%', marginBottom: 2 },
   },
   {
     key: 'description_id',
     label: 'Description in Bahasa (ID)',
     type: 'textfield',
-    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+    style: { width: '100%', marginBottom: 2 },
   },
 ];
 

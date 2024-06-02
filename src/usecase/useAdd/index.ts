@@ -13,10 +13,9 @@ const useEdit = <T>({ name, identifier }: Props<keyof T>) => {
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(false);
   const bodyRef = useRef<T>();
-  const errorRef = useRef<string[]>([]);
+  const errorRef = useRef<string[]>();
 
   const handleSubmit = (body: T) => {
-    // console.warn('[CHECK] form', form);
     bodyRef.current = body;
     setLoading(true);
     fetch(`/api/${name}`, { method: 'POST', body: JSON.stringify(body) })
@@ -60,7 +59,7 @@ const useEdit = <T>({ name, identifier }: Props<keyof T>) => {
   return {
     isLoading,
     body: bodyRef.current,
-    errors: errorRef.current,
+    errors: errorRef.current ? errorRef.current : [],
     handleSubmit,
   };
 };

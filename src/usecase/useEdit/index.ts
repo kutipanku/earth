@@ -13,7 +13,7 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [detail, setDetail] = useState<T>();
-  const errorRef = useRef<string[]>([]);
+  const errorRef = useRef<string[]>();
 
   useEffect(() => {
     if (id) {
@@ -46,6 +46,7 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
         }
 
         router.replace(`/dashboard/${name}`);
+        errorRef.current = undefined;
         dispatch({
           type: 'OPEN_NOTIFICATION',
           payload: {
@@ -69,7 +70,7 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
   return {
     isLoading,
     detail,
-    errors: errorRef.current,
+    errors: errorRef.current ? errorRef.current : [],
     handleSubmit,
   };
 };

@@ -12,11 +12,12 @@ export interface DynamicField<T> {
   type: 'text' | 'textfield' | 'autocomplete';
   style: {
     width: string;
-    marginBottom: number;
+    marginBottom?: number;
     paddingLeft?: number;
     paddingRight?: number;
   };
   prefix?: string | StaticImageData;
+  required?: boolean;
   optionProps?: {
     entity: string;
     label: string;

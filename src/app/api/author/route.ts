@@ -45,16 +45,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const {
-    name,
-    slug,
-    dob,
-    description_en,
-    description_id,
-    picture_url,
-    nationality_id,
-    profession_id,
-  }: {
+  const body: {
     name?: string;
     slug?: string;
     dob?: string;
@@ -65,9 +56,17 @@ export async function POST(req: NextRequest) {
     profession_id?: string;
   } = await req.json();
 
-  if (!name || !slug) {
+  type BodyKey = keyof typeof body;
+  const requiredFields: BodyKey[] = ['name', 'slug'];
+
+  const errorFields = requiredFields.filter((key) => !body[key]);
+
+  if (errorFields.length || !body.name || !body.slug || !body.slug) {
     return NextResponse.json(
-      { error: 'Missing required key on body' },
+      {
+        error: `Missing ${errorFields.join(', ')} on body`,
+        fields: errorFields,
+      },
       { status: 400 }
     );
   }
@@ -82,16 +81,16 @@ export async function POST(req: NextRequest) {
     nationality_id?: string;
     profession_id?: string;
   } = {
-    name,
-    slug,
+    name: body.name,
+    slug: body.slug,
   };
 
-  if (dob) payload.dob = dob;
-  if (description_en) payload.description_en = description_en;
-  if (description_id) payload.description_id = description_id;
-  if (picture_url) payload.picture_url = picture_url;
-  if (nationality_id) payload.nationality_id = nationality_id;
-  if (profession_id) payload.profession_id = profession_id;
+  if (body.dob) payload.dob = body.dob;
+  if (body.description_en) payload.description_en = body.description_en;
+  if (body.description_id) payload.description_id = body.description_id;
+  if (body.picture_url) payload.picture_url = body.picture_url;
+  if (body.nationality_id) payload.nationality_id = body.nationality_id;
+  if (body.profession_id) payload.profession_id = body.profession_id;
 
   const author = await prisma.author.create({
     data: payload,
