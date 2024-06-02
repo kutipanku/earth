@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Skeleton from '@mui/material/Skeleton';
+import type { MultiLangOption } from '@/entity/ui/type';
 
 interface Props {
   index: number;
@@ -18,12 +17,6 @@ interface Props {
   value?: string;
   style?: Record<string, unknown>;
   handleInputChange: (keyName: string, value: string) => void;
-}
-
-interface Options {
-  id: string;
-  name_en: string;
-  name_id: string;
 }
 
 const InputAutocomplete = ({
@@ -38,8 +31,9 @@ const InputAutocomplete = ({
   handleInputChange,
 }: Props) => {
   const optionsRef = useRef([]);
-  const [currentValue, setCurrentValue] = useState<Options>();
+  const [currentValue, setCurrentValue] = useState<MultiLangOption>();
   const [isLoadingField, setIsLoadingField] = useState(true);
+  const [isLoadingValue, setIsLoadingValue] = useState(true);
 
   useEffect(() => {
     if (!optionsRef.current.length) {
@@ -49,25 +43,28 @@ const InputAutocomplete = ({
           optionsRef.current = options.data;
           setIsLoadingField(false);
         });
-    } else {
-      if (value) {
-        const defaultCurrentValue = optionsRef.current.find(
-          (option: { id: string }) => option.id === value
-        );
+    }
 
-        setCurrentValue(defaultCurrentValue);
-      }
+    if (value) {
+      const defaultCurrentValue = optionsRef.current.find(
+        (option: { id: string }) => option.id === value
+      );
+
+      setCurrentValue(defaultCurrentValue);
+      setIsLoadingValue(false);
+    } else {
+      setIsLoadingValue(false);
     }
   }, [entity, value]);
 
-  const handleChange = (newValue: Options) => {
+  const handleChange = (newValue: MultiLangOption) => {
     setCurrentValue(currentValue);
     handleInputChange(keyName, newValue.id);
   };
 
   return (
     <Box key={index} sx={style}>
-      {!isLoading && !isLoadingField ? (
+      {!isLoading && !isLoadingValue && !isLoadingField ? (
         <Autocomplete
           fullWidth
           id={`approvers-${index}`}
@@ -76,7 +73,9 @@ const InputAutocomplete = ({
           // @ts-expect-error need to overide options typed objec
           getOptionLabel={(option) => option[optionLabel]}
           isOptionEqualToValue={(option, value) => option.id === value.id}
-          onChange={(_, value) => handleChange(value as unknown as Options)}
+          onChange={(_, value) =>
+            handleChange(value as unknown as MultiLangOption)
+          }
           defaultValue={currentValue}
           renderInput={(params) => <TextField {...params} label={label} />}
         />

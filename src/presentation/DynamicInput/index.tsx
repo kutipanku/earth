@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { DynamicField } from '@/entity/ui/type';
 import InputText from '@/presentation/InputText';
 import InputAutocomplete from '@/presentation/InputAutocomplete';
+import InputRichText from '@/presentation/InputRichText';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
@@ -95,6 +96,24 @@ const DynamicInput = <
                   optionLabel={
                     field.optionProps ? field.optionProps?.label : ''
                   }
+                  handleInputChange={handleInputChange}
+                />
+              );
+            }
+
+            if (field.type === 'richtext') {
+              return (
+                <InputRichText
+                  key={key}
+                  keyName={key}
+                  index={index}
+                  isRequired={!!field.required}
+                  isLoading={isLoading}
+                  label={field.label}
+                  value={value}
+                  prefix={prefix}
+                  style={field.style}
+                  isError={errors.includes(key)}
                   handleInputChange={handleInputChange}
                 />
               );

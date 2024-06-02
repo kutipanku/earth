@@ -9,7 +9,7 @@ export interface Filter {
 export interface DynamicField<T> {
   label: string;
   key: T;
-  type: 'text' | 'textfield' | 'autocomplete';
+  type: 'text' | 'textfield' | 'autocomplete' | 'richtext';
   style: {
     width: string;
     marginBottom?: number;
@@ -22,4 +22,15 @@ export interface DynamicField<T> {
     entity: string;
     label: string;
   };
+}
+
+export interface MultiLangOption {
+  id: string;
+  name_en: string;
+  name_id: string;
+}
+
+export interface SingleLangOption {
+  id: string;
+  name: string;
 }

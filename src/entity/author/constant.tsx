@@ -100,13 +100,13 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
   {
     key: 'description_en',
     label: 'Description in English (EN)',
-    type: 'textfield',
+    type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
   {
     key: 'description_id',
     label: 'Description in Bahasa (ID)',
-    type: 'textfield',
+    type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
 ];

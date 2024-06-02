@@ -1,30 +1,25 @@
 'use client';
 
-import type {
-  NationalityInputFIeld,
-  NationalityVariables,
-} from '@/entity/nationality/type';
+import type { AuthorInputFIeld, AuthorVariables } from '@/entity/author/type';
 import {
   EDIT_PAGE_TITLE,
   PAGE_TYPE,
   INPUT_FIELDS,
   INPUT_VARIABLE,
-} from '@/entity/nationality/constant';
+} from '@/entity/author/constant';
 import useEdit from '@/usecase/useEdit';
 import UnifiedHeaderDetail from '@/presentation/HeaderDetail';
 import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedDynamicInputs from '@/presentation/DynamicInput';
 import styles from '@/styles/Dashboard.module.css';
 
-const EditNationalityPage = ({ params }: { params: { id: string } }) => {
+const EditAuthorPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { isLoading, handleSubmit, detail } = useEdit<NationalityVariables>({
+  const { isLoading, detail, errors, handleSubmit } = useEdit<AuthorVariables>({
     id,
     name: PAGE_TYPE,
-    identifier: 'name_en',
+    identifier: 'name',
   });
-
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className={styles.container}>
@@ -33,13 +28,10 @@ const EditNationalityPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={EDIT_PAGE_TITLE} />
 
-        <UnifiedDynamicInputs<
-          NationalityVariables,
-          NationalityInputFIeld,
-          'key'
-        >
+        <UnifiedDynamicInputs<AuthorVariables, AuthorInputFIeld, 'key'>
           data={detail || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
+          errors={errors}
           property='key'
           isLoading={isLoading}
           onSubmit={handleSubmit}
@@ -49,4 +41,4 @@ const EditNationalityPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default EditNationalityPage;
+export default EditAuthorPage;
