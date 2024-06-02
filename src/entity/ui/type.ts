@@ -9,7 +9,7 @@ export interface Filter {
 export interface DynamicField<T> {
   label: string;
   key: T;
-  type: 'text' | 'textfield';
+  type: 'text' | 'textfield' | 'autocomplete';
   style: {
     width: string;
     marginBottom: number;
@@ -17,8 +17,8 @@ export interface DynamicField<T> {
     paddingRight?: number;
   };
   prefix?: string | StaticImageData;
-  options?: {
-    id: string;
-    name: string;
-  }[];
+  optionProps?: {
+    entity: string;
+    label: string;
+  };
 }

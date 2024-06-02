@@ -18,11 +18,12 @@ import styles from '@/styles/Dashboard.module.css';
 
 const EditNationalityPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { isLoading, handleSubmit, detail } = useEdit<NationalityVariables>({
-    id,
-    name: PAGE_TYPE,
-    identifier: 'name_en',
-  });
+  const { isLoading, detail, errors, handleSubmit } =
+    useEdit<NationalityVariables>({
+      id,
+      name: PAGE_TYPE,
+      identifier: 'name_en',
+    });
 
   return (
     <div className={styles.container}>
@@ -38,6 +39,7 @@ const EditNationalityPage = ({ params }: { params: { id: string } }) => {
         >
           data={detail || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
+          errors={errors}
           property='key'
           isLoading={isLoading}
           onSubmit={handleSubmit}

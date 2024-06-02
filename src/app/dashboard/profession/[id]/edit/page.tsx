@@ -18,11 +18,12 @@ import styles from '@/styles/Dashboard.module.css';
 
 const EditProfessionPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { isLoading, handleSubmit, detail } = useEdit<ProfessionVariables>({
-    id,
-    name: PAGE_TYPE,
-    identifier: 'name_en',
-  });
+  const { isLoading, handleSubmit, errors, detail } =
+    useEdit<ProfessionVariables>({
+      id,
+      name: PAGE_TYPE,
+      identifier: 'name_en',
+    });
 
   return (
     <div className={styles.container}>
@@ -34,6 +35,7 @@ const EditProfessionPage = ({ params }: { params: { id: string } }) => {
         <UnifiedDynamicInputs<ProfessionVariables, ProfessionInputFIeld, 'key'>
           data={detail || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
+          errors={errors}
           property='key'
           isLoading={isLoading}
           onSubmit={handleSubmit}

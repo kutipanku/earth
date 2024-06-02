@@ -7,10 +7,7 @@ export async function GET(req: NextRequest) {
   const limit = req.nextUrl.searchParams.get('limit') || 100;
 
   const nationalities = await prisma.nationality.findMany({
-    orderBy: {
-      name_en: 'asc',
-      name_id: 'asc',
-    },
+    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
     skip: Number(page) * Number(limit),
     take: Number(limit),
     where: {
@@ -23,11 +20,12 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json(
-    nationalities.map((nationality) => ({
+  return NextResponse.json({
+    status: 200,
+    data: nationalities.map((nationality) => ({
       id: nationality.id,
       name_en: nationality.name_en,
       name_id: nationality.name_id,
-    }))
-  );
+    })),
+  });
 }

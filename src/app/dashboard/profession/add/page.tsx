@@ -17,12 +17,12 @@ import UnifiedDynamicInputs from '@/presentation/DynamicInput';
 import styles from '@/styles/Dashboard.module.css';
 
 const AddProfessionPage = () => {
-  const { isLoading, handleSubmit } = useAdd<ProfessionVariables>({
-    name: PAGE_TYPE,
-    identifier: 'name_en',
-  });
-
-  if (isLoading) return <p>Loading...</p>;
+  const { isLoading, body, errors, handleSubmit } = useAdd<ProfessionVariables>(
+    {
+      name: PAGE_TYPE,
+      identifier: 'name_en',
+    }
+  );
 
   return (
     <div className={styles.container}>
@@ -32,8 +32,9 @@ const AddProfessionPage = () => {
         <UnifiedHeaderDetail title={ADD_PAGE_TITLE} />
 
         <UnifiedDynamicInputs<ProfessionVariables, ProfessionInputFIeld, 'key'>
-          data={INPUT_VARIABLE}
+          data={body || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
+          errors={errors}
           property='key'
           isLoading={isLoading}
           onSubmit={handleSubmit}

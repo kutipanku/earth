@@ -29,7 +29,28 @@ export async function PUT(
   });
 
   if (profession) {
-    const { name_en, name_id, slug, icon } = await req.json();
+    const body: {
+      name_en?: string;
+      name_id?: string;
+      flag?: string;
+      slug?: string;
+      icon?: string;
+    } = await req.json();
+
+    type BodyKey = keyof typeof body;
+    const requiredFields: BodyKey[] = ['name_en', 'name_id', 'slug'];
+
+    const errorFields = requiredFields.filter((key) => !body[key]);
+
+    if (errorFields.length || !body.name_en || !body.name_id || !body.slug) {
+      return NextResponse.json(
+        {
+          error: `Missing ${errorFields.join(', ')} on body`,
+          fields: errorFields,
+        },
+        { status: 400 }
+      );
+    }
 
     const payload: {
       name_en?: string;
@@ -37,12 +58,12 @@ export async function PUT(
       slug?: string;
       icon?: string;
     } = {
-      name_en,
-      name_id,
+      name_en: body.name_en,
+      name_id: body.name_id,
+      slug: body.slug,
     };
 
-    if (slug) payload.slug = slug;
-    if (icon) payload.icon = icon;
+    if (body.icon) payload.icon = body.icon;
 
     const updatedProfession = await prisma.profession.update({
       where: {

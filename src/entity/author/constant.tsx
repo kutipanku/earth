@@ -78,8 +78,12 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
   {
     key: 'nationality_id',
     label: 'Nationality',
-    type: 'textfield',
+    type: 'autocomplete',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+    optionProps: {
+      entity: 'nationality',
+      label: 'name_en',
+    },
   },
   {
     key: 'profession_id',

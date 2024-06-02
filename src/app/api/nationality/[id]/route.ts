@@ -29,7 +29,27 @@ export async function PUT(
   });
 
   if (nationality) {
-    const { name_en, name_id, slug, flag } = await req.json();
+    const body: {
+      name_en?: string;
+      name_id?: string;
+      flag?: string;
+      slug?: string;
+    } = await req.json();
+
+    type BodyKey = keyof typeof body;
+    const requiredFields: BodyKey[] = ['name_en', 'name_id', 'slug'];
+
+    const errorFields = requiredFields.filter((key) => !body[key]);
+
+    if (errorFields.length || !body.name_en || !body.name_id || !body.slug) {
+      return NextResponse.json(
+        {
+          error: `Missing ${errorFields.join(', ')} on body`,
+          fields: errorFields,
+        },
+        { status: 400 }
+      );
+    }
 
     const payload: {
       name_en?: string;
@@ -37,12 +57,11 @@ export async function PUT(
       slug?: string;
       flag?: string;
     } = {
-      name_en,
-      name_id,
+      name_en: body.name_en,
+      name_id: body.name_id,
+      slug: body.slug,
     };
-
-    if (slug) payload.slug = slug;
-    if (flag) payload.flag = flag;
+    if (body.flag) payload.flag = body.flag;
 
     const updatedNationality = await prisma.nationality.update({
       where: {

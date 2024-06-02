@@ -17,12 +17,11 @@ import UnifiedDynamicInputs from '@/presentation/DynamicInput';
 import styles from '@/styles/Dashboard.module.css';
 
 const AddNationalityPage = () => {
-  const { isLoading, handleSubmit } = useAdd<NationalityVariables>({
-    name: PAGE_TYPE,
-    identifier: 'name_en',
-  });
-
-  if (isLoading) return <p>Loading...</p>;
+  const { isLoading, body, errors, handleSubmit } =
+    useAdd<NationalityVariables>({
+      name: PAGE_TYPE,
+      identifier: 'name_en',
+    });
 
   return (
     <div className={styles.container}>
@@ -36,8 +35,9 @@ const AddNationalityPage = () => {
           NationalityInputFIeld,
           'key'
         >
-          data={INPUT_VARIABLE}
+          data={body || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
+          errors={errors}
           property='key'
           isLoading={isLoading}
           onSubmit={handleSubmit}

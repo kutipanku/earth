@@ -11,6 +11,7 @@ import Skeleton from '@mui/material/Skeleton';
 interface Props {
   index: number;
   isLoading: boolean;
+  isError: boolean;
   label: string;
   keyName: string;
   value?: string;
@@ -21,6 +22,7 @@ interface Props {
 const InputText = ({
   index,
   isLoading,
+  isError,
   label,
   keyName,
   value,
@@ -50,6 +52,8 @@ const InputText = ({
           label={label}
           name={keyName}
           value={currentValue}
+          error={isError}
+          helperText={isError ? 'Required!' : ''}
           onChange={handleChange(keyName)}
           InputLabelProps={{
             shrink: true,

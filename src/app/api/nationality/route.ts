@@ -51,31 +51,34 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const {
-    name_en,
-    name_id,
-    flag,
-    slug,
-  }: {
+  const body: {
     name_en?: string;
     name_id?: string;
     flag?: string;
     slug?: string;
   } = await req.json();
 
-  if (!name_en || !name_id || !slug) {
+  type BodyKey = keyof typeof body;
+  const requiredFields: BodyKey[] = ['name_en', 'name_id', 'slug'];
+
+  const errorFields = requiredFields.filter((key) => !body[key]);
+
+  if (errorFields.length || !body.name_en || !body.name_id || !body.slug) {
     return NextResponse.json(
-      { error: 'Missing required key on body' },
+      {
+        error: `Missing ${errorFields.join(', ')} on body`,
+        fields: errorFields,
+      },
       { status: 400 }
     );
   }
 
   const nationality = await prisma.nationality.create({
     data: {
-      name_en,
-      name_id,
-      slug,
-      flag,
+      name_en: body.name_en,
+      name_id: body.name_id,
+      slug: body.slug,
+      flag: body.flag,
     },
   });
 

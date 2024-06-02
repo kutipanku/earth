@@ -9,12 +9,14 @@ import Button from '@mui/material/Button';
 
 import { DynamicField } from '@/entity/ui/type';
 import InputText from '@/presentation/InputText';
+import InputAutocomplete from '@/presentation/InputAutocomplete';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
   isLoading: boolean;
   fields: FieldType[];
   property: Key;
+  errors: string[];
   onSubmit: (variable: DataType) => void;
 }
 
@@ -26,6 +28,7 @@ const DynamicInput = <
   data,
   isLoading,
   fields,
+  errors,
   property,
   onSubmit,
 }: Props<DataType, FieldType, Key>) => {
@@ -70,6 +73,24 @@ const DynamicInput = <
                   label={field.label}
                   value={value}
                   prefix={prefix}
+                  isError={errors.includes(key)}
+                  handleInputChange={handleInputChange}
+                />
+              );
+            }
+
+            if (field.type === 'autocomplete') {
+              return (
+                <InputAutocomplete
+                  key={key}
+                  index={index}
+                  isLoading={isLoading}
+                  label={field.label}
+                  value={value}
+                  entity={field.optionProps ? field.optionProps?.entity : ''}
+                  optionLabel={
+                    field.optionProps ? field.optionProps?.label : ''
+                  }
                   handleInputChange={handleInputChange}
                 />
               );

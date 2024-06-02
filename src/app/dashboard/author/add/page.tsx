@@ -14,12 +14,10 @@ import UnifiedDynamicInputs from '@/presentation/DynamicInput';
 import styles from '@/styles/Dashboard.module.css';
 
 const AddAuthorPage = () => {
-  const { isLoading, handleSubmit } = useAdd<AuthorVariables>({
+  const { isLoading, body, errors, handleSubmit } = useAdd<AuthorVariables>({
     name: PAGE_TYPE,
     identifier: 'name',
   });
-
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className={styles.container}>
@@ -29,8 +27,9 @@ const AddAuthorPage = () => {
         <UnifiedHeaderDetail title={ADD_PAGE_TITLE} />
 
         <UnifiedDynamicInputs<AuthorVariables, AuthorInputFIeld, 'key'>
-          data={INPUT_VARIABLE}
+          data={body || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
+          errors={errors}
           property='key'
           isLoading={isLoading}
           onSubmit={handleSubmit}

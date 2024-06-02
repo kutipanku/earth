@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNotificationContext } from '@/repository/state/notification';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,7 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [detail, setDetail] = useState<T>();
+  const errorRef = useRef<string[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -27,10 +28,12 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
 
   const handleSubmit = (body: T) => {
     setLoading(true);
+    setDetail(body);
     fetch(`/api/${name}/${id}`, { method: 'PUT', body: JSON.stringify(body) })
       .then((res) => res.json())
       .then((responseObject) => {
         if (responseObject.error) {
+          errorRef.current = responseObject.fields;
           dispatch({
             type: 'OPEN_NOTIFICATION',
             payload: {
@@ -64,8 +67,9 @@ const useAdd = <T>({ id, name, identifier }: Props<keyof T>) => {
   };
 
   return {
-    detail,
     isLoading,
+    detail,
+    errors: errorRef.current,
     handleSubmit,
   };
 };
