@@ -23,6 +23,10 @@ export async function GET(req: NextRequest) {
         slug: { contains: filterSlug, mode: 'insensitive' },
       }),
     },
+    include: {
+      nationality: true,
+      profession: true,
+    },
   });
 
   const count = await prisma.author.count({
@@ -61,7 +65,7 @@ export async function POST(req: NextRequest) {
 
   const errorFields = requiredFields.filter((key) => !body[key]);
 
-  if (errorFields.length || !body.name || !body.slug || !body.slug) {
+  if (errorFields.length || !body.name || !body.slug) {
     return NextResponse.json(
       {
         error: `Missing ${errorFields.join(', ')} on body`,

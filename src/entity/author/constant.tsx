@@ -114,19 +114,29 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
 export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: any) => void
 ) => [
-  { field: 'name_en', headerName: 'Name', width: 300, sortable: false },
+  { field: 'name', headerName: 'Name', width: 300, sortable: false },
   { field: 'slug', headerName: 'Slug', width: 300, sortable: false },
   {
     field: 'nationality',
     headerName: 'Nationality',
     width: 300,
     sortable: false,
+    renderCell: (params: any) => {
+      if (params.row.nationality === null) return '-';
+
+      return <>{params.row.nationality.name_en}</>;
+    },
   },
   {
     field: 'profession',
     headerName: 'Profession',
     width: 300,
     sortable: false,
+    renderCell: (params: any) => {
+      if (params.row.profession === null) return '-';
+
+      return <>{params.row.profession.name_en}</>;
+    },
   },
   {
     field: 'action',
