@@ -7,7 +7,13 @@ export async function GET(
 ) {
   const { id } = params;
 
-  const author = await prisma.author.findFirst({ where: { id } });
+  const author = await prisma.author.findFirst({
+    where: { id },
+    include: {
+      nationality: true,
+      profession: true,
+    },
+  });
   return NextResponse.json({ status: 200, data: author });
 }
 

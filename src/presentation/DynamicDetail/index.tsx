@@ -7,6 +7,7 @@ import { DynamicField } from '@/entity/ui/type';
 import { NodeActionTimestamps } from '@/entity/db/type';
 import { convertDateToLocaleString } from '@/lib/date';
 import DetailText from '@/presentation/DetailText';
+import DetailAutocomplete from '@/presentation/DetailAutocomplete';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
@@ -25,7 +26,6 @@ const DynamicDetail = <
   property,
   isLoading,
 }: Props<DataType, FieldType, Key>) => {
-  console.warn('[DEBUG] dynamic isLoading', isLoading);
   return (
     <Container maxWidth={false} disableGutters>
       <Container
@@ -40,7 +40,8 @@ const DynamicDetail = <
       >
         {fields.map((field, index) => {
           const key = field[property];
-          const value: string = (data as any)[key];
+          const value = (data as any)[key];
+
           if (field.type === 'text') {
             return (
               <DetailText
@@ -48,6 +49,21 @@ const DynamicDetail = <
                 index={index}
                 isLoading={isLoading}
                 label={field.label}
+                value={value}
+                prefix={field.prefix}
+                style={field.style}
+              />
+            );
+          }
+
+          if (field.type === 'autocomplete') {
+            return (
+              <DetailAutocomplete
+                key={index}
+                index={index}
+                isLoading={isLoading}
+                label={field.label}
+                entity={key as string}
                 value={value}
                 prefix={field.prefix}
                 style={field.style}

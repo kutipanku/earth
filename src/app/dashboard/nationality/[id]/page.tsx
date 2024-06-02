@@ -20,7 +20,6 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const { detail, isLoading } = useDetail<Nationality>({ id, name: PAGE_TYPE });
 
-  console.warn('[DEBUG] page isLoading', isLoading);
   return (
     <div className={styles.container}>
       <UnifiedHeadTag title={DETAIL_PAGE_TITLE} />

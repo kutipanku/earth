@@ -105,8 +105,20 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
     key: 'slug',
     label: 'Slug',
     type: 'text',
-    style: { width: '100%', marginBottom: 2 },
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
     prefix: '/',
+  },
+  {
+    key: 'nationality',
+    label: 'Nationality',
+    type: 'autocomplete',
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+  },
+  {
+    key: 'profession',
+    label: 'Profession',
+    type: 'autocomplete',
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
   },
 ];
 
@@ -120,6 +132,12 @@ export const DETAIL_PLACEHOLDER: Author = {
   description_id: '',
   picture_url: null,
   slug: '',
+  nationality: {
+    name_en: '',
+  },
+  profession: {
+    name_en: '',
+  },
   created_at: '',
   updated_at: '',
 };

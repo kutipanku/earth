@@ -1,20 +1,25 @@
 'use client';
 
 import type { StaticImageData } from 'next/image';
+import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
+import type { SelectOption } from '@/entity/ui/type';
 
 interface Props {
-  index?: number;
-  isLoading: boolean;
+  entity: string;
   label: string;
-  value?: string;
+  isLoading: boolean;
+  index?: number;
+  value?: SelectOption;
   prefix?: string | StaticImageData;
   style?: Record<string, unknown>;
 }
 
-const DetailText = ({
+const DetailAutocomplete = ({
+  entity,
   index,
   isLoading,
   label,
@@ -22,6 +27,13 @@ const DetailText = ({
   prefix,
   style,
 }: Props) => {
+  const router = useRouter();
+  const name = value?.name || value?.name_en || '';
+
+  const redirectTo = () => {
+    router.push(`/dashboard/${entity}/${value?.id}`);
+  };
+
   return (
     <Box key={index} sx={style}>
       {!isLoading ? (
@@ -35,10 +47,12 @@ const DetailText = ({
           >
             {label}:
           </Typography>
-          <Typography variant='body1' gutterBottom>
-            {typeof prefix === 'string' && prefix}
-            {value}
-          </Typography>
+          <Button variant='text' onClick={redirectTo}>
+            <Typography variant='body1' gutterBottom>
+              {typeof prefix === 'string' && prefix}
+              {name}
+            </Typography>
+          </Button>
         </>
       ) : (
         <Skeleton variant='rounded' height={56} />
@@ -47,4 +61,4 @@ const DetailText = ({
   );
 };
 
-export default DetailText;
+export default DetailAutocomplete;

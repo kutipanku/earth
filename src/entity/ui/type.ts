@@ -24,13 +24,9 @@ export interface DynamicField<T> {
   };
 }
 
-export interface MultiLangOption {
+export interface SelectOption {
   id: string;
-  name_en: string;
-  name_id: string;
-}
-
-export interface SingleLangOption {
-  id: string;
-  name: string;
+  name?: string;
+  name_en?: string;
+  name_id?: string;
 }

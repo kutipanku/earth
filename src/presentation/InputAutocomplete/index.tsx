@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Skeleton from '@mui/material/Skeleton';
-import type { MultiLangOption } from '@/entity/ui/type';
+import type { SelectOption } from '@/entity/ui/type';
 
 interface Props {
   index: number;
@@ -31,7 +31,7 @@ const InputAutocomplete = ({
   handleInputChange,
 }: Props) => {
   const optionsRef = useRef([]);
-  const [currentValue, setCurrentValue] = useState<MultiLangOption>();
+  const [currentValue, setCurrentValue] = useState<SelectOption>();
   const [isLoadingField, setIsLoadingField] = useState(true);
   const [isLoadingValue, setIsLoadingValue] = useState(true);
 
@@ -57,7 +57,7 @@ const InputAutocomplete = ({
     }
   }, [entity, value]);
 
-  const handleChange = (newValue: MultiLangOption) => {
+  const handleChange = (newValue: SelectOption) => {
     setCurrentValue(currentValue);
     handleInputChange(keyName, newValue.id);
   };
@@ -74,7 +74,7 @@ const InputAutocomplete = ({
           getOptionLabel={(option) => option[optionLabel]}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={(_, value) =>
-            handleChange(value as unknown as MultiLangOption)
+            handleChange(value as unknown as SelectOption)
           }
           defaultValue={currentValue}
           renderInput={(params) => <TextField {...params} label={label} />}

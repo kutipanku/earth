@@ -1,25 +1,21 @@
 'use client';
 
-import type {
-  Nationality,
-  NationalityDetailField,
-} from '@/entity/nationality/type';
+import type { Author, AuthorDetailField } from '@/entity/author/type';
 import {
   PAGE_TYPE,
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
-} from '@/entity/nationality/constant';
+  DETAIL_PLACEHOLDER,
+} from '@/entity/author/constant';
 import useDetail from '@/usecase/useDetail';
 import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedHeaderDetail from '@/presentation/HeaderDetail';
 import UnifiedDetailFields from '@/presentation/DynamicDetail';
 import styles from '@/styles/Dashboard.module.css';
 
-const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
+const AuthorDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { detail, isLoading } = useDetail<Nationality>({ id, name: PAGE_TYPE });
-
-  if (isLoading) return <p>Loading...</p>;
+  const { detail, isLoading } = useDetail<Author>({ id, name: PAGE_TYPE });
 
   return (
     <div className={styles.container}>
@@ -28,16 +24,15 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        {detail && (
-          <UnifiedDetailFields<Nationality, NationalityDetailField, 'key'>
-            data={detail}
-            fields={DETAIL_FIELDS}
-            property='key'
-          />
-        )}
+        <UnifiedDetailFields<Author, AuthorDetailField, 'key'>
+          data={detail || DETAIL_PLACEHOLDER}
+          fields={DETAIL_FIELDS}
+          property='key'
+          isLoading={isLoading}
+        />
       </main>
     </div>
   );
 };
 
-export default NationalityDetailPage;
+export default AuthorDetailPage;
