@@ -1,7 +1,6 @@
 'use client';
 
 import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { DynamicField } from '@/entity/ui/type';
@@ -26,6 +25,7 @@ const DynamicDetail = <
   property,
   isLoading,
 }: Props<DataType, FieldType, Key>) => {
+  console.warn('[DEBUG] dynamic isLoading', isLoading);
   return (
     <Container maxWidth={false} disableGutters>
       <Container
@@ -60,34 +60,18 @@ const DynamicDetail = <
       </Container>
       <Divider sx={{ marginBottom: 3 }} />
       <Box sx={{ width: '100%', marginBottom: 2, display: 'flex' }}>
-        <Box sx={{ width: '50%', marginRight: 1 }}>
-          <Typography
-            sx={{ paddingBottom: 0 }}
-            variant='caption'
-            display='block'
-            color='primary'
-            gutterBottom
-          >
-            Created At:
-          </Typography>
-          <Typography variant='body1' gutterBottom>
-            {convertDateToLocaleString(data.created_at)}
-          </Typography>
-        </Box>
-        <Box sx={{ width: '50%', marginLeft: 1 }}>
-          <Typography
-            sx={{ paddingBottom: 0 }}
-            variant='caption'
-            display='block'
-            color='primary'
-            gutterBottom
-          >
-            Updated At:
-          </Typography>
-          <Typography variant='body1' gutterBottom>
-            {convertDateToLocaleString(data.updated_at)}
-          </Typography>
-        </Box>
+        <DetailText
+          isLoading={isLoading}
+          label='Created At:'
+          value={convertDateToLocaleString(data.created_at)}
+          style={{ width: '50%', marginRight: 1 }}
+        />
+        <DetailText
+          isLoading={isLoading}
+          label='Updated At:'
+          value={convertDateToLocaleString(data.updated_at)}
+          style={{ width: '50%', marginLeft: 1 }}
+        />
       </Box>
       <Divider sx={{ marginBottom: 3 }} />
     </Container>

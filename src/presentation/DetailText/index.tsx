@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 
 interface Props {
-  index: number;
+  index?: number;
   isLoading: boolean;
   label: string;
   value?: string;
@@ -22,6 +22,7 @@ const DetailText = ({
   prefix,
   style,
 }: Props) => {
+  console.warn('[DEBUG] isLoading', isLoading);
   return (
     <Box key={index} sx={style}>
       {!isLoading ? (

@@ -17,6 +17,8 @@ const useDetail = <T>({ id, name }: Props) => {
           setDetail(responseObject.data);
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [id, name]);
 

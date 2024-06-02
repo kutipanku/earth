@@ -7,11 +7,23 @@ import IndonesiaIcon from '@/public/icons/id.png';
 import EnglishIcon from '@/public/icons/gb.png';
 import type { Filter } from '@/entity/ui/type';
 import type {
+  Profession,
   ProfessionDetailField,
   ProfessionInputFIeld,
   ProfessionVariables,
 } from '@/entity/profession/type';
+// ================================================================
 
+// Page Meta
+export const PAGE_TYPE = 'profession';
+export const HOME_PAGE_TITLE = 'Professions';
+export const HOME_PAGE_REDIRECT_ADD = 'Add Profession';
+export const DETAIL_PAGE_TITLE = 'Profession Detail';
+export const ADD_PAGE_TITLE = 'Add Profession';
+export const EDIT_PAGE_TITLE = 'Edit Profession';
+// ================================================================
+
+// Table Properties
 export const INITIAL_FILTER_STATE: Filter[] = [
   {
     label: 'Name',
@@ -22,64 +34,6 @@ export const INITIAL_FILTER_STATE: Filter[] = [
     label: 'Slug',
     key: 'slug',
     value: '',
-  },
-];
-export const PAGE_TYPE = 'profession';
-export const HOME_PAGE_TITLE = 'Professions';
-export const HOME_PAGE_REDIRECT_ADD = 'Add Profession';
-export const DETAIL_PAGE_TITLE = 'Profession Detail';
-export const ADD_PAGE_TITLE = 'Add Profession';
-export const EDIT_PAGE_TITLE = 'Edit Profession';
-export const DETAIL_FIELDS: ProfessionDetailField[] = [
-  {
-    key: 'name_en',
-    label: 'Name (EN)',
-    type: 'text',
-    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
-  },
-  {
-    key: 'name_id',
-    label: 'Name (ID)',
-    type: 'text',
-    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
-  },
-  {
-    key: 'slug',
-    label: 'Slug',
-    type: 'text',
-    style: { width: '100%', marginBottom: 2 },
-    prefix: '/',
-  },
-];
-
-export const INPUT_VARIABLE: ProfessionVariables = {
-  name_id: '',
-  name_en: '',
-  slug: '',
-  icon: '',
-};
-
-export const INPUT_FIELDS: ProfessionInputFIeld[] = [
-  {
-    key: 'name_en',
-    label: 'Name (EN)',
-    type: 'textfield',
-    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
-    prefix: EnglishIcon,
-  },
-  {
-    key: 'name_id',
-    label: 'Name (ID)',
-    type: 'textfield',
-    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
-    prefix: IndonesiaIcon,
-  },
-  {
-    key: 'slug',
-    label: 'Slug',
-    type: 'textfield',
-    style: { width: '100%', marginBottom: 2 },
-    prefix: '/',
   },
 ];
 
@@ -122,3 +76,71 @@ export const TABLE_HEADER = (
     ),
   },
 ];
+// ================================================================
+
+// Detail Properties
+export const DETAIL_FIELDS: ProfessionDetailField[] = [
+  {
+    key: 'name_en',
+    label: 'Name (EN)',
+    type: 'text',
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+  },
+  {
+    key: 'name_id',
+    label: 'Name (ID)',
+    type: 'text',
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+  },
+  {
+    key: 'slug',
+    label: 'Slug',
+    type: 'text',
+    style: { width: '100%', marginBottom: 2 },
+    prefix: '/',
+  },
+];
+
+export const DETAIL_PLACEHOLDER: Profession = {
+  id: '',
+  name_en: '',
+  name_id: '',
+  slug: '',
+  icon: '',
+  created_at: '',
+  updated_at: '',
+};
+// ================================================================
+
+// Update Properties
+export const INPUT_FIELDS: ProfessionInputFIeld[] = [
+  {
+    key: 'name_en',
+    label: 'Name (EN)',
+    type: 'textfield',
+    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+    prefix: EnglishIcon,
+  },
+  {
+    key: 'name_id',
+    label: 'Name (ID)',
+    type: 'textfield',
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+    prefix: IndonesiaIcon,
+  },
+  {
+    key: 'slug',
+    label: 'Slug',
+    type: 'textfield',
+    style: { width: '100%', marginBottom: 2 },
+    prefix: '/',
+  },
+];
+
+export const INPUT_VARIABLE: ProfessionVariables = {
+  name_id: '',
+  name_en: '',
+  slug: '',
+  icon: '',
+};
+// ================================================================

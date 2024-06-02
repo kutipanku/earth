@@ -8,6 +8,7 @@ import {
   PAGE_TYPE,
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
+  DETAIL_PLACEHOLDER,
 } from '@/entity/nationality/constant';
 import useDetail from '@/usecase/useDetail';
 import UnifiedHeadTag from '@/presentation/Head';
@@ -19,6 +20,7 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const { detail, isLoading } = useDetail<Nationality>({ id, name: PAGE_TYPE });
 
+  console.warn('[DEBUG] page isLoading', isLoading);
   return (
     <div className={styles.container}>
       <UnifiedHeadTag title={DETAIL_PAGE_TITLE} />
@@ -26,14 +28,12 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        {detail && (
-          <UnifiedDetailFields<Nationality, NationalityDetailField, 'key'>
-            data={detail}
-            fields={DETAIL_FIELDS}
-            property='key'
-            isLoading={isLoading}
-          />
-        )}
+        <UnifiedDetailFields<Nationality, NationalityDetailField, 'key'>
+          data={detail || DETAIL_PLACEHOLDER}
+          fields={DETAIL_FIELDS}
+          property='key'
+          isLoading={isLoading}
+        />
       </main>
     </div>
   );

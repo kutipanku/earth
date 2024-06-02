@@ -8,6 +8,7 @@ import {
   PAGE_TYPE,
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
+  DETAIL_PLACEHOLDER,
 } from '@/entity/profession/constant';
 import useDetail from '@/usecase/useDetail';
 import UnifiedHeadTag from '@/presentation/Head';
@@ -19,8 +20,6 @@ const ProfessionDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const { detail, isLoading } = useDetail<Profession>({ id, name: PAGE_TYPE });
 
-  if (isLoading) return <p>Loading...</p>;
-
   return (
     <div className={styles.container}>
       <UnifiedHeadTag title={DETAIL_PAGE_TITLE} />
@@ -28,13 +27,12 @@ const ProfessionDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        {detail && (
-          <UnifiedDetailFields<Profession, ProfessionDetailField, 'key'>
-            data={detail}
-            fields={DETAIL_FIELDS}
-            property='key'
-          />
-        )}
+        <UnifiedDetailFields<Profession, ProfessionDetailField, 'key'>
+          data={detail || DETAIL_PLACEHOLDER}
+          fields={DETAIL_FIELDS}
+          property='key'
+          isLoading={isLoading}
+        />
       </main>
     </div>
   );
