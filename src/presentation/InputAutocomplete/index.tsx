@@ -45,17 +45,17 @@ const InputAutocomplete = ({
         });
     }
 
-    if (value) {
+    if (!isLoadingField && value) {
       const defaultCurrentValue = optionsRef.current.find(
         (option: { id: string }) => option.id === value
       );
 
       setCurrentValue(defaultCurrentValue);
       setIsLoadingValue(false);
-    } else {
+    } else if (!isLoadingField && !isLoading && !value) {
       setIsLoadingValue(false);
     }
-  }, [entity, value]);
+  }, [entity, isLoading, isLoadingField, value]);
 
   const handleChange = (newValue: SelectOption) => {
     setCurrentValue(currentValue);
@@ -68,7 +68,7 @@ const InputAutocomplete = ({
         <Autocomplete
           fullWidth
           id={`approvers-${index}`}
-          multiple={index === 0}
+          value={currentValue}
           options={optionsRef.current}
           // @ts-expect-error need to overide options typed objec
           getOptionLabel={(option) => option[optionLabel]}
@@ -76,7 +76,6 @@ const InputAutocomplete = ({
           onChange={(_, value) =>
             handleChange(value as unknown as SelectOption)
           }
-          defaultValue={currentValue}
           renderInput={(params) => <TextField {...params} label={label} />}
         />
       ) : (

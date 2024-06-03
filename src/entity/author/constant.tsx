@@ -98,13 +98,13 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
   {
     key: 'name',
     label: 'Name',
-    type: 'textfield',
+    type: 'text',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'slug',
     label: 'Slug',
-    type: 'textfield',
+    type: 'text',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
     prefix: '/',
   },
@@ -123,13 +123,13 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
   {
     key: 'description_en',
     label: 'Description in English (EN)',
-    type: 'textfield',
+    type: 'text',
     style: { width: '100%', marginBottom: 2 },
   },
   {
     key: 'description_id',
     label: 'Description in Bahasa (ID)',
-    type: 'textfield',
+    type: 'text',
     style: { width: '100%', marginBottom: 2 },
   },
 ];
@@ -160,14 +160,14 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
   {
     key: 'name',
     label: 'Name',
-    type: 'textfield',
+    type: 'text',
     required: true,
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'slug',
     label: 'Slug',
-    type: 'textfield',
+    type: 'text',
     required: true,
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
     prefix: '/',
@@ -195,8 +195,14 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
   {
     key: 'picture_url',
     label: 'Picture',
-    type: 'textfield',
+    type: 'text',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+  },
+  {
+    key: 'dob',
+    label: 'Date of Birth',
+    type: 'date',
+    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
   },
   {
     key: 'description_en',

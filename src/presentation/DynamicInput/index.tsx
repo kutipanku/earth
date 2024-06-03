@@ -11,6 +11,7 @@ import { DynamicField } from '@/entity/ui/type';
 import InputText from '@/presentation/InputText';
 import InputAutocomplete from '@/presentation/InputAutocomplete';
 import InputRichText from '@/presentation/InputRichText';
+import InputDate from '@/presentation/InputDate';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
@@ -66,7 +67,7 @@ const DynamicInput = <
             const prefix = field.prefix;
 
             switch (field.type) {
-              case 'textfield':
+              case 'text':
                 return (
                   <InputText
                     key={key}
@@ -105,13 +106,23 @@ const DynamicInput = <
                     key={key}
                     keyName={key}
                     index={index}
-                    isRequired={!!field.required}
                     isLoading={isLoading}
                     label={field.label}
                     value={value}
-                    prefix={prefix}
                     style={field.style}
-                    isError={errors.includes(key)}
+                    handleInputChange={handleInputChange}
+                  />
+                );
+              case 'date':
+                return (
+                  <InputDate
+                    key={key}
+                    keyName={key}
+                    index={index}
+                    isLoading={isLoading}
+                    label={field.label}
+                    value={value}
+                    style={field.style}
                     handleInputChange={handleInputChange}
                   />
                 );

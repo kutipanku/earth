@@ -13,7 +13,7 @@ export interface TableRowProps<T> {
 export interface DynamicField<T> {
   label: string;
   key: T;
-  type: 'textfield' | 'autocomplete' | 'richtext';
+  type: 'text' | 'autocomplete' | 'richtext' | 'date';
   style: {
     width: string;
     marginBottom?: number;

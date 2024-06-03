@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
     slug: body.slug,
   };
 
-  if (body.dob) payload.dob = body.dob;
+  if (body.dob) payload.dob = new Date(body.dob).toISOString();
   if (body.description_en) payload.description_en = body.description_en;
   if (body.description_id) payload.description_id = body.description_id;
   if (body.picture_url) payload.picture_url = body.picture_url;

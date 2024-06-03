@@ -71,7 +71,7 @@ export async function PUT(
       slug,
     };
 
-    if (dob) payload.dob = dob;
+    if (dob) payload.dob = new Date(dob).toISOString();
     if (description_en) payload.description_en = description_en;
     if (description_id) payload.description_id = description_id;
     if (picture_url) payload.picture_url = picture_url;
