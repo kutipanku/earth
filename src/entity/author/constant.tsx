@@ -98,13 +98,13 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
   {
     key: 'name',
     label: 'Name',
-    type: 'text',
+    type: 'textfield',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'slug',
     label: 'Slug',
-    type: 'text',
+    type: 'textfield',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
     prefix: '/',
   },
@@ -123,13 +123,13 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
   {
     key: 'description_en',
     label: 'Description in English (EN)',
-    type: 'text',
+    type: 'textfield',
     style: { width: '100%', marginBottom: 2 },
   },
   {
     key: 'description_id',
     label: 'Description in Bahasa (ID)',
-    type: 'text',
+    type: 'textfield',
     style: { width: '100%', marginBottom: 2 },
   },
 ];

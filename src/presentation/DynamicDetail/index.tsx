@@ -43,7 +43,7 @@ const DynamicDetail = <
           const value = (data as any)[key];
 
           switch (field.type) {
-            case 'text':
+            case 'textfield':
               return (
                 <DetailText
                   key={index}

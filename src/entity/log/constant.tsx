@@ -4,8 +4,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { renderActionLogType } from '@/entity/log/function';
 import { convertDateToLocaleString } from '@/lib/date';
 import { convertDateToTime } from '@/lib/time';
-import type { LogVariables } from '@/entity/log/type';
-import type { Filter } from '@/entity/ui/type';
+import type { Log, LogVariables } from '@/entity/log/type';
+import type { Filter, TableRowProps } from '@/entity/ui/type';
 // ================================================================
 
 // Page Meta
@@ -34,21 +34,22 @@ export const INITIAL_FILTER_STATE: Filter[] = [
 ];
 
 export const TABLE_HEADER = (
-  callbackFunction: (type: string, dataRow: any) => void
+  callbackFunction: (type: string, dataRow: TableRowProps<Log>) => void
 ) => [
   {
     field: 'admin',
     headerName: 'Admin Name',
     width: 300,
     sortable: false,
-    renderCell: (params: any) => params.row.user.name,
+    renderCell: (params: TableRowProps<Log>) => params.row.user.name,
   },
   {
     field: 'action_type',
     headerName: 'Action Type',
     width: 200,
     sortable: false,
-    renderCell: (params: any) => renderActionLogType(params.row.action),
+    renderCell: (params: TableRowProps<Log>) =>
+      renderActionLogType(params.row.action),
   },
   { field: 'entity', headerName: 'Entity', width: 200, sortable: false },
   {
@@ -56,7 +57,7 @@ export const TABLE_HEADER = (
     headerName: 'Action Date',
     width: 300,
     sortable: false,
-    renderCell: (params: any) =>
+    renderCell: (params: TableRowProps<Log>) =>
       `${convertDateToTime(params.row.created_at)} | ${convertDateToLocaleString(params.row.created_at)}`,
   },
   {
@@ -64,7 +65,7 @@ export const TABLE_HEADER = (
     headerName: 'Action',
     sortable: false,
     width: 370,
-    renderCell: (params: any) => (
+    renderCell: (params: TableRowProps<Log>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
           onClick={() => callbackFunction('view', params)}

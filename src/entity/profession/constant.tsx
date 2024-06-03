@@ -83,19 +83,19 @@ export const DETAIL_FIELDS: ProfessionDetailField[] = [
   {
     key: 'name_en',
     label: 'Name (EN)',
-    type: 'text',
+    type: 'textfield',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'name_id',
     label: 'Name (ID)',
-    type: 'text',
+    type: 'textfield',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
   },
   {
     key: 'slug',
     label: 'Slug',
-    type: 'text',
+    type: 'textfield',
     style: { width: '100%', marginBottom: 2 },
     prefix: '/',
   },
