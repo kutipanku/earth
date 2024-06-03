@@ -42,36 +42,35 @@ const DynamicDetail = <
           const key = field[property];
           const value = (data as any)[key];
 
-          if (field.type === 'text') {
-            return (
-              <DetailText
-                key={index}
-                index={index}
-                isLoading={isLoading}
-                label={field.label}
-                value={value}
-                prefix={field.prefix}
-                style={field.style}
-              />
-            );
+          switch (field.type) {
+            case 'text':
+              return (
+                <DetailText
+                  key={index}
+                  index={index}
+                  isLoading={isLoading}
+                  label={field.label}
+                  value={value}
+                  prefix={field.prefix}
+                  style={field.style}
+                />
+              );
+            case 'autocomplete':
+              return (
+                <DetailAutocomplete
+                  key={index}
+                  index={index}
+                  isLoading={isLoading}
+                  label={field.label}
+                  entity={key as string}
+                  value={value}
+                  prefix={field.prefix}
+                  style={field.style}
+                />
+              );
+            default:
+              return <></>;
           }
-
-          if (field.type === 'autocomplete') {
-            return (
-              <DetailAutocomplete
-                key={index}
-                index={index}
-                isLoading={isLoading}
-                label={field.label}
-                entity={key as string}
-                value={value}
-                prefix={field.prefix}
-                style={field.style}
-              />
-            );
-          }
-
-          return null;
         })}
       </Container>
       <Divider sx={{ marginBottom: 3 }} />

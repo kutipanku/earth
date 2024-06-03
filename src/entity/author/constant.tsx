@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import type { Filter } from '@/entity/ui/type';
+import type { Filter, TableRowProps } from '@/entity/ui/type';
 import type {
   Author,
   AuthorDetailField,
@@ -36,7 +36,7 @@ export const INITIAL_FILTER_STATE: Filter[] = [
 ];
 
 export const TABLE_HEADER = (
-  callbackFunction: (type: string, dataRow: any) => void
+  callbackFunction: (type: string, dataRow: TableRowProps<Author>) => void
 ) => [
   { field: 'name', headerName: 'Name', width: 300, sortable: false },
   { field: 'slug', headerName: 'Slug', width: 300, sortable: false },
@@ -45,10 +45,10 @@ export const TABLE_HEADER = (
     headerName: 'Nationality',
     width: 300,
     sortable: false,
-    renderCell: (params: any) => {
+    renderCell: (params: TableRowProps<Author>) => {
       if (params.row.nationality === null) return '-';
 
-      return <>{params.row.nationality.name_en}</>;
+      return <>{params.row.nationality?.name_en}</>;
     },
   },
   {
@@ -56,10 +56,10 @@ export const TABLE_HEADER = (
     headerName: 'Profession',
     width: 300,
     sortable: false,
-    renderCell: (params: any) => {
+    renderCell: (params: TableRowProps<Author>) => {
       if (params.row.profession === null) return '-';
 
-      return <>{params.row.profession.name_en}</>;
+      return <>{params.row.profession?.name_en}</>;
     },
   },
   {
@@ -67,7 +67,7 @@ export const TABLE_HEADER = (
     headerName: 'Actions',
     sortable: false,
     width: 370,
-    renderCell: (params: any) => (
+    renderCell: (params: TableRowProps<Author>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
           onClick={() => callbackFunction('view', params)}
@@ -119,6 +119,18 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
     label: 'Profession',
     type: 'autocomplete',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+  },
+  {
+    key: 'description_en',
+    label: 'Description in English (EN)',
+    type: 'text',
+    style: { width: '100%', marginBottom: 2 },
+  },
+  {
+    key: 'description_id',
+    label: 'Description in Bahasa (ID)',
+    type: 'text',
+    style: { width: '100%', marginBottom: 2 },
   },
 ];
 

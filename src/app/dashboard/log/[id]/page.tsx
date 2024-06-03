@@ -5,7 +5,6 @@ import { PAGE_TYPE, DETAIL_PAGE_TITLE } from '@/entity/log/constant';
 import useDetail from '@/usecase/useDetail';
 import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedHeaderDetail from '@/presentation/HeaderDetail';
-import UnifiedDetailFields from '@/presentation/DynamicDetail';
 import styles from '@/styles/Dashboard.module.css';
 
 const NationalityDetailPage = ({ params }: { params: { id: string } }) => {

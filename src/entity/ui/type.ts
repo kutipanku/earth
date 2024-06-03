@@ -6,6 +6,10 @@ export interface Filter {
   value: string;
 }
 
+export interface TableRowProps<T> {
+  row: T;
+}
+
 export interface DynamicField<T> {
   label: string;
   key: T;

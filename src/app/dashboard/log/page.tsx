@@ -46,7 +46,6 @@ const LogPage = () => {
       <main className={styles.main}>
         <UnifiedHeaderHome
           title={HOME_PAGE_TITLE}
-          actAdd=''
           isLoading={isLoading}
           actAddFunction={handleRedirectToAddPage}
         />

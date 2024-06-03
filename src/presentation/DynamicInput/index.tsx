@@ -64,62 +64,60 @@ const DynamicInput = <
             const key = field[property] as string;
             const value = (values.current as any)[key];
             const prefix = field.prefix;
-            if (field.type === 'textfield') {
-              return (
-                <InputText
-                  key={key}
-                  keyName={key}
-                  index={index}
-                  isRequired={!!field.required}
-                  isLoading={isLoading}
-                  label={field.label}
-                  value={value}
-                  prefix={prefix}
-                  style={field.style}
-                  isError={errors.includes(key)}
-                  handleInputChange={handleInputChange}
-                />
-              );
-            }
 
-            if (field.type === 'autocomplete') {
-              return (
-                <InputAutocomplete
-                  key={key}
-                  keyName={key}
-                  index={index}
-                  isLoading={isLoading}
-                  label={field.label}
-                  value={value}
-                  style={field.style}
-                  entity={field.optionProps ? field.optionProps?.entity : ''}
-                  optionLabel={
-                    field.optionProps ? field.optionProps?.label : ''
-                  }
-                  handleInputChange={handleInputChange}
-                />
-              );
+            switch (field.type) {
+              case 'textfield':
+                return (
+                  <InputText
+                    key={key}
+                    keyName={key}
+                    index={index}
+                    isRequired={!!field.required}
+                    isLoading={isLoading}
+                    label={field.label}
+                    value={value}
+                    prefix={prefix}
+                    style={field.style}
+                    isError={errors.includes(key)}
+                    handleInputChange={handleInputChange}
+                  />
+                );
+              case 'autocomplete':
+                return (
+                  <InputAutocomplete
+                    key={key}
+                    keyName={key}
+                    index={index}
+                    isLoading={isLoading}
+                    label={field.label}
+                    value={value}
+                    style={field.style}
+                    entity={field.optionProps ? field.optionProps?.entity : ''}
+                    optionLabel={
+                      field.optionProps ? field.optionProps?.label : ''
+                    }
+                    handleInputChange={handleInputChange}
+                  />
+                );
+              case 'richtext':
+                return (
+                  <InputRichText
+                    key={key}
+                    keyName={key}
+                    index={index}
+                    isRequired={!!field.required}
+                    isLoading={isLoading}
+                    label={field.label}
+                    value={value}
+                    prefix={prefix}
+                    style={field.style}
+                    isError={errors.includes(key)}
+                    handleInputChange={handleInputChange}
+                  />
+                );
+              default:
+                return null;
             }
-
-            if (field.type === 'richtext') {
-              return (
-                <InputRichText
-                  key={key}
-                  keyName={key}
-                  index={index}
-                  isRequired={!!field.required}
-                  isLoading={isLoading}
-                  label={field.label}
-                  value={value}
-                  prefix={prefix}
-                  style={field.style}
-                  isError={errors.includes(key)}
-                  handleInputChange={handleInputChange}
-                />
-              );
-            }
-
-            return null;
           })}
           <Container maxWidth={false} disableGutters sx={{ width: '100%' }}>
             <Divider sx={{ marginTop: 1, marginBottom: 2 }} />

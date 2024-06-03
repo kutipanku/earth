@@ -6,7 +6,15 @@ import { convertDateToLocaleString } from '@/lib/date';
 import { convertDateToTime } from '@/lib/time';
 import type { LogVariables } from '@/entity/log/type';
 import type { Filter } from '@/entity/ui/type';
+// ================================================================
 
+// Page Meta
+export const PAGE_TYPE = 'log';
+export const HOME_PAGE_TITLE = 'Logs';
+export const DETAIL_PAGE_TITLE = 'Log Detail';
+// ================================================================
+
+// Table Properties
 export const INITIAL_FILTER_STATE: Filter[] = [
   {
     label: 'Admin Name',
@@ -24,14 +32,6 @@ export const INITIAL_FILTER_STATE: Filter[] = [
     value: '',
   },
 ];
-export const PAGE_TYPE = 'log';
-export const HOME_PAGE_TITLE = 'Logs';
-export const DETAIL_PAGE_TITLE = 'Log Detail';
-
-export const INPUT_VARIABLE: LogVariables = {
-  action: '',
-  entity: '',
-};
 
 export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: any) => void
@@ -77,3 +77,8 @@ export const TABLE_HEADER = (
     ),
   },
 ];
+
+export const INPUT_VARIABLE: LogVariables = {
+  action: '',
+  entity: '',
+};

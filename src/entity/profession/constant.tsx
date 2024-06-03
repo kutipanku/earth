@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import IndonesiaIcon from '@/public/icons/id.png';
 import EnglishIcon from '@/public/icons/gb.png';
-import type { Filter } from '@/entity/ui/type';
+import type { Filter, TableRowProps } from '@/entity/ui/type';
 import type {
   Profession,
   ProfessionDetailField,
@@ -38,7 +38,7 @@ export const INITIAL_FILTER_STATE: Filter[] = [
 ];
 
 export const TABLE_HEADER = (
-  callbackFunction: (type: string, dataRow: any) => void
+  callbackFunction: (type: string, dataRow: TableRowProps<Profession>) => void
 ) => [
   { field: 'name_en', headerName: 'Name (EN)', width: 300, sortable: false },
   { field: 'name_id', headerName: 'Name (ID)', width: 300, sortable: false },
@@ -49,7 +49,7 @@ export const TABLE_HEADER = (
     headerName: 'Actions',
     sortable: false,
     width: 370,
-    renderCell: (params: any) => (
+    renderCell: (params: TableRowProps<Profession>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
           onClick={() => callbackFunction('view', params)}
