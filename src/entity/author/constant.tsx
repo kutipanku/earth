@@ -123,13 +123,13 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
   {
     key: 'description_en',
     label: 'Description in English (EN)',
-    type: 'text',
+    type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
   {
     key: 'description_id',
     label: 'Description in Bahasa (ID)',
-    type: 'text',
+    type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
 ];

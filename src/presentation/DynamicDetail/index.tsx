@@ -8,6 +8,7 @@ import { NodeActionTimestamps } from '@/entity/db/type';
 import { convertDateToLocaleString } from '@/lib/date';
 import DetailText from '@/presentation/DetailText';
 import DetailAutocomplete from '@/presentation/DetailAutocomplete';
+import DetailRichText from '@/presentation/DetailRichText';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
@@ -52,6 +53,17 @@ const DynamicDetail = <
                   label={field.label}
                   value={value}
                   prefix={field.prefix}
+                  style={field.style}
+                />
+              );
+            case 'richtext':
+              return (
+                <DetailRichText
+                  key={index}
+                  index={index}
+                  isLoading={isLoading}
+                  label={field.label}
+                  value={value}
                   style={field.style}
                 />
               );
