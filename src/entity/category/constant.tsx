@@ -7,20 +7,20 @@ import IndonesiaIcon from '@/public/icons/id.png';
 import EnglishIcon from '@/public/icons/gb.png';
 import type { Filter, TableRowProps } from '@/entity/ui/type';
 import type {
-  Tag,
-  TagDetailField,
-  TagInputFIeld,
-  TagVariables,
-} from '@/entity/tag/type';
+  Category,
+  CategoryDetailField,
+  CategoryInputFIeld,
+  CategoryVariables,
+} from '@/entity/category/type';
 // ================================================================
 
 // Page Meta
-export const PAGE_TYPE = 'tag';
-export const HOME_PAGE_TITLE = 'Tags';
-export const HOME_PAGE_REDIRECT_ADD = 'Add Tag';
-export const DETAIL_PAGE_TITLE = 'Tag Detail';
-export const ADD_PAGE_TITLE = 'Add Tag';
-export const EDIT_PAGE_TITLE = 'Edit Tag';
+export const PAGE_TYPE = 'category';
+export const HOME_PAGE_TITLE = 'Categories';
+export const HOME_PAGE_REDIRECT_ADD = 'Add Category';
+export const DETAIL_PAGE_TITLE = 'Category Detail';
+export const ADD_PAGE_TITLE = 'Add Category';
+export const EDIT_PAGE_TITLE = 'Edit Category';
 // ================================================================
 
 // Table Properties
@@ -38,7 +38,7 @@ export const INITIAL_FILTER_STATE: Filter[] = [
 ];
 
 export const TABLE_HEADER = (
-  callbackFunction: (type: string, dataRow: TableRowProps<Tag>) => void
+  callbackFunction: (type: string, dataRow: TableRowProps<Category>) => void
 ) => [
   { field: 'name_en', headerName: 'Name (EN)', width: 300, sortable: false },
   { field: 'name_id', headerName: 'Name (ID)', width: 300, sortable: false },
@@ -48,7 +48,7 @@ export const TABLE_HEADER = (
     headerName: 'Actions',
     sortable: false,
     width: 370,
-    renderCell: (params: TableRowProps<Tag>) => (
+    renderCell: (params: TableRowProps<Category>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
           onClick={() => callbackFunction('view', params)}
@@ -75,7 +75,7 @@ export const TABLE_HEADER = (
 // ================================================================
 
 // Detail Properties
-export const DETAIL_FIELDS: TagDetailField[] = [
+export const DETAIL_FIELDS: CategoryDetailField[] = [
   {
     key: 'name_en',
     label: 'Name (EN)',
@@ -97,7 +97,7 @@ export const DETAIL_FIELDS: TagDetailField[] = [
   },
 ];
 
-export const DETAIL_PLACEHOLDER: Tag = {
+export const DETAIL_PLACEHOLDER: Category = {
   id: '',
   name_en: '',
   name_id: '',
@@ -110,7 +110,7 @@ export const DETAIL_PLACEHOLDER: Tag = {
 // ================================================================
 
 // Update Properties
-export const INPUT_FIELDS: TagInputFIeld[] = [
+export const INPUT_FIELDS: CategoryInputFIeld[] = [
   {
     key: 'name_en',
     label: 'Name (EN)',
@@ -134,7 +134,7 @@ export const INPUT_FIELDS: TagInputFIeld[] = [
   },
 ];
 
-export const INPUT_VARIABLE: TagVariables = {
+export const INPUT_VARIABLE: CategoryVariables = {
   name_id: '',
   name_en: '',
   slug: '',

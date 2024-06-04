@@ -1,24 +1,24 @@
 'use client';
 
 import type {
-  Tag,
-  TagDetailField,
-} from '@/entity/tag/type';
+  Category,
+  CategoryDetailField,
+} from '@/entity/category/type';
 import {
   PAGE_TYPE,
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
   DETAIL_PLACEHOLDER,
-} from '@/entity/tag/constant';
+} from '@/entity/category/constant';
 import useDetail from '@/usecase/useDetail';
 import UnifiedHeadTag from '@/presentation/Head';
 import UnifiedHeaderDetail from '@/presentation/HeaderDetail';
 import UnifiedDetailFields from '@/presentation/DynamicDetail';
 import styles from '@/styles/Dashboard.module.css';
 
-const TagDetailPage = ({ params }: { params: { id: string } }) => {
+const CategoryDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { detail, isLoading } = useDetail<Tag>({ id, name: PAGE_TYPE });
+  const { detail, isLoading } = useDetail<Category>({ id, name: PAGE_TYPE });
 
   return (
     <div className={styles.container}>
@@ -27,7 +27,7 @@ const TagDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        <UnifiedDetailFields<Tag, TagDetailField, 'key'>
+        <UnifiedDetailFields<Category, CategoryDetailField, 'key'>
           data={detail || DETAIL_PLACEHOLDER}
           fields={DETAIL_FIELDS}
           property='key'
@@ -38,4 +38,4 @@ const TagDetailPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default TagDetailPage;
+export default CategoryDetailPage;

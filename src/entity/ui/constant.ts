@@ -5,6 +5,7 @@ import QuoteIcon from '@mui/icons-material/FormatQuote';
 import PaidIcon from '@mui/icons-material/Paid';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import BookIcon from '@mui/icons-material/MenuBook';
+import CategoryIcon from '@mui/icons-material/Category';
 import MMSIcon from '@mui/icons-material/mms';
 import LogIcon from '@mui/icons-material/History';
 
@@ -24,6 +25,11 @@ export const DRAWER_MENU_LIST = [
     text: 'Authors',
     icon: AccountIcon,
     path: '/dashboard/author',
+  },
+  {
+    text: 'Category',
+    icon: CategoryIcon,
+    path: '/dashboard/category',
   },
   {
     text: 'Tags',

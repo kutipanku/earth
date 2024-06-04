@@ -8,6 +8,7 @@ export type {
   Media,
   Log,
   SuperUser,
+  Category,
 } from '@prisma/client';
 
 export interface NodeActionTimestamps {

@@ -33,7 +33,7 @@ const Dashboard: FC<
   };
   const isSelected = useCallback(
     (link: string) => {
-      return currentPath === link;
+      return currentPath.includes(link);
     },
     [currentPath]
   );
