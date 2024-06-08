@@ -25,6 +25,7 @@ export interface DynamicField<T> {
   optionProps?: {
     entity: string;
     label: string;
+    isMultiple?: boolean;
   };
 }
 

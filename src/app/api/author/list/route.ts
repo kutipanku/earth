@@ -13,10 +13,12 @@ export async function GET(req: NextRequest) {
     take: Number(limit),
   });
 
-  return NextResponse.json(
-    authors.map((author) => ({
+  return NextResponse.json({
+    status: 200,
+    data: authors.map((author) => ({
       id: author.id,
-      name: author.name,
-    }))
-  );
+      name_en: author.name,
+      name_id: author.name,
+    })),
+  });
 }

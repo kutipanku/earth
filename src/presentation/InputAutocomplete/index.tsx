@@ -12,6 +12,7 @@ interface Props {
   keyName: string;
   entity: string;
   isLoading: boolean;
+  isMultiple?: boolean;
   label: string;
   optionLabel: string;
   value?: string;
@@ -24,6 +25,7 @@ const InputAutocomplete = ({
   keyName,
   entity,
   isLoading,
+  isMultiple = false,
   label,
   optionLabel,
   value,
@@ -70,6 +72,7 @@ const InputAutocomplete = ({
           id={`approvers-${index}`}
           value={currentValue}
           options={optionsRef.current}
+          multiple={isMultiple}
           // @ts-expect-error need to overide options typed objec
           getOptionLabel={(option) => option[optionLabel]}
           isOptionEqualToValue={(option, value) => option.id === value.id}

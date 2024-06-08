@@ -94,6 +94,7 @@ const DynamicInput = <
                     value={value}
                     style={field.style}
                     entity={field.optionProps ? field.optionProps?.entity : ''}
+                    isMultiple={field.optionProps?.isMultiple}
                     optionLabel={
                       field.optionProps ? field.optionProps?.label : ''
                     }
