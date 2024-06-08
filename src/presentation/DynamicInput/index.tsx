@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { DynamicField } from '@/entity/ui/type';
 import InputText from '@/presentation/InputText';
 import InputAutocomplete from '@/presentation/InputAutocomplete';
+import InputAutocompleteMultiple from '@/presentation/InputAutocompleteMultiple';
 import InputRichText from '@/presentation/InputRichText';
 import InputDate from '@/presentation/InputDate';
 
@@ -37,7 +38,7 @@ const DynamicInput = <
   const values = useRef<DataType>(data);
   values.current = data; // Somehow the above default value doesn't work on edit
 
-  const handleInputChange = (inputKey: string, value: string) => {
+  const handleInputChange = (inputKey: string, value: string | string[]) => {
     values.current = {
       ...values.current,
       [inputKey]: value,
@@ -84,6 +85,27 @@ const DynamicInput = <
                   />
                 );
               case 'autocomplete':
+                if (field.optionProps?.isMultiple) {
+                  return (
+                    <InputAutocompleteMultiple
+                      key={key}
+                      keyName={key}
+                      index={index}
+                      isLoading={isLoading}
+                      label={field.label}
+                      value={value}
+                      style={field.style}
+                      entity={
+                        field.optionProps ? field.optionProps?.entity : ''
+                      }
+                      optionLabel={
+                        field.optionProps ? field.optionProps?.label : ''
+                      }
+                      handleInputChange={handleInputChange}
+                    />
+                  );
+                }
+
                 return (
                   <InputAutocomplete
                     key={key}
@@ -94,7 +116,6 @@ const DynamicInput = <
                     value={value}
                     style={field.style}
                     entity={field.optionProps ? field.optionProps?.entity : ''}
-                    isMultiple={field.optionProps?.isMultiple}
                     optionLabel={
                       field.optionProps ? field.optionProps?.label : ''
                     }

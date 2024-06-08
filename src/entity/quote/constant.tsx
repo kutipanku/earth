@@ -40,10 +40,40 @@ export const INITIAL_FILTER_STATE: Filter[] = [
 export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: TableRowProps<Quote>) => void
 ) => [
-  { field: 'content_en', headerName: 'Content (EN)', width: 300, sortable: false },
-  { field: 'content_id', headerName: 'Content (ID)', width: 300, sortable: false },
-  { field: 'author', headerName: 'Author', width: 200, sortable: false },
-  { field: 'category', headerName: 'Category', width: 200, sortable: false },
+  {
+    field: 'content_en',
+    headerName: 'Content (EN)',
+    width: 300,
+    sortable: false,
+  },
+  {
+    field: 'content_id',
+    headerName: 'Content (ID)',
+    width: 300,
+    sortable: false,
+  },
+  {
+    field: 'author',
+    headerName: 'Author',
+    width: 200,
+    sortable: false,
+    renderCell: (params: TableRowProps<Quote>) => {
+      if (params.row.author === null) return '-';
+
+      return <>{params.row.author?.name}</>;
+    },
+  },
+  {
+    field: 'category',
+    headerName: 'Category',
+    width: 200,
+    sortable: false,
+    renderCell: (params: TableRowProps<Quote>) => {
+      if (params.row.category === null) return '-';
+
+      return <>{params.row.category?.name_en}</>;
+    },
+  },
   { field: 'tag', headerName: 'Tags', width: 200, sortable: false },
   { field: 'slug', headerName: 'Slug', width: 200, sortable: false },
   {
@@ -125,7 +155,7 @@ export const DETAIL_PLACEHOLDER: Quote = {
   category_id: null,
   created_at: '',
   updated_at: '',
-  tags: []
+  tags: [],
 };
 // ================================================================
 
@@ -150,8 +180,8 @@ export const INPUT_FIELDS: QuoteInputFIeld[] = [
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
     optionProps: {
       entity: 'author',
-      label: 'name_en'
-    }
+      label: 'name_en',
+    },
   },
   {
     key: 'category_id',
@@ -161,8 +191,8 @@ export const INPUT_FIELDS: QuoteInputFIeld[] = [
     prefix: IndonesiaIcon,
     optionProps: {
       entity: 'category',
-      label: 'name_en'
-    }
+      label: 'name_en',
+    },
   },
   {
     key: 'tags',
@@ -174,7 +204,7 @@ export const INPUT_FIELDS: QuoteInputFIeld[] = [
       entity: 'tag',
       label: 'name_en',
       isMultiple: true,
-    }
+    },
   },
   {
     key: 'slug',
@@ -195,20 +225,20 @@ export const INPUT_FIELDS: QuoteInputFIeld[] = [
     type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
-  {
-    key: 'image_en_url',
-    label: 'Image (EN)',
-    type: 'text',
-    style: { width: '50%', marginBottom: 2, paddingRight: 1 },
-    prefix: EnglishIcon,
-  },
-  {
-    key: 'image_id_url',
-    label: 'Image (ID)',
-    type: 'text',
-    style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
-    prefix: IndonesiaIcon,
-  },
+  // {
+  //   key: 'image_en_url',
+  //   label: 'Image (EN)',
+  //   type: 'text',
+  //   style: { width: '50%', marginBottom: 2, paddingRight: 1 },
+  //   prefix: EnglishIcon,
+  // },
+  // {
+  //   key: 'image_id_url',
+  //   label: 'Image (ID)',
+  //   type: 'text',
+  //   style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
+  //   prefix: IndonesiaIcon,
+  // },
 ];
 
 export const INPUT_VARIABLE: QuoteVariables = {
@@ -221,6 +251,6 @@ export const INPUT_VARIABLE: QuoteVariables = {
   description_en: null,
   description_id: null,
   category_id: null,
-  tags: []
+  tags: [],
 };
 // ================================================================

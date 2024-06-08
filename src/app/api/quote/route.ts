@@ -25,13 +25,43 @@ export async function GET(req: NextRequest) {
       }),
       ...(filterDescription && {
         OR: [
-          { description_en: { contains: filterDescription, mode: 'insensitive' } },
-          { description_id: { contains: filterDescription, mode: 'insensitive' } },
+          {
+            description_en: {
+              contains: filterDescription,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description_id: {
+              contains: filterDescription,
+              mode: 'insensitive',
+            },
+          },
         ],
       }),
       ...(filterSlug && {
         slug: { contains: filterSlug, mode: 'insensitive' },
       }),
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          name_en: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          name_en: true,
+        },
+      },
     },
   });
 
@@ -45,8 +75,18 @@ export async function GET(req: NextRequest) {
       }),
       ...(filterDescription && {
         OR: [
-          { description_en: { contains: filterDescription, mode: 'insensitive' } },
-          { description_id: { contains: filterDescription, mode: 'insensitive' } },
+          {
+            description_en: {
+              contains: filterDescription,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description_id: {
+              contains: filterDescription,
+              mode: 'insensitive',
+            },
+          },
         ],
       }),
       ...(filterSlug && {
@@ -74,6 +114,7 @@ export async function POST(req: NextRequest) {
     description_en?: string;
     description_id?: string;
     category_id?: string;
+    tags?: string[];
   } = await req.json();
 
   type BodyKey = keyof typeof body;
@@ -101,6 +142,11 @@ export async function POST(req: NextRequest) {
     description_en?: string;
     description_id?: string;
     category_id?: string;
+    tags?: {
+      connect: {
+        id: string;
+      }[];
+    };
   } = {
     slug: body.slug,
   };
@@ -113,6 +159,10 @@ export async function POST(req: NextRequest) {
   if (body.image_id_url) payload.image_id_url = body.image_id_url;
   if (body.author_id) payload.author_id = body.author_id;
   if (body.category_id) payload.category_id = body.category_id;
+  if (body.tags)
+    payload.tags = {
+      connect: body.tags.map((tagId) => ({ id: tagId })),
+    };
 
   const quote = await prisma.quote.create({
     data: payload,

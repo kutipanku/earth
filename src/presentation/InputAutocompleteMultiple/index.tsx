@@ -16,7 +16,7 @@ interface Props {
   optionLabel: string;
   value?: string;
   style?: Record<string, unknown>;
-  handleInputChange: (keyName: string, value: string) => void;
+  handleInputChange: (keyName: string, value: string[]) => void;
 }
 
 const InputAutocomplete = ({
@@ -31,7 +31,7 @@ const InputAutocomplete = ({
   handleInputChange,
 }: Props) => {
   const optionsRef = useRef([]);
-  const [currentValue, setCurrentValue] = useState<SelectOption>();
+  const [currentValue, setCurrentValue] = useState<SelectOption[]>([]);
   const [isLoadingField, setIsLoadingField] = useState(true);
   const [isLoadingValue, setIsLoadingValue] = useState(true);
 
@@ -46,7 +46,7 @@ const InputAutocomplete = ({
     }
 
     if (!isLoadingField && value) {
-      const defaultCurrentValue = optionsRef.current.find(
+      const defaultCurrentValue = optionsRef.current.filter(
         (option: { id: string }) => option.id === value
       );
 
@@ -57,9 +57,12 @@ const InputAutocomplete = ({
     }
   }, [entity, isLoading, isLoadingField, value]);
 
-  const handleChange = (newValue: SelectOption) => {
-    setCurrentValue(currentValue);
-    handleInputChange(keyName, newValue.id);
+  const handleChange = (newValue: SelectOption[]) => {
+    setCurrentValue(newValue);
+    handleInputChange(
+      keyName,
+      newValue.map((optionValue) => optionValue.id)
+    );
   };
 
   return (
@@ -70,11 +73,12 @@ const InputAutocomplete = ({
           id={`approvers-${index}`}
           value={currentValue}
           options={optionsRef.current}
+          multiple
           // @ts-expect-error need to overide options typed objec
           getOptionLabel={(option) => option[optionLabel]}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={(_, value) =>
-            handleChange(value as unknown as SelectOption)
+            handleChange(value as unknown as SelectOption[])
           }
           renderInput={(params) => <TextField {...params} label={label} />}
         />
