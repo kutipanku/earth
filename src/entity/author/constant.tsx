@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -39,7 +40,13 @@ export const TABLE_HEADER = (
   callbackFunction: (type: string, dataRow: TableRowProps<Author>) => void
 ) => [
   { field: 'name', headerName: 'Name', width: 300, sortable: false },
-  { field: 'slug', headerName: 'Slug', width: 300, sortable: false },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 300,
+    sortable: false,
+    renderCell: (params: TableRowProps<Author>) => <>/{params.row.slug}</>,
+  },
   {
     field: 'nationality',
     headerName: 'Nationality',
@@ -48,7 +55,11 @@ export const TABLE_HEADER = (
     renderCell: (params: TableRowProps<Author>) => {
       if (params.row.nationality === null) return '-';
 
-      return <>{params.row.nationality?.name_en}</>;
+      return (
+        <Link href={`/dashboard/nationality/${params.row.nationality?.id}`}>
+          <Button>{params.row.nationality?.name_en}</Button>
+        </Link>
+      );
     },
   },
   {
@@ -59,7 +70,11 @@ export const TABLE_HEADER = (
     renderCell: (params: TableRowProps<Author>) => {
       if (params.row.profession === null) return '-';
 
-      return <>{params.row.profession?.name_en}</>;
+      return (
+        <Link href={`/dashboard/profession/${params.row.profession?.id}`}>
+          <Button>{params.row.profession?.name_en}</Button>
+        </Link>
+      );
     },
   },
   {
@@ -145,9 +160,11 @@ export const DETAIL_PLACEHOLDER: Author = {
   picture_url: null,
   slug: '',
   nationality: {
+    id: '',
     name_en: '',
   },
   profession: {
+    id: '',
     name_en: '',
   },
   created_at: '',

@@ -24,8 +24,18 @@ export async function GET(req: NextRequest) {
       }),
     },
     include: {
-      nationality: true,
-      profession: true,
+      nationality: {
+        select: {
+          id: true,
+          name_en: true,
+        },
+      },
+      profession: {
+        select: {
+          id: true,
+          name_en: true,
+        },
+      },
     },
   });
 

@@ -42,7 +42,13 @@ export const TABLE_HEADER = (
 ) => [
   { field: 'name_en', headerName: 'Name (EN)', width: 300, sortable: false },
   { field: 'name_id', headerName: 'Name (ID)', width: 300, sortable: false },
-  { field: 'slug', headerName: 'Slug', width: 300, sortable: false },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 300,
+    sortable: false,
+    renderCell: (params: TableRowProps<Category>) => <>/{params.row.slug}</>,
+  },
   {
     field: 'action',
     headerName: 'Actions',
@@ -105,7 +111,7 @@ export const DETAIL_PLACEHOLDER: Category = {
   created_at: '',
   updated_at: '',
   description_en: null,
-  description_id: null
+  description_id: null,
 };
 // ================================================================
 
@@ -139,6 +145,6 @@ export const INPUT_VARIABLE: CategoryVariables = {
   name_en: '',
   slug: '',
   description_en: null,
-  description_id: null
+  description_id: null,
 };
 // ================================================================

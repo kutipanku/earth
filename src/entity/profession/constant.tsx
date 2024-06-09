@@ -42,7 +42,13 @@ export const TABLE_HEADER = (
 ) => [
   { field: 'name_en', headerName: 'Name (EN)', width: 300, sortable: false },
   { field: 'name_id', headerName: 'Name (ID)', width: 300, sortable: false },
-  { field: 'slug', headerName: 'Slug', width: 300, sortable: false },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 300,
+    sortable: false,
+    renderCell: (params: TableRowProps<Profession>) => <>/{params.row.slug}</>,
+  },
   { field: 'icon', headerName: 'Icon', width: 200, sortable: false },
   {
     field: 'action',
