@@ -7,8 +7,8 @@ import type { Tag } from '@/entity/tag/type';
 export interface Quote extends Omit<QuoteOnDB, 'created_at' | 'updated_at'> {
   created_at: string;
   updated_at: string;
-  author?: Pick<Author, 'name'>;
-  category?: Pick<Category, 'name_en'>;
+  author?: Pick<Author, 'id' | 'name'>;
+  category?: Pick<Category, 'id' | 'name_en'>;
   tags?: Pick<Tag, 'id' | 'name_en'>[];
 }
 

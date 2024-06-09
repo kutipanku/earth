@@ -1,10 +1,11 @@
+import Link from 'next/link';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import IndonesiaIcon from '@/public/icons/id.png';
-import EnglishIcon from '@/public/icons/gb.png';
 import type { Filter, TableRowProps } from '@/entity/ui/type';
 import type {
   Quote,
@@ -45,12 +46,22 @@ export const TABLE_HEADER = (
     headerName: 'Content (EN)',
     width: 300,
     sortable: false,
+    renderCell: (params: TableRowProps<Quote>) => (
+      <span
+        dangerouslySetInnerHTML={{ __html: params.row.content_en || '' }}
+      ></span>
+    ),
   },
   {
     field: 'content_id',
     headerName: 'Content (ID)',
     width: 300,
     sortable: false,
+    renderCell: (params: TableRowProps<Quote>) => (
+      <span
+        dangerouslySetInnerHTML={{ __html: params.row.content_id || '' }}
+      ></span>
+    ),
   },
   {
     field: 'author',
@@ -60,7 +71,11 @@ export const TABLE_HEADER = (
     renderCell: (params: TableRowProps<Quote>) => {
       if (params.row.author === null) return '-';
 
-      return <>{params.row.author?.name}</>;
+      return (
+        <Link href={`/dashboard/author/${params.row.author?.id}`}>
+          <Button>{params.row.author?.name}</Button>
+        </Link>
+      );
     },
   },
   {
@@ -71,11 +86,44 @@ export const TABLE_HEADER = (
     renderCell: (params: TableRowProps<Quote>) => {
       if (params.row.category === null) return '-';
 
-      return <>{params.row.category?.name_en}</>;
+      return (
+        <Link href={`/dashboard/category/${params.row.category?.id}`}>
+          <Button>{params.row.category?.name_en}</Button>
+        </Link>
+      );
     },
   },
-  { field: 'tag', headerName: 'Tags', width: 200, sortable: false },
-  { field: 'slug', headerName: 'Slug', width: 200, sortable: false },
+  {
+    field: 'tag',
+    headerName: 'Tags',
+    width: 400,
+    sortable: false,
+    renderCell: (params: TableRowProps<Quote>) => {
+      if (!params.row.tags || !params.row.tags?.length) return '-';
+
+      return (
+        <Stack direction='row' spacing={1}>
+          {params.row.tags.map((tag) => (
+            <Chip
+              key={tag.id}
+              label={tag.name_en}
+              href={`/dashboard/tag/${tag.id}`}
+              component='a'
+              color='primary'
+              variant='outlined'
+            />
+          ))}
+        </Stack>
+      );
+    },
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 200,
+    sortable: false,
+    renderCell: (params: TableRowProps<Quote>) => <>/{params.row.slug}</>,
+  },
   {
     field: 'action',
     headerName: 'Actions',
@@ -188,7 +236,6 @@ export const INPUT_FIELDS: QuoteInputFIeld[] = [
     label: 'Category',
     type: 'autocomplete',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
-    prefix: IndonesiaIcon,
     optionProps: {
       entity: 'category',
       label: 'name_en',
@@ -199,7 +246,6 @@ export const INPUT_FIELDS: QuoteInputFIeld[] = [
     label: 'Tags',
     type: 'autocomplete',
     style: { width: '100%', marginBottom: 2 },
-    prefix: IndonesiaIcon,
     optionProps: {
       entity: 'tag',
       label: 'name_en',
