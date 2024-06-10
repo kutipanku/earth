@@ -6,7 +6,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import BookIcon from '@mui/icons-material/MenuBook';
 import CategoryIcon from '@mui/icons-material/Category';
-import MMSIcon from '@mui/icons-material/mms';
+import MMSIcon from '@mui/icons-material/Mms';
 import LogIcon from '@mui/icons-material/History';
 
 export const DRAWER_WIDTH = 240;
