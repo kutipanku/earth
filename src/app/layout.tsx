@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
+// import { Roboto } from 'next/font/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/lib/theme';
@@ -9,11 +9,11 @@ import SessionProvider from '@/repository/state/auth';
 
 import './globals.css';
 
-const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+// const roboto = Roboto({
+//   weight: ['300', '400', '500', '700'],
+//   subsets: ['latin'],
+//   display: 'swap',
+// });
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -31,7 +31,8 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <SessionProvider>
             <NotificationProvider>
-              <body className={roboto.className}>{children}</body>
+              {/* <body className={roboto.className}>{children}</body> */}
+              <body>{children}</body>
             </NotificationProvider>
           </SessionProvider>
         </ThemeProvider>
