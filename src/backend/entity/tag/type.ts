@@ -1,3 +1,12 @@
-import type { Tag as TagOnDB } from '@/entity/db/type';
+import type {
+  Metadata,
+  MultilingualContent,
+} from '@/backend/entity/general/type';
 
-export type Tag = TagOnDB;
+export interface Tag {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+  description: MultilingualContent;
+  metadata: Metadata;
+}

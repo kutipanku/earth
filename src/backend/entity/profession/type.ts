@@ -1,3 +1,12 @@
-import type { Profession as ProfessionOnDB } from '@/entity/db/type';
+import type {
+  Metadata,
+  MultilingualContent,
+} from '@/backend/entity/general/type';
 
-export type Profession = ProfessionOnDB;
+export interface Profession {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+  icon: string | null;
+  metadata: Metadata;
+}

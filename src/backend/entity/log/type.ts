@@ -1,3 +1,14 @@
-import type { Log as LogOnDB } from '@/entity/db/type';
+import type { Metadata } from '@/backend/entity/general/type';
+import type { Admin } from '@/backend/entity/admin/type';
 
-export type Log = LogOnDB;
+export interface Log {
+  id: string;
+  user: Admin;
+  action: string;
+  entity: string;
+  data: {
+    old: string;
+    new: string;
+  };
+  metadata: Metadata;
+}

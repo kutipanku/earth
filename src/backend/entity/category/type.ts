@@ -1,3 +1,12 @@
-import type { Category as CategoryOnDB } from '@/backend/entity/db/type';
+import type {
+  Metadata,
+  MultilingualContent,
+} from '@/backend/entity/general/type';
 
-export type Category = CategoryOnDB;
+export interface Category {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+  description: MultilingualContent;
+  metadata: Metadata;
+}

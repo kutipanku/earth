@@ -1,3 +1,5 @@
-import type { SuperUser as SuperUserOnDB } from '@/backend/entity/db/type';
-
-export type Admin = SuperUserOnDB;
+export interface Admin {
+  id: string;
+  name: string;
+  email: string;
+}

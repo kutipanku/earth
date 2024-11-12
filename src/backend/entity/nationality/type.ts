@@ -1,3 +1,12 @@
-import type { Nationality as NationalityOnDB } from '@/entity/db/type';
+import type {
+  Metadata,
+  MultilingualContent,
+} from '@/backend/entity/general/type';
 
-export type Nationality = NationalityOnDB;
+export interface Nationality {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+  flag: string | null;
+  metadata: Metadata;
+}
