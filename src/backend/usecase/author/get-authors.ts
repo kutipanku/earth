@@ -1,5 +1,5 @@
-import { findMany } from '@/backend/repository/database/read/author';
-import type { FindManyProps } from '@/backend/repository/database/read/author';
+import { findMany } from '@/backend/repository/database/author/read';
+import type { FindManyProps } from '@/backend/repository/database/author/read';
 
 const getAuthors = async (props: FindManyProps) => {
   const { page, limit, filterName, filterSlug } = props;

@@ -1,5 +1,5 @@
-import { deleteOne } from '@/backend/repository/database/delete/author';
-import type { DeleteOneProps } from '@/backend/repository/database/delete/author';
+import { deleteOne } from '@/backend/repository/database/author/delete';
+import type { DeleteOneProps } from '@/backend/repository/database/author/delete';
 
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';

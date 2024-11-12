@@ -1,5 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
-import type { Author } from '@/backend/repository/lib/prisma-types';
+import type { Author } from '@/backend/entity/author/type';
+import type { AuthorForOne } from './types';
+import { normalizerForOne } from './normalizer';
 
 export interface UpdateOneProps {
   id: string;
@@ -15,12 +17,26 @@ export interface UpdateOneProps {
   };
 }
 
-export const updateOne = async (props: UpdateOneProps) => {
+interface Result {
+  status: number;
+  data: {
+    new: Author | null;
+    old: Author | null;
+  } | null;
+  error: string | null;
+  errorFields?: string[];
+}
+
+export const updateOne = async (props: UpdateOneProps): Promise<Result> => {
   const { id, payload } = props;
 
-  const author: Author | null = await prisma.author.findUnique({
+  const author: AuthorForOne | null = await prisma.author.findUnique({
     where: {
       id,
+    },
+    include: {
+      nationality: true,
+      profession: true,
     },
   });
 
@@ -68,16 +84,23 @@ export const updateOne = async (props: UpdateOneProps) => {
   if (payload.profession_id) data.profession_id = payload.profession_id;
 
   try {
-    const updatedAuthor = await prisma.author.update({
+    const updatedAuthor: AuthorForOne = await prisma.author.update({
       where: {
         id,
+      },
+      include: {
+        nationality: true,
+        profession: true,
       },
       data,
     });
 
     return {
       status: 200,
-      data: { new: updatedAuthor, old: author },
+      data: {
+        new: normalizerForOne(updatedAuthor),
+        old: normalizerForOne(author),
+      },
       error: null,
       errorFields,
     };

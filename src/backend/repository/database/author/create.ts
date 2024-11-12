@@ -1,5 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
-import type { Author } from '@/backend/repository/lib/prisma-types';
+import type { Author } from '@/backend/entity/author/type';
+import type { AuthorForOne } from './types';
+import { normalizerForOne } from './normalizer';
 
 export interface CreateOneProps {
   payload: {
@@ -14,7 +16,14 @@ export interface CreateOneProps {
   };
 }
 
-export const createOne = async (props: CreateOneProps) => {
+interface Result {
+  status: number;
+  data: Author | null;
+  error: string | null;
+  errorFields?: string[];
+}
+
+export const createOne = async (props: CreateOneProps): Promise<Result> => {
   const { payload } = props;
 
   type BodyKey = keyof typeof payload;
@@ -53,10 +62,14 @@ export const createOne = async (props: CreateOneProps) => {
   if (payload.profession_id) payload.profession_id = payload.profession_id;
 
   try {
-    const author: Author = await prisma.author.create({
+    const author: AuthorForOne = await prisma.author.create({
       data,
+      include: {
+        nationality: true,
+        profession: true,
+      },
     });
-    return { status: 201, data: author, error: null };
+    return { status: 201, data: normalizerForOne(author), error: null };
   } catch (error) {
     return { status: 400, data: null, error: JSON.stringify(error) };
   }

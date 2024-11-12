@@ -16,3 +16,16 @@ export interface Author {
   picture_url: string | null;
   metadata: Metadata;
 }
+
+export interface AuthorListItem {
+  id: string;
+  name: string;
+  slug: string;
+  nationality: string;
+  profession: string;
+}
+
+export interface AuthorOptionItem {
+  id: string;
+  name: string;
+}
