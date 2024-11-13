@@ -10,3 +10,14 @@ export interface Nationality {
   flag: string | null;
   metadata: Metadata;
 }
+
+export interface NationalityListItem {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+}
+
+export interface NationalityOptionItem {
+  id: string;
+  name: MultilingualContent;
+}
