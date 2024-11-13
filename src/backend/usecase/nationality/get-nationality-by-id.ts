@@ -1,5 +1,5 @@
-import { finOne } from '@/backend/repository/database/nationality/read';
-import type { FindOneProps } from '@/backend/repository/database/nationality/read';
+import { finOne } from '@/backend/repository/database/nationality';
+import type { FindOneProps } from '@/backend/repository/database/nationality/types';
 
 const getNationalityById = async (props: FindOneProps) => {
   const { id } = props;

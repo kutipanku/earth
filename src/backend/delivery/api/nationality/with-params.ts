@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import getNationalityById from '@/backend/usecase/nationality/get-nationality-by-id';
-import editNationality from '@/backend/usecase/nationality/edit-nationality';
-import removeNationalityById from '@/backend/usecase/nationality/remove-nationality-by-id';
+import {
+  getNationalityById,
+  editNationality,
+  removeNationalityById,
+} from '@/backend/usecase/nationality';
 
 interface Params {
   id: string;
 }
 
-export async function GET(_: NextRequest, { params }: { params: Params }) {
+export async function retrieveNationalityById(
+  _: NextRequest,
+  { params }: { params: Params }
+) {
   const { id } = params;
 
   const response = await getNationalityById({
@@ -18,7 +23,10 @@ export async function GET(_: NextRequest, { params }: { params: Params }) {
   return NextResponse.json(response);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Params }) {
+export async function changeNationalityDetail(
+  req: NextRequest,
+  { params }: { params: Params }
+) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -50,7 +58,7 @@ export async function PUT(req: NextRequest, { params }: { params: Params }) {
   return NextResponse.json(response);
 }
 
-export async function DELETE(
+export async function removeNationality(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {

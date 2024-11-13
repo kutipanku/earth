@@ -2,16 +2,20 @@ import prisma from '@/backend/repository/lib/prisma';
 import type {
   Nationality,
   NationalityListItem,
+  NationalityOptionItem,
 } from '@/backend/entity/nationality/type';
-import type { NationalityForOne, NationalityForMany } from './types';
-import { normalizerForOne, normalizerFoList } from './normalizer';
-
-export interface FindManyProps {
-  page: string | null;
-  limit: string | null;
-  filterName?: string | null;
-  filterSlug?: string | null;
-}
+import type {
+  NationalityForOne,
+  NationalityForMany,
+  FindManyProps,
+  FindOneProps,
+  FindOptionsProps,
+} from './types';
+import {
+  normalizerForOne,
+  normalizerFoList,
+  normalizerForOption,
+} from './normalizer';
 
 interface ResultMany {
   status: number;
@@ -26,6 +30,13 @@ interface ResultMany {
 interface ResultOne {
   status: number;
   data: Nationality | null;
+  error: string | null;
+  errorFields?: string[];
+}
+
+interface ResultOptions {
+  status: number;
+  data: NationalityOptionItem[];
   error: string | null;
   errorFields?: string[];
 }
@@ -75,10 +86,6 @@ export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
   };
 };
 
-export interface FindOneProps {
-  id: string;
-}
-
 export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
   const { id } = props;
 
@@ -91,4 +98,26 @@ export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
     return { data: null, error: 'Not found', status: 404 };
   }
   return { data: normalizerForOne(nationality), error: null, status: 200 };
+};
+
+export const findOptions = async (
+  props: FindOptionsProps
+): Promise<ResultOptions> => {
+  const { name } = props;
+
+  const nationalities = await prisma.nationality.findMany({
+    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
+    skip: 0,
+    take: 100,
+    where: {
+      ...(name && {
+        OR: [
+          { name_en: { contains: name, mode: 'insensitive' } },
+          { name_id: { contains: name, mode: 'insensitive' } },
+        ],
+      }),
+    },
+  });
+
+  return { data: normalizerForOption(nationalities), error: null, status: 200 };
 };

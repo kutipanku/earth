@@ -1,5 +1,5 @@
-import { findMany } from '@/backend/repository/database/nationality/read';
-import type { FindManyProps } from '@/backend/repository/database/nationality/read';
+import { findMany } from '@/backend/repository/database/nationality';
+import type { FindManyProps } from '@/backend/repository/database/nationality/types';
 
 const getNationalities = async (props: FindManyProps) => {
   const { page, limit, filterName, filterSlug } = props;

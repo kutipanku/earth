@@ -1,5 +1,5 @@
-import { updateOne } from '@/backend/repository/database/nationality/update';
-import type { UpdateOneProps } from '@/backend/repository/database/nationality/update';
+import { updateOne } from '@/backend/repository/database/nationality';
+import type { UpdateOneProps } from '@/backend/repository/database/nationality/types';
 
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';

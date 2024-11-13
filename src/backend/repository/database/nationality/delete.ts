@@ -1,11 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Nationality } from '@/backend/entity/nationality/type';
-import type { NationalityForOne } from './types';
+import type { NationalityForOne, DeleteOneProps } from './types';
 import { normalizerForOne } from './normalizer';
-
-export interface DeleteOneProps {
-  id: string;
-}
 
 interface Result {
   status: number;

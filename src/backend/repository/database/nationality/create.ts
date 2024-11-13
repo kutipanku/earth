@@ -1,16 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Nationality } from '@/backend/entity/nationality/type';
-import type { NationalityForOne } from './types';
+import type { NationalityForOne, CreateOneProps } from './types';
 import { normalizerForOne } from './normalizer';
-
-export interface CreateOneProps {
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
-  };
-}
 
 interface Result {
   status: number;
