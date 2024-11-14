@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
-  addNewNationality,
-  getNationalities,
-  getNationalityOptions,
-} from '@/backend/usecase/nationality';
+  addNewProfession,
+  getProfessions,
+  getProfessionOptions,
+} from '@/backend/usecase/profession';
 
-export async function retrieveNationalities(req: NextRequest) {
-  const response = await getNationalities({
+export async function retrieveProfessions(req: NextRequest) {
+  const response = await getProfessions({
     page: req.nextUrl.searchParams.get('page'),
     limit: req.nextUrl.searchParams.get('limit'),
     filterName: req.nextUrl.searchParams.get('name'),
@@ -17,7 +17,7 @@ export async function retrieveNationalities(req: NextRequest) {
   return NextResponse.json(response);
 }
 
-export async function addNationality(req: NextRequest) {
+export async function addProfession(req: NextRequest) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -29,7 +29,7 @@ export async function addNationality(req: NextRequest) {
     slug?: string;
   } = await req.json();
 
-  const response = await addNewNationality({
+  const response = await addNewProfession({
     sessionToken: sessionToken?.value,
     payload: body,
   });
@@ -37,8 +37,8 @@ export async function addNationality(req: NextRequest) {
   return NextResponse.json(response);
 }
 
-export async function retrieveNationalitiesAsOptions(req: NextRequest) {
-  const response = await getNationalityOptions({
+export async function retrieveProfessionsAsOptions(req: NextRequest) {
+  const response = await getProfessionOptions({
     name: req.nextUrl.searchParams.get('name'),
   });
 

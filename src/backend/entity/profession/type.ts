@@ -10,3 +10,14 @@ export interface Profession {
   icon: string | null;
   metadata: Metadata;
 }
+
+export interface ProfessionListItem {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+}
+
+export interface ProfessionOptionItem {
+  id: string;
+  name: MultilingualContent;
+}

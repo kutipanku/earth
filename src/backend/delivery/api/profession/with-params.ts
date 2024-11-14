@@ -1,29 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
-  getAuthorById,
-  editAuthor,
-  removeAuthorById,
-} from '@/backend/usecase/author';
+  getProfessionById,
+  editProfession,
+  removeProfessionById,
+} from '@/backend/usecase/profession';
 
 interface Params {
   id: string;
 }
 
-export async function retrieveAuthorById(
+export async function retrieveProfessionById(
   _: NextRequest,
   { params }: { params: Params }
 ) {
   const { id } = params;
 
-  const response = await getAuthorById({
+  const response = await getProfessionById({
     id,
   });
 
   return NextResponse.json(response);
 }
 
-export async function changeAuthorDetail(
+export async function changeProfessionDetail(
   req: NextRequest,
   { params }: { params: Params }
 ) {
@@ -33,44 +33,32 @@ export async function changeAuthorDetail(
 
   const { id } = params;
   const {
-    name,
+    name_en,
+    name_id,
+    icon,
     slug,
-    dob,
-    description_en,
-    description_id,
-    picture_url,
-    nationality_id,
-    profession_id,
   }: {
-    name?: string;
+    name_en?: string;
+    name_id?: string;
+    icon?: string;
     slug?: string;
-    dob?: string;
-    description_en?: string;
-    description_id?: string;
-    picture_url?: string;
-    nationality_id?: string;
-    profession_id?: string;
   } = await req.json();
 
-  const response = await editAuthor({
+  const response = await editProfession({
     sessionToken: sessionToken?.value,
     id,
     payload: {
-      name,
+      name_en,
+      name_id,
+      icon,
       slug,
-      dob,
-      description_en,
-      description_id,
-      picture_url,
-      nationality_id,
-      profession_id,
     },
   });
 
   return NextResponse.json(response);
 }
 
-export async function removeAuthor(
+export async function removeProfession(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -79,7 +67,7 @@ export async function removeAuthor(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const response = await removeAuthorById({
+  const response = await removeProfessionById({
     id,
     sessionToken: sessionToken?.value,
   });
