@@ -3,7 +3,11 @@ import type {
   AuthorListItem,
   AuthorOptionItem,
 } from '@/backend/entity/author/type';
-import type { AuthorForOne, AuthorForMany } from './types';
+import type {
+  AuthorForOne,
+  AuthorForMany,
+  AuthorForManyOptions,
+} from './types';
 
 export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
   if (itemOnDB === null) return null;
@@ -45,7 +49,9 @@ export const normalizerFoList = (itemsOnDB: AuthorForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOption = (itemsOnDB: AuthorForMany[] | null) => {
+export const normalizerForOption = (
+  itemsOnDB: AuthorForManyOptions[] | null
+) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: AuthorOptionItem[] = itemsOnDB.map((item) => ({

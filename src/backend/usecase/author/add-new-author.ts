@@ -1,5 +1,5 @@
 import { createOne } from '@/backend/repository/database/author/create';
-import type { CreateOneProps } from '@/backend/repository/database/author/create';
+import type { CreateOneProps } from '@/backend/repository/database/author/types';
 
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';

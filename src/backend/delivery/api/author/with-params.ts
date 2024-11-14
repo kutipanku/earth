@@ -8,7 +8,10 @@ interface Params {
   id: string;
 }
 
-export async function GET(_: NextRequest, { params }: { params: Params }) {
+export async function retrieveAuthorById(
+  _: NextRequest,
+  { params }: { params: Params }
+) {
   const { id } = params;
 
   const response = await getAuthorById({
@@ -18,7 +21,10 @@ export async function GET(_: NextRequest, { params }: { params: Params }) {
   return NextResponse.json(response);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Params }) {
+export async function changeAuthorDetail(
+  req: NextRequest,
+  { params }: { params: Params }
+) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -62,7 +68,7 @@ export async function PUT(req: NextRequest, { params }: { params: Params }) {
   return NextResponse.json(response);
 }
 
-export async function DELETE(
+export async function removeAuthor(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {

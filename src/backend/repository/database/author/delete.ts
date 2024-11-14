@@ -1,11 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Author } from '@/backend/entity/author/type';
-import type { AuthorForOne } from './types';
+import type { AuthorForOne, DeleteOneProps } from './types';
 import { normalizerForOne } from './normalizer';
-
-export interface DeleteOneProps {
-  id: string;
-}
 
 interface Result {
   status: number;

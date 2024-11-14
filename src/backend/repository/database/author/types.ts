@@ -21,3 +21,51 @@ export type AuthorForOne = Prisma.AuthorGetPayload<{
     profession: true;
   };
 }>;
+
+export type AuthorForManyOptions = Prisma.AuthorGetPayload<{}>;
+
+export interface FindOptionsProps {
+  name: string | null;
+}
+
+export interface CreateOneProps {
+  payload: {
+    name?: string;
+    slug?: string;
+    dob?: string;
+    description_en?: string;
+    description_id?: string;
+    picture_url?: string;
+    nationality_id?: string;
+    profession_id?: string;
+  };
+}
+
+export interface DeleteOneProps {
+  id: string;
+}
+
+export interface UpdateOneProps {
+  id: string;
+  payload: {
+    name?: string;
+    slug?: string;
+    dob?: string;
+    description_en?: string;
+    description_id?: string;
+    picture_url?: string;
+    nationality_id?: string;
+    profession_id?: string;
+  };
+}
+
+export interface FindOneProps {
+  id: string;
+}
+
+export interface FindManyProps {
+  page: string | null;
+  limit: string | null;
+  filterName?: string | null;
+  filterSlug?: string | null;
+}

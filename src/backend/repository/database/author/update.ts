@@ -1,21 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Author } from '@/backend/entity/author/type';
-import type { AuthorForOne } from './types';
+import type { AuthorForOne, UpdateOneProps } from './types';
 import { normalizerForOne } from './normalizer';
-
-export interface UpdateOneProps {
-  id: string;
-  payload: {
-    name?: string;
-    slug?: string;
-    dob?: string;
-    description_en?: string;
-    description_id?: string;
-    picture_url?: string;
-    nationality_id?: string;
-    profession_id?: string;
-  };
-}
 
 interface Result {
   status: number;
