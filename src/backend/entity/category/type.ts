@@ -10,3 +10,14 @@ export interface Category {
   description: MultilingualContent;
   metadata: Metadata;
 }
+
+export interface CategoryListItem {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+}
+
+export interface CategoryOptionItem {
+  id: string;
+  name: MultilingualContent;
+}

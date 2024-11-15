@@ -3,6 +3,8 @@ import type {
   AuthorListItem,
   AuthorOptionItem,
 } from '@/backend/entity/author/type';
+import { normalizerForOne as normalizerForOneNationality } from '@/backend/repository/database/nationality/normalizer';
+import { normalizerForOne as normalizerForOneProfession } from '@/backend/repository/database/profession/normalizer';
 import type {
   AuthorForOne,
   AuthorForMany,
@@ -22,8 +24,8 @@ export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
     },
     dob: itemOnDB.dob === null ? null : new Date(itemOnDB.dob),
     // TODO: add nationality and profession,
-    nationality: null,
-    profession: null,
+    nationality: normalizerForOneNationality(itemOnDB.nationality),
+    profession: normalizerForOneProfession(itemOnDB.profession),
     picture_url: itemOnDB.picture_url,
     metadata: {
       created_at: new Date(itemOnDB.created_at),
