@@ -10,3 +10,14 @@ export interface Tag {
   description: MultilingualContent;
   metadata: Metadata;
 }
+
+export interface TagListItem {
+  id: string;
+  slug: string;
+  name: MultilingualContent;
+}
+
+export interface TagOptionItem {
+  id: string;
+  name: MultilingualContent;
+}
