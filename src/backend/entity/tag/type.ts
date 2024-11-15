@@ -21,3 +21,5 @@ export interface TagOptionItem {
   id: string;
   name: MultilingualContent;
 }
+
+export type TagAtOtherEntity = TagOptionItem;

@@ -53,7 +53,7 @@ export async function changeQuoteDetail(
     image_en_url?: string;
     author_id?: string;
     category_id?: string;
-    tag_ids?: string;
+    tag_ids?: string[];
   } = await req.json();
 
   const response = await editQuote({

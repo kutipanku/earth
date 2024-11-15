@@ -7,6 +7,10 @@ import {
   normalizerForOtherEntity as normalizeCategory,
   normalizerForOtherEntityList as normalizeCategoryList,
 } from '@/backend/repository/database/category/normalizer';
+import {
+  normalizerForOtherEntity as normalizeTag,
+  normalizerForOtherEntityList as normalizeTagList,
+} from '@/backend/repository/database/tag/normalizer';
 import type { QuoteForOne, QuoteForMany } from './types';
 
 export const normalizerForOne = (itemOnDB: QuoteForOne | null) => {
@@ -29,8 +33,7 @@ export const normalizerForOne = (itemOnDB: QuoteForOne | null) => {
     },
     author: normalizeAuthor(itemOnDB.author),
     category: normalizeCategory(itemOnDB.category),
-    // TODO: integrate with tag entity
-    tags: [],
+    tags: normalizeTag(itemOnDB.tags),
     metadata: {
       created_at: new Date(itemOnDB.created_at),
       updated_at:
@@ -41,7 +44,7 @@ export const normalizerForOne = (itemOnDB: QuoteForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizerFoList = (itemsOnDB: QuoteForMany[] | null) => {
+export const normalizerForList = (itemsOnDB: QuoteForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: QuoteListItem[] = itemsOnDB.map((item) => ({
@@ -53,7 +56,7 @@ export const normalizerFoList = (itemsOnDB: QuoteForMany[] | null) => {
     },
     author: normalizeAuthorList(item.author),
     category: normalizeCategoryList(item.category),
-    tags: [],
+    tags: normalizeTagList(item.tags),
   }));
 
   return normalizedItem;

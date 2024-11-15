@@ -59,7 +59,11 @@ export const updateOne = async (props: UpdateOneProps): Promise<Result> => {
     image_en_url?: string;
     author_id?: string;
     category_id?: string;
-    tag_ids?: string;
+    tags?: {
+      connect: {
+        id: string;
+      }[];
+    };
   } = {
     slug: payload.slug,
   };
@@ -72,7 +76,10 @@ export const updateOne = async (props: UpdateOneProps): Promise<Result> => {
   if (payload.image_en_url) payload.image_en_url = payload.image_en_url;
   if (payload.author_id) payload.author_id = payload.author_id;
   if (payload.category_id) payload.category_id = payload.category_id;
-  if (payload.tag_ids) payload.tag_ids = payload.tag_ids;
+  if (payload.tag_ids)
+    data.tags = {
+      connect: payload.tag_ids.map((tag_id) => ({ id: tag_id })),
+    };
 
   try {
     const updatedQuote: QuoteForOne = await prisma.quote.update({

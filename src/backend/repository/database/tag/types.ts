@@ -3,6 +3,14 @@ import type { Prisma } from '@/backend/repository/lib/prisma-types';
 export type TagForMany = Prisma.TagGetPayload<{}>;
 
 export type TagForOne = Prisma.TagGetPayload<{}>;
+export type TagForOtherEntity = Prisma.TagGetPayload<{}>;
+export type TagForOtherEntityList = Prisma.TagGetPayload<{
+  select: {
+    id: true;
+    name_en: true;
+    name_id: true;
+  };
+}>;
 
 export interface CreateOneProps {
   payload: {

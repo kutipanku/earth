@@ -2,8 +2,14 @@ import type {
   Tag,
   TagListItem,
   TagOptionItem,
+  TagAtOtherEntity,
 } from '@/backend/entity/tag/type';
-import type { TagForOne, TagForMany } from './types';
+import type {
+  TagForOne,
+  TagForMany,
+  TagForOtherEntity,
+  TagForOtherEntityList,
+} from './types';
 
 export const normalizerForOne = (itemOnDB: TagForOne | null) => {
   if (itemOnDB === null) return null;
@@ -48,6 +54,39 @@ export const normalizerForOption = (itemsOnDB: TagForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: TagOptionItem[] = itemsOnDB.map((item) => ({
+    id: item.id,
+    name: {
+      id: item.name_id || '',
+      en: item.name_en || '',
+    },
+  }));
+
+  return normalizedItem;
+};
+
+export const normalizerForOtherEntity = (
+  itemsOnDB: TagForOtherEntity[] | null
+) => {
+  if (itemsOnDB === null) return [];
+
+  const normalizedItem: TagAtOtherEntity[] = itemsOnDB.map((item) => ({
+    id: item.id,
+    name: {
+      id: item.name_id || '',
+      en: item.name_en || '',
+    },
+    slug: item.slug,
+  }));
+
+  return normalizedItem;
+};
+
+export const normalizerForOtherEntityList = (
+  itemsOnDB: TagForOtherEntityList[] | null
+) => {
+  if (itemsOnDB === null) return [];
+
+  const normalizedItem: TagAtOtherEntity[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
       id: item.name_id || '',

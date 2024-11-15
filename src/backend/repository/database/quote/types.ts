@@ -49,7 +49,7 @@ export interface CreateOneProps {
     image_en_url?: string;
     author_id?: string;
     category_id?: string;
-    tag_ids?: string;
+    tag_ids?: string[];
   };
 }
 
@@ -69,7 +69,7 @@ export interface UpdateOneProps {
     image_en_url?: string;
     author_id?: string;
     category_id?: string;
-    tag_ids?: string;
+    tag_ids?: string[];
   };
 }
 

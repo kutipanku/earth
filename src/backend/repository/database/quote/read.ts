@@ -6,7 +6,7 @@ import type {
   FindOneProps,
   FindManyProps,
 } from './types';
-import { normalizerForOne, normalizerFoList } from './normalizer';
+import { normalizerForOne, normalizerForList } from './normalizer';
 
 interface ResultMany {
   status: number;
@@ -138,7 +138,7 @@ export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
   });
 
   return {
-    data: { list: normalizerFoList(quotes), total: count },
+    data: { list: normalizerForList(quotes), total: count },
     error: null,
     status: 200,
   };
