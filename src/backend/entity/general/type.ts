@@ -4,6 +4,6 @@ export interface Metadata {
 }
 
 export interface MultilingualContent {
-  idn: string;
+  id: string;
   en: string;
 }

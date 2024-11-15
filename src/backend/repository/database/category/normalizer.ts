@@ -11,12 +11,12 @@ export const normalizerForOne = (itemOnDB: CategoryForOne | null) => {
   const normalizedItem: Category = {
     id: itemOnDB.id,
     name: {
-      idn: itemOnDB.name_id || '',
+      id: itemOnDB.name_id || '',
       en: itemOnDB.name_en || '',
     },
     slug: itemOnDB.slug,
     description: {
-      idn: itemOnDB.description_id || '',
+      id: itemOnDB.description_id || '',
       en: itemOnDB.description_en || '',
     },
     metadata: {
@@ -35,7 +35,7 @@ export const normalizerFoList = (itemsOnDB: CategoryForMany[] | null) => {
   const normalizedItem: CategoryListItem[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      idn: item.name_id || '',
+      id: item.name_id || '',
       en: item.name_en || '',
     },
     slug: item.slug,
@@ -50,7 +50,7 @@ export const normalizerForOption = (itemsOnDB: CategoryForMany[] | null) => {
   const normalizedItem: CategoryOptionItem[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      idn: item.name_id || '',
+      id: item.name_id || '',
       en: item.name_en || '',
     },
   }));

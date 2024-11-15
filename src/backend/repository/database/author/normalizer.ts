@@ -19,7 +19,7 @@ export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
     name: itemOnDB.name,
     slug: itemOnDB.slug,
     description: {
-      idn: itemOnDB.description_id || '',
+      id: itemOnDB.description_id || '',
       en: itemOnDB.description_en || '',
     },
     dob: itemOnDB.dob === null ? null : new Date(itemOnDB.dob),
