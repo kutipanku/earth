@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Category } from '@/backend/entity/category/type';
 import type { CategoryForOne, UpdateOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -74,8 +74,8 @@ export const updateOne = async (props: UpdateOneProps): Promise<Result> => {
     return {
       status: 200,
       data: {
-        new: normalizerForOne(updatedCategory),
-        old: normalizerForOne(category),
+        new: normalizeForOne(updatedCategory),
+        old: normalizeForOne(category),
       },
       error: null,
       errorFields,

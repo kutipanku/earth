@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Profession } from '@/backend/entity/profession/type';
 import type { ProfessionForOne, CreateOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -41,7 +41,7 @@ export const createOne = async (props: CreateOneProps): Promise<Result> => {
         icon: payload.icon,
       },
     });
-    return { status: 201, data: normalizerForOne(profession), error: null };
+    return { status: 201, data: normalizeForOne(profession), error: null };
   } catch (error) {
     return { status: 400, data: null, error: JSON.stringify(error) };
   }

@@ -5,7 +5,7 @@ import type {
 } from '@/backend/entity/nationality/type';
 import type { NationalityForOne, NationalityForMany } from './types';
 
-export const normalizerForOne = (itemOnDB: NationalityForOne | null) => {
+export const normalizeForOne = (itemOnDB: NationalityForOne | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Nationality = {
@@ -26,7 +26,7 @@ export const normalizerForOne = (itemOnDB: NationalityForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizerFoList = (itemsOnDB: NationalityForMany[] | null) => {
+export const normalizeFoList = (itemsOnDB: NationalityForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: NationalityListItem[] = itemsOnDB.map((item) => ({
@@ -41,7 +41,7 @@ export const normalizerFoList = (itemsOnDB: NationalityForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOption = (itemsOnDB: NationalityForMany[] | null) => {
+export const normalizeForOption = (itemsOnDB: NationalityForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: NationalityOptionItem[] = itemsOnDB.map((item) => ({

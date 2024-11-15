@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Tag } from '@/backend/entity/tag/type';
 import type { TagForOne, CreateOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -42,7 +42,7 @@ export const createOne = async (props: CreateOneProps): Promise<Result> => {
         description_id: payload.description_id,
       },
     });
-    return { status: 201, data: normalizerForOne(tag), error: null };
+    return { status: 201, data: normalizeForOne(tag), error: null };
   } catch (error) {
     return { status: 400, data: null, error: JSON.stringify(error) };
   }

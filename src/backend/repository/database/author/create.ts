@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Author } from '@/backend/entity/author/type';
 import type { AuthorForOne, CreateOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -56,7 +56,7 @@ export const createOne = async (props: CreateOneProps): Promise<Result> => {
         profession: true,
       },
     });
-    return { status: 201, data: normalizerForOne(author), error: null };
+    return { status: 201, data: normalizeForOne(author), error: null };
   } catch (error) {
     return { status: 400, data: null, error: JSON.stringify(error) };
   }

@@ -5,7 +5,7 @@ import type {
 } from '@/backend/entity/profession/type';
 import type { ProfessionForMany, ProfessionForOne } from './types';
 
-export const normalizerForOne = (itemOnDB: ProfessionForMany | null) => {
+export const normalizeForOne = (itemOnDB: ProfessionForMany | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Profession = {
@@ -26,7 +26,7 @@ export const normalizerForOne = (itemOnDB: ProfessionForMany | null) => {
   return normalizedItem;
 };
 
-export const normalizerFoList = (itemsOnDB: ProfessionForOne[] | null) => {
+export const normalizeFoList = (itemsOnDB: ProfessionForOne[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: ProfessionListItem[] = itemsOnDB.map((item) => ({
@@ -41,7 +41,7 @@ export const normalizerFoList = (itemsOnDB: ProfessionForOne[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOption = (itemsOnDB: ProfessionForOne[] | null) => {
+export const normalizeForOption = (itemsOnDB: ProfessionForOne[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: ProfessionOptionItem[] = itemsOnDB.map((item) => ({

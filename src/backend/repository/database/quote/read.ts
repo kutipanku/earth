@@ -6,7 +6,7 @@ import type {
   FindOneProps,
   FindManyProps,
 } from './types';
-import { normalizerForOne, normalizerForList } from './normalizer';
+import { normalizeForOne, normalizeForList } from './normalizer';
 
 interface ResultMany {
   status: number;
@@ -138,7 +138,7 @@ export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
   });
 
   return {
-    data: { list: normalizerForList(quotes), total: count },
+    data: { list: normalizeForList(quotes), total: count },
     error: null,
     status: 200,
   };
@@ -159,5 +159,5 @@ export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
   if (quote === null) {
     return { data: null, error: 'Not found', status: 404 };
   }
-  return { data: normalizerForOne(quote), error: null, status: 200 };
+  return { data: normalizeForOne(quote), error: null, status: 200 };
 };

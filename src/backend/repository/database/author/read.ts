@@ -12,9 +12,9 @@ import type {
   FindManyProps,
 } from './types';
 import {
-  normalizerForOne,
-  normalizerFoList,
-  normalizerForOption,
+  normalizeForOne,
+  normalizeFoList,
+  normalizeForOption,
 } from './normalizer';
 
 interface ResultMany {
@@ -86,7 +86,7 @@ export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
   });
 
   return {
-    data: { list: normalizerFoList(authors), total: count },
+    data: { list: normalizeFoList(authors), total: count },
     error: null,
     status: 200,
   };
@@ -106,7 +106,7 @@ export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
   if (author === null) {
     return { data: null, error: 'Not found', status: 404 };
   }
-  return { data: normalizerForOne(author), error: null, status: 200 };
+  return { data: normalizeForOne(author), error: null, status: 200 };
 };
 
 export const findOptions = async (
@@ -125,5 +125,5 @@ export const findOptions = async (
     },
   });
 
-  return { data: normalizerForOption(authors), error: null, status: 200 };
+  return { data: normalizeForOption(authors), error: null, status: 200 };
 };

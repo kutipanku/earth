@@ -11,7 +11,7 @@ import type {
   CategoryForOtherEntityList,
 } from './types';
 
-export const normalizerForOne = (itemOnDB: CategoryForOne | null) => {
+export const normalizeForOne = (itemOnDB: CategoryForOne | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Category = {
@@ -35,7 +35,7 @@ export const normalizerForOne = (itemOnDB: CategoryForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizerFoList = (itemsOnDB: CategoryForMany[] | null) => {
+export const normalizeFoList = (itemsOnDB: CategoryForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: CategoryListItem[] = itemsOnDB.map((item) => ({
@@ -50,7 +50,7 @@ export const normalizerFoList = (itemsOnDB: CategoryForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOption = (itemsOnDB: CategoryForMany[] | null) => {
+export const normalizeForOption = (itemsOnDB: CategoryForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: CategoryOptionItem[] = itemsOnDB.map((item) => ({
@@ -64,7 +64,7 @@ export const normalizerForOption = (itemsOnDB: CategoryForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOtherEntity = (
+export const normalizeForOtherEntity = (
   itemOnDB: CategoryForOtherEntity | null
 ) => {
   if (itemOnDB === null) return null;
@@ -80,7 +80,7 @@ export const normalizerForOtherEntity = (
   return normalizedItem;
 };
 
-export const normalizerForOtherEntityList = (
+export const normalizeForOtherEntityList = (
   itemOnDB: CategoryForOtherEntityList | null
 ) => {
   if (itemOnDB === null) return null;

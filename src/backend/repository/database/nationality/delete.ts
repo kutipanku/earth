@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Nationality } from '@/backend/entity/nationality/type';
 import type { NationalityForOne, DeleteOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -20,7 +20,7 @@ export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
       });
     return {
       status: 200,
-      data: normalizerForOne(deletedNationality),
+      data: normalizeForOne(deletedNationality),
       error: null,
     };
   } catch (error) {

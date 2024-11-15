@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Quote } from '@/backend/entity/quote/type';
 import type { QuoteForOne, DeleteOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -22,7 +22,7 @@ export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
         tags: true,
       },
     });
-    return { status: 200, data: normalizerForOne(deletedQuote), error: null };
+    return { status: 200, data: normalizeForOne(deletedQuote), error: null };
   } catch (error) {
     return { status: 400, data: null, error: JSON.stringify(error) };
   }

@@ -1,19 +1,19 @@
 import type { Quote, QuoteListItem } from '@/backend/entity/quote/type';
 import {
-  normalizerForOtherEntity as normalizeAuthor,
-  normalizerForOtherEntityList as normalizeAuthorList,
+  normalizeForOtherEntity as normalizeAuthor,
+  normalizeForOtherEntityList as normalizeAuthorList,
 } from '@/backend/repository/database/author/normalizer';
 import {
-  normalizerForOtherEntity as normalizeCategory,
-  normalizerForOtherEntityList as normalizeCategoryList,
+  normalizeForOtherEntity as normalizeCategory,
+  normalizeForOtherEntityList as normalizeCategoryList,
 } from '@/backend/repository/database/category/normalizer';
 import {
-  normalizerForOtherEntity as normalizeTag,
-  normalizerForOtherEntityList as normalizeTagList,
+  normalizeForOtherEntity as normalizeTag,
+  normalizeForOtherEntityList as normalizeTagList,
 } from '@/backend/repository/database/tag/normalizer';
 import type { QuoteForOne, QuoteForMany } from './types';
 
-export const normalizerForOne = (itemOnDB: QuoteForOne | null) => {
+export const normalizeForOne = (itemOnDB: QuoteForOne | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Quote = {
@@ -44,7 +44,7 @@ export const normalizerForOne = (itemOnDB: QuoteForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizerForList = (itemsOnDB: QuoteForMany[] | null) => {
+export const normalizeForList = (itemsOnDB: QuoteForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: QuoteListItem[] = itemsOnDB.map((item) => ({

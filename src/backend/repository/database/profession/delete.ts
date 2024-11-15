@@ -1,7 +1,7 @@
 import prisma from '@/backend/repository/lib/prisma';
 import type { Profession } from '@/backend/entity/profession/type';
 import type { ProfessionForOne, DeleteOneProps } from './types';
-import { normalizerForOne } from './normalizer';
+import { normalizeForOne } from './normalizer';
 
 interface Result {
   status: number;
@@ -19,7 +19,7 @@ export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
     });
     return {
       status: 200,
-      data: normalizerForOne(deletedProfession),
+      data: normalizeForOne(deletedProfession),
       error: null,
     };
   } catch (error) {

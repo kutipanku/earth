@@ -4,8 +4,8 @@ import type {
   AuthorOptionItem,
   AuthorAtOtherEntity,
 } from '@/backend/entity/author/type';
-import { normalizerForOne as normalizerForOneNationality } from '@/backend/repository/database/nationality/normalizer';
-import { normalizerForOne as normalizerForOneProfession } from '@/backend/repository/database/profession/normalizer';
+import { normalizeForOne as normalizeForOneNationality } from '@/backend/repository/database/nationality/normalizer';
+import { normalizeForOne as normalizeForOneProfession } from '@/backend/repository/database/profession/normalizer';
 import type {
   AuthorForOne,
   AuthorForMany,
@@ -14,7 +14,7 @@ import type {
   AuthorForOtherEntityList,
 } from './types';
 
-export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
+export const normalizeForOne = (itemOnDB: AuthorForOne | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Author = {
@@ -26,9 +26,8 @@ export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
       en: itemOnDB.description_en || '',
     },
     dob: itemOnDB.dob === null ? null : new Date(itemOnDB.dob),
-    // TODO: add nationality and profession,
-    nationality: normalizerForOneNationality(itemOnDB.nationality),
-    profession: normalizerForOneProfession(itemOnDB.profession),
+    nationality: normalizeForOneNationality(itemOnDB.nationality),
+    profession: normalizeForOneProfession(itemOnDB.profession),
     picture_url: itemOnDB.picture_url,
     metadata: {
       created_at: new Date(itemOnDB.created_at),
@@ -40,7 +39,7 @@ export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizerFoList = (itemsOnDB: AuthorForMany[] | null) => {
+export const normalizeFoList = (itemsOnDB: AuthorForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: AuthorListItem[] = itemsOnDB.map((item) => ({
@@ -54,7 +53,7 @@ export const normalizerFoList = (itemsOnDB: AuthorForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOption = (
+export const normalizeForOption = (
   itemsOnDB: AuthorForManyOptions[] | null
 ) => {
   if (itemsOnDB === null) return [];
@@ -67,7 +66,7 @@ export const normalizerForOption = (
   return normalizedItem;
 };
 
-export const normalizerForOtherEntity = (
+export const normalizeForOtherEntity = (
   itemOnDB: AuthorForOtherEntity | null
 ) => {
   if (itemOnDB === null) return null;
@@ -80,7 +79,7 @@ export const normalizerForOtherEntity = (
   return normalizedItem;
 };
 
-export const normalizerForOtherEntityList = (
+export const normalizeForOtherEntityList = (
   itemOnDB: AuthorForOtherEntityList | null
 ) => {
   if (itemOnDB === null) return null;

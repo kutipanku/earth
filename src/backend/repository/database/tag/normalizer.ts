@@ -11,7 +11,7 @@ import type {
   TagForOtherEntityList,
 } from './types';
 
-export const normalizerForOne = (itemOnDB: TagForOne | null) => {
+export const normalizeForOne = (itemOnDB: TagForOne | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Tag = {
@@ -35,7 +35,7 @@ export const normalizerForOne = (itemOnDB: TagForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizerFoList = (itemsOnDB: TagForMany[] | null) => {
+export const normalizeFoList = (itemsOnDB: TagForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: TagListItem[] = itemsOnDB.map((item) => ({
@@ -50,7 +50,7 @@ export const normalizerFoList = (itemsOnDB: TagForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOption = (itemsOnDB: TagForMany[] | null) => {
+export const normalizeForOption = (itemsOnDB: TagForMany[] | null) => {
   if (itemsOnDB === null) return [];
 
   const normalizedItem: TagOptionItem[] = itemsOnDB.map((item) => ({
@@ -64,7 +64,7 @@ export const normalizerForOption = (itemsOnDB: TagForMany[] | null) => {
   return normalizedItem;
 };
 
-export const normalizerForOtherEntity = (
+export const normalizeForOtherEntity = (
   itemsOnDB: TagForOtherEntity[] | null
 ) => {
   if (itemsOnDB === null) return [];
@@ -81,7 +81,7 @@ export const normalizerForOtherEntity = (
   return normalizedItem;
 };
 
-export const normalizerForOtherEntityList = (
+export const normalizeForOtherEntityList = (
   itemsOnDB: TagForOtherEntityList[] | null
 ) => {
   if (itemsOnDB === null) return [];
