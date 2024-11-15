@@ -2,6 +2,7 @@ import type {
   Author,
   AuthorListItem,
   AuthorOptionItem,
+  AuthorAtOtherEntity,
 } from '@/backend/entity/author/type';
 import { normalizerForOne as normalizerForOneNationality } from '@/backend/repository/database/nationality/normalizer';
 import { normalizerForOne as normalizerForOneProfession } from '@/backend/repository/database/profession/normalizer';
@@ -9,6 +10,8 @@ import type {
   AuthorForOne,
   AuthorForMany,
   AuthorForManyOptions,
+  AuthorForOtherEntity,
+  AuthorForOtherEntityList,
 } from './types';
 
 export const normalizerForOne = (itemOnDB: AuthorForOne | null) => {
@@ -60,6 +63,32 @@ export const normalizerForOption = (
     id: item.id,
     name: item.name,
   }));
+
+  return normalizedItem;
+};
+
+export const normalizerForOtherEntity = (
+  itemOnDB: AuthorForOtherEntity | null
+) => {
+  if (itemOnDB === null) return null;
+
+  const normalizedItem: AuthorAtOtherEntity = {
+    id: itemOnDB.id,
+    name: itemOnDB.name,
+  };
+
+  return normalizedItem;
+};
+
+export const normalizerForOtherEntityList = (
+  itemOnDB: AuthorForOtherEntityList | null
+) => {
+  if (itemOnDB === null) return null;
+
+  const normalizedItem: AuthorAtOtherEntity = {
+    id: itemOnDB.id,
+    name: itemOnDB.name,
+  };
 
   return normalizedItem;
 };

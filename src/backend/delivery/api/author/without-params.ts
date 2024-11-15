@@ -8,7 +8,7 @@ import {
 
 export async function retrieveAuthors(req: NextRequest) {
   const response = await getAuthors({
-    page: req.nextUrl.searchParams.get('name'),
+    page: req.nextUrl.searchParams.get('page'),
     limit: req.nextUrl.searchParams.get('limit'),
     filterName: req.nextUrl.searchParams.get('name'),
     filterSlug: req.nextUrl.searchParams.get('slug'),

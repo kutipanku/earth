@@ -23,6 +23,13 @@ export type AuthorForOne = Prisma.AuthorGetPayload<{
 }>;
 
 export type AuthorForManyOptions = Prisma.AuthorGetPayload<{}>;
+export type AuthorForOtherEntity = Prisma.AuthorGetPayload<{}>;
+export type AuthorForOtherEntityList = Prisma.AuthorGetPayload<{
+  select: {
+    id: true;
+    name: true;
+  };
+}>;
 
 export interface FindOptionsProps {
   name: string | null;

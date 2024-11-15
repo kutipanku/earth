@@ -29,3 +29,5 @@ export interface AuthorOptionItem {
   id: string;
   name: string;
 }
+
+export type AuthorAtOtherEntity = AuthorOptionItem;

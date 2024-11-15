@@ -2,8 +2,14 @@ import type {
   Category,
   CategoryListItem,
   CategoryOptionItem,
+  CategoryAtOtherEntity,
 } from '@/backend/entity/category/type';
-import type { CategoryForOne, CategoryForMany } from './types';
+import type {
+  CategoryForOne,
+  CategoryForMany,
+  CategoryForOtherEntity,
+  CategoryForOtherEntityList,
+} from './types';
 
 export const normalizerForOne = (itemOnDB: CategoryForOne | null) => {
   if (itemOnDB === null) return null;
@@ -54,6 +60,38 @@ export const normalizerForOption = (itemsOnDB: CategoryForMany[] | null) => {
       en: item.name_en || '',
     },
   }));
+
+  return normalizedItem;
+};
+
+export const normalizerForOtherEntity = (
+  itemOnDB: CategoryForOtherEntity | null
+) => {
+  if (itemOnDB === null) return null;
+
+  const normalizedItem: CategoryAtOtherEntity = {
+    id: itemOnDB.id,
+    name: {
+      id: itemOnDB.name_id || '',
+      en: itemOnDB.name_en || '',
+    },
+  };
+
+  return normalizedItem;
+};
+
+export const normalizerForOtherEntityList = (
+  itemOnDB: CategoryForOtherEntityList | null
+) => {
+  if (itemOnDB === null) return null;
+
+  const normalizedItem: CategoryAtOtherEntity = {
+    id: itemOnDB.id,
+    name: {
+      id: itemOnDB.name_id || '',
+      en: itemOnDB.name_en || '',
+    },
+  };
 
   return normalizedItem;
 };

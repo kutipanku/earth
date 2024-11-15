@@ -21,3 +21,5 @@ export interface CategoryOptionItem {
   id: string;
   name: MultilingualContent;
 }
+
+export type CategoryAtOtherEntity = CategoryOptionItem;
