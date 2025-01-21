@@ -3,8 +3,8 @@ import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import IndonesiaIcon from '@/public/icons/id.png';
-import EnglishIcon from '@/public/icons/gb.png';
+import IndonesiaIcon from '@public/icons/id.png';
+import EnglishIcon from '@public/icons/gb.png';
 import type { Filter, TableRowProps } from '@/entity/ui/type';
 import type {
   Category,

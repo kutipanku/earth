@@ -12,7 +12,7 @@ import { DRAWER_MENU_LIST } from '@/entity/ui/constant';
 import type { DrapwerProps } from './type';
 import { DrawerHeader, closedMixin, openedMixin } from './style';
 import { DRAWER_WIDTH } from '@/entity/ui/constant';
-import logo from '@/public/logo.svg';
+import logo from '@public/logo.svg';
 
 const CustomizedDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',

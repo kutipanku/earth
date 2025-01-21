@@ -3,12 +3,13 @@
 import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { DynamicField } from '@/entity/ui/type';
-import { NodeActionTimestamps } from '@/entity/db/type';
+import { DynamicField } from '@/frontend/entity/core/types';
+import { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
 import { convertDateToLocaleString } from '@/lib/date';
 import DetailText from '@/presentation/DetailText';
 import DetailAutocomplete from '@/presentation/DetailAutocomplete';
 import DetailRichText from '@/presentation/DetailRichText';
+import type { StaticImageData } from '@/frontend/delivery/lib/next/types';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;
@@ -19,7 +20,7 @@ interface Props<DataType, FieldType, Key extends keyof FieldType> {
 
 const DynamicDetail = <
   DataType extends NodeActionTimestamps,
-  FieldType extends DynamicField<keyof DataType>,
+  FieldType extends DynamicField<keyof DataType, StaticImageData | string>,
   Key extends keyof FieldType,
 >({
   data,
@@ -90,13 +91,13 @@ const DynamicDetail = <
         <DetailText
           isLoading={isLoading}
           label='Created At:'
-          value={convertDateToLocaleString(data.created_at)}
+          value={convertDateToLocaleString(data.createdAt)}
           style={{ width: '50%', marginRight: 1 }}
         />
         <DetailText
           isLoading={isLoading}
           label='Updated At:'
-          value={convertDateToLocaleString(data.updated_at)}
+          value={convertDateToLocaleString(data.updatedAt)}
           style={{ width: '50%', marginLeft: 1 }}
         />
       </Box>

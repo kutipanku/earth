@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import type { Filter, TableRowProps } from '@/entity/ui/type';
+import type { Filter, TableRowProps } from '@/frontend/entity/core/types';
 import type {
   Author,
   AuthorDetailField,
