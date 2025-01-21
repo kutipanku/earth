@@ -17,13 +17,13 @@ export const normalizeForOne = (itemOnDB: TagForOne | null) => {
   const normalizedItem: Tag = {
     id: itemOnDB.id,
     name: {
-      id: itemOnDB.name_id || '',
-      en: itemOnDB.name_en || '',
+      ind: itemOnDB.name_id || '',
+      eng: itemOnDB.name_en || '',
     },
     slug: itemOnDB.slug,
     description: {
-      id: itemOnDB.description_id || '',
-      en: itemOnDB.description_en || '',
+      ind: itemOnDB.description_id || '',
+      eng: itemOnDB.description_en || '',
     },
     metadata: {
       created_at: new Date(itemOnDB.created_at),
@@ -41,8 +41,8 @@ export const normalizeFoList = (itemsOnDB: TagForMany[] | null) => {
   const normalizedItem: TagListItem[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      id: item.name_id || '',
-      en: item.name_en || '',
+      ind: item.name_id || '',
+      eng: item.name_en || '',
     },
     slug: item.slug,
   }));
@@ -56,8 +56,8 @@ export const normalizeForOption = (itemsOnDB: TagForMany[] | null) => {
   const normalizedItem: TagOptionItem[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      id: item.name_id || '',
-      en: item.name_en || '',
+      ind: item.name_id || '',
+      eng: item.name_en || '',
     },
   }));
 
@@ -72,8 +72,8 @@ export const normalizeForOtherEntity = (
   const normalizedItem: TagAtOtherEntity[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      id: item.name_id || '',
-      en: item.name_en || '',
+      ind: item.name_id || '',
+      eng: item.name_en || '',
     },
     slug: item.slug,
   }));
@@ -89,8 +89,8 @@ export const normalizeForOtherEntityList = (
   const normalizedItem: TagAtOtherEntity[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      id: item.name_id || '',
-      en: item.name_en || '',
+      ind: item.name_id || '',
+      eng: item.name_en || '',
     },
   }));
 

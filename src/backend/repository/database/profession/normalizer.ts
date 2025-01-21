@@ -11,8 +11,8 @@ export const normalizeForOne = (itemOnDB: ProfessionForMany | null) => {
   const normalizedItem: Profession = {
     id: itemOnDB.id,
     name: {
-      id: itemOnDB.name_id || '',
-      en: itemOnDB.name_en || '',
+      ind: itemOnDB.name_id || '',
+      eng: itemOnDB.name_en || '',
     },
     slug: itemOnDB.slug,
     icon: itemOnDB.icon,
@@ -32,8 +32,8 @@ export const normalizeFoList = (itemsOnDB: ProfessionForOne[] | null) => {
   const normalizedItem: ProfessionListItem[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      id: item.name_id || '',
-      en: item.name_en || '',
+      ind: item.name_id || '',
+      eng: item.name_en || '',
     },
     slug: item.slug,
   }));
@@ -47,8 +47,8 @@ export const normalizeForOption = (itemsOnDB: ProfessionForOne[] | null) => {
   const normalizedItem: ProfessionOptionItem[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      id: item.name_id || '',
-      en: item.name_en || '',
+      ind: item.name_id || '',
+      eng: item.name_en || '',
     },
   }));
 

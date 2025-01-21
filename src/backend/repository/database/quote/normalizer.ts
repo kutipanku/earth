@@ -20,16 +20,16 @@ export const normalizeForOne = (itemOnDB: QuoteForOne | null) => {
     id: itemOnDB.id,
     slug: itemOnDB.slug,
     content: {
-      id: itemOnDB.content_id || '',
-      en: itemOnDB.content_en || '',
+      ind: itemOnDB.content_id || '',
+      eng: itemOnDB.content_en || '',
     },
     description: {
-      id: itemOnDB.description_id || '',
-      en: itemOnDB.description_en || '',
+      ind: itemOnDB.description_id || '',
+      eng: itemOnDB.description_en || '',
     },
     url: {
-      id: itemOnDB.image_id_url || '',
-      en: itemOnDB.image_en_url || '',
+      ind: itemOnDB.image_id_url || '',
+      eng: itemOnDB.image_en_url || '',
     },
     author: normalizeAuthor(itemOnDB.author),
     category: normalizeCategory(itemOnDB.category),
@@ -51,8 +51,8 @@ export const normalizeForList = (itemsOnDB: QuoteForMany[] | null) => {
     id: item.id,
     slug: item.slug,
     content: {
-      id: item.content_id || '',
-      en: item.content_en || '',
+      ind: item.content_id || '',
+      eng: item.content_en || '',
     },
     author: normalizeAuthorList(item.author),
     category: normalizeCategoryList(item.category),
