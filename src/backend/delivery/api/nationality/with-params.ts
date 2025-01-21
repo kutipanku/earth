@@ -5,6 +5,7 @@ import {
   editNationality,
   removeNationalityById,
 } from '@/backend/usecase/nationality';
+import type { EditNationality } from './contract';
 
 interface Params {
   id: string;
@@ -20,7 +21,7 @@ export async function retrieveNationalityById(
     id,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
 
 export async function changeNationalityDetail(
@@ -32,30 +33,28 @@ export async function changeNationalityDetail(
   );
 
   const { id } = params;
-  const {
-    name_en,
-    name_id,
-    flag,
-    slug,
-  }: {
-    name_en?: string;
-    name_id?: string;
+  const body: EditNationality = await req.json();
+
+  const payload: {
     flag?: string;
     slug?: string;
-  } = await req.json();
+    name_en?: string;
+    name_id?: string;
+  } = {};
+  if (body.flag) payload.flag = body.flag;
+  if (body.slug) payload.slug = body.slug;
+  if (body.name) {
+    if (body.name.eng) payload.name_en = body.name.eng;
+    if (body.name.eng) payload.name_id = body.name.eng;
+  }
 
   const response = await editNationality({
     sessionToken: sessionToken?.value,
     id,
-    payload: {
-      name_en,
-      name_id,
-      flag,
-      slug,
-    },
+    payload,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
 
 export async function removeNationality(
@@ -72,5 +71,5 @@ export async function removeNationality(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }

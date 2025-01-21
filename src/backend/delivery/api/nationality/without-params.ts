@@ -14,7 +14,7 @@ export async function retrieveNationalities(req: NextRequest) {
     filterSlug: req.nextUrl.searchParams.get('slug'),
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
 
 export async function addNationality(req: NextRequest) {
@@ -23,18 +23,27 @@ export async function addNationality(req: NextRequest) {
   );
 
   const body: {
-    name_en?: string;
-    name_id?: string;
+    name?: {
+      eng?: string;
+      ind?: string;
+    };
     flag?: string;
     slug?: string;
   } = await req.json();
 
+  const normalizedBody = {
+    name_en: body.name?.eng,
+    name_id: body.name?.ind,
+    flag: body.flag,
+    slug: body.slug,
+  };
+
   const response = await addNewNationality({
     sessionToken: sessionToken?.value,
-    payload: body,
+    payload: normalizedBody,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
 
 export async function retrieveNationalitiesAsOptions(req: NextRequest) {
@@ -42,5 +51,5 @@ export async function retrieveNationalitiesAsOptions(req: NextRequest) {
     name: req.nextUrl.searchParams.get('name'),
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
