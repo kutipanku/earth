@@ -1,7 +1,8 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type { Profession } from '@/backend/entity/profession/type';
-import type { ProfessionForOne, UpdateOneProps } from './types';
+import prisma from '@backend/repository/lib/prisma';
 import { normalizeForOne } from './normalizer';
+
+import type { Profession } from '@backend/entity/profession/type';
+import type { ProfessionForOne, UpdateOneProps } from './types';
 
 interface Result {
   status: number;

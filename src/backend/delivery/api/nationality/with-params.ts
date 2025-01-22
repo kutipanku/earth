@@ -4,7 +4,7 @@ import {
   getNationalityById,
   editNationality,
   removeNationalityById,
-} from '@/backend/usecase/nationality';
+} from '@backend/usecase/nationality';
 import type { EditNationality } from './contract';
 
 interface Params {

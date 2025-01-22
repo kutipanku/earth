@@ -63,7 +63,7 @@ export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
     },
   });
 
-  const count = await prisma.nationality.count({
+  const count = await prisma.profession.count({
     where: {
       ...(filterName && {
         OR: [

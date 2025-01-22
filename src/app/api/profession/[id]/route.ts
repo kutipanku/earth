@@ -2,7 +2,7 @@ import {
   retrieveProfessionById,
   changeProfessionDetail,
   removeProfession,
-} from '@/backend/delivery/api/profession';
+} from '@backend/delivery/api/profession';
 
 export const GET = retrieveProfessionById;
 export const PUT = changeProfessionDetail;

@@ -4,7 +4,8 @@ import {
   getProfessionById,
   editProfession,
   removeProfessionById,
-} from '@/backend/usecase/profession';
+} from '@backend/usecase/profession';
+import type { EditProfession } from './contract';
 
 interface Params {
   id: string;
@@ -20,7 +21,7 @@ export async function retrieveProfessionById(
     id,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
 
 export async function changeProfessionDetail(
@@ -32,30 +33,29 @@ export async function changeProfessionDetail(
   );
 
   const { id } = params;
-  const {
-    name_en,
-    name_id,
-    icon,
-    slug,
-  }: {
+  const body: EditProfession = await req.json();
+
+  const payload: {
     name_en?: string;
     name_id?: string;
     icon?: string;
     slug?: string;
-  } = await req.json();
+  } = {};
+
+  if (body.icon) payload.icon = body.icon;
+  if (body.slug) payload.slug = body.slug;
+  if (body.name) {
+    if (body.name.eng) payload.name_en = body.name.eng;
+    if (body.name.eng) payload.name_id = body.name.eng;
+  }
 
   const response = await editProfession({
     sessionToken: sessionToken?.value,
     id,
-    payload: {
-      name_en,
-      name_id,
-      icon,
-      slug,
-    },
+    payload,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }
 
 export async function removeProfession(
@@ -72,5 +72,5 @@ export async function removeProfession(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response);
+  return NextResponse.json(response[0]);
 }

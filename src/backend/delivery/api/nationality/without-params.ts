@@ -4,7 +4,9 @@ import {
   addNewNationality,
   getNationalities,
   getNationalityOptions,
-} from '@/backend/usecase/nationality';
+} from '@backend/usecase/nationality';
+
+import type { AddNationality } from './contract';
 
 export async function retrieveNationalities(req: NextRequest) {
   const response = await getNationalities({
@@ -22,14 +24,7 @@ export async function addNationality(req: NextRequest) {
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const body: {
-    name?: {
-      eng?: string;
-      ind?: string;
-    };
-    flag?: string;
-    slug?: string;
-  } = await req.json();
+  const body: AddNationality = await req.json();
 
   const normalizedBody = {
     name_en: body.name?.eng,
