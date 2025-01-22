@@ -1,5 +1,5 @@
-import { editNationality } from '@frontend/repository/api/nationality';
-import type { NationalityVariables } from '@frontend/entity/nationality/types';
+import { editProfession } from '@frontend/repository/api/profession';
+import type { ProfessionVariables } from '@frontend/entity/profession/types';
 
 interface Props {
   id: string;
@@ -19,32 +19,29 @@ const useEdit = ({
   doUpdateErrorRef,
   doSetLoading,
 }: Props) => {
-  const handleSubmit = (body: NationalityVariables) => {
+  const handleSubmit = (body: ProfessionVariables) => {
     doSetLoading(true);
-    editNationality({ id, data: body })
+    editProfession({ id, data: body })
       .then((responseObject) => {
         if (responseObject.error) {
           doUpdateErrorRef(responseObject.fields || null);
           doOpenNotification(
             'error',
-            `Failed to edit nationality, error: ${responseObject.error}`
+            `Failed to edit profession, error: ${responseObject.error}`
           );
           doSetLoading(false);
           return;
         }
 
-        doNavigate(`/dashboard/nationality`);
+        doNavigate(`/dashboard/profession`);
         doUpdateErrorRef(null);
         doOpenNotification(
           'success',
-          `Successfully edited new nationality: ${responseObject.data.old.name.eng} to ${responseObject.data.new.name.eng}`
+          `Successfully edited new profession: ${responseObject.data.old.name.eng} to ${responseObject.data.new.name.eng}`
         );
       })
       .catch((err) => {
-        doOpenNotification(
-          'error',
-          `Failed to edit nationality, error: ${err}`
-        );
+        doOpenNotification('error', `Failed to edit profession, error: ${err}`);
         doSetLoading(false);
       });
   };

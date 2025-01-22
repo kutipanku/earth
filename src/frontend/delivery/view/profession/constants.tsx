@@ -6,12 +6,12 @@ import {
 } from '../../lib/mui-icons';
 
 import type { TableRowProps } from '@frontend/entity/core/types';
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
 
 export const TABLE_HEADER = (
   callbackFunction: (
     type: string,
-    dataRow: TableRowProps<NationalityListItem>
+    dataRow: TableRowProps<ProfessionListItem>
   ) => void
 ) => [
   {
@@ -19,7 +19,7 @@ export const TABLE_HEADER = (
     headerName: 'Name (EN)',
     width: 300,
     sortable: false,
-    renderCell: (params: TableRowProps<NationalityListItem>) => (
+    renderCell: (params: TableRowProps<ProfessionListItem>) => (
       <>{params.row.name.eng}</>
     ),
   },
@@ -28,7 +28,7 @@ export const TABLE_HEADER = (
     headerName: 'Name (ID)',
     width: 300,
     sortable: false,
-    renderCell: (params: TableRowProps<NationalityListItem>) => (
+    renderCell: (params: TableRowProps<ProfessionListItem>) => (
       <>{params.row.name.ind}</>
     ),
   },
@@ -37,17 +37,17 @@ export const TABLE_HEADER = (
     headerName: 'Slug',
     width: 300,
     sortable: false,
-    renderCell: (params: TableRowProps<NationalityListItem>) => (
+    renderCell: (params: TableRowProps<ProfessionListItem>) => (
       <>/{params.row.slug}</>
     ),
   },
   {
-    field: 'flag',
-    headerName: 'Flag',
+    field: 'icon',
+    headerName: 'Icon',
     width: 200,
     sortable: false,
-    renderCell: (params: TableRowProps<NationalityListItem>) => {
-      if (params.row.flag) return <>/{params.row.flag}</>;
+    renderCell: (params: TableRowProps<ProfessionListItem>) => {
+      if (params.row.icon) return <>/{params.row.icon}</>;
       return '-';
     },
   },
@@ -56,7 +56,7 @@ export const TABLE_HEADER = (
     headerName: 'Actions',
     sortable: false,
     width: 370,
-    renderCell: (params: TableRowProps<NationalityListItem>) => (
+    renderCell: (params: TableRowProps<ProfessionListItem>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
           onClick={() => callbackFunction('view', params)}

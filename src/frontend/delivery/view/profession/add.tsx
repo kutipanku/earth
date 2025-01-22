@@ -4,8 +4,8 @@ import {
   ADD_PAGE_TITLE,
   INPUT_FIELDS,
   INPUT_VARIABLE,
-} from '@frontend/entity/nationality/constants';
-import { useAdd } from '@frontend/usecase/nationality';
+} from '@frontend/entity/profession/constants';
+import { useAdd } from '@frontend/usecase/profession';
 import {
   UnifiedHeaderDetail,
   UnifiedHeadTag,
@@ -17,15 +17,15 @@ import { useRouter } from '../../lib/next';
 import { useNotificationContext } from '../../view/notification';
 
 import type {
-  NationalityInputField,
-  NationalityVariables,
-} from '@frontend/entity/nationality/types';
+  ProfessionInputField,
+  ProfessionVariables,
+} from '@frontend/entity/profession/types';
 
-const AddNationalityPage = () => {
+const AddProfessionPage = () => {
   const router = useRouter();
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const formRef = useRef<NationalityVariables | null>(null);
+  const formRef = useRef<ProfessionVariables | null>(null);
   const errorRef = useRef<string[] | null>(null);
 
   const { handleSubmit } = useAdd({
@@ -50,7 +50,7 @@ const AddNationalityPage = () => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={ADD_PAGE_TITLE} />
 
-        <DynamicInput<NationalityVariables, NationalityInputField, 'key'>
+        <DynamicInput<ProfessionVariables, ProfessionInputField, 'key'>
           data={formRef.current || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
           errors={errorRef.current ?? []}
@@ -63,4 +63,4 @@ const AddNationalityPage = () => {
   );
 };
 
-export default AddNationalityPage;
+export default AddProfessionPage;

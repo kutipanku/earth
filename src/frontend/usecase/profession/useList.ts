@@ -1,5 +1,5 @@
-import { getNationalityRows } from '@frontend/repository/api/nationality';
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+import { getProfessionRows } from '@frontend/repository/api/profession';
+import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
 
 interface Props {
   page: number;
@@ -7,7 +7,7 @@ interface Props {
   filterString: string;
   doSetCount: (count: number) => void;
   doSetLoading: (value: boolean) => void;
-  doSetList: (list: NationalityListItem[]) => void;
+  doSetList: (list: ProfessionListItem[]) => void;
 }
 
 const useList = ({
@@ -20,7 +20,7 @@ const useList = ({
 }: Props) => {
   const handleGetList = (directFilterString?: string) => {
     const currentFilterString = directFilterString || filterString;
-    getNationalityRows({
+    getProfessionRows({
       page,
       rowPerPage,
       filterString: currentFilterString,

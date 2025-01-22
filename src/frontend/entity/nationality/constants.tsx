@@ -1,10 +1,10 @@
-import type { Filter } from '@/frontend/entity/core/types';
+import type { Filter } from '@frontend/entity/core/types';
 import type {
   NationalityDetail,
   NationalityDetailField,
   NationalityInputField,
   NationalityVariables,
-} from '@/frontend/entity/nationality/types';
+} from '@frontend/entity/nationality/types';
 // ================================================================
 
 // Page Meta

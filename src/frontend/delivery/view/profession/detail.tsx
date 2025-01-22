@@ -4,8 +4,8 @@ import {
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
   DETAIL_PLACEHOLDER,
-} from '@frontend/entity/nationality/constants';
-import { useShowDetail } from '@frontend/usecase/nationality';
+} from '@frontend/entity/profession/constants';
+import { useShowDetail } from '@frontend/usecase/profession';
 import { useEffect, useState } from '../../lib/react';
 import {
   UnifiedHeadTag,
@@ -15,19 +15,19 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  NationalityDetailField,
-  NationalityDetail,
-} from '@frontend/entity/nationality/types';
+  ProfessionDetailField,
+  ProfessionDetail,
+} from '@frontend/entity/profession/types';
 
-const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
+const ProfessionDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<NationalityDetail>();
+  const [detail, setDetail] = useState<ProfessionDetail>();
 
   const { handleGetDetail } = useShowDetail({
     id,
     doSetLoading: (value: boolean) => setLoading(value),
-    doSetDetail: (value: NationalityDetail) => setDetail(value),
+    doSetDetail: (value: ProfessionDetail) => setDetail(value),
   });
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        <DynamicDetail<NationalityDetail, NationalityDetailField, 'key'>
+        <DynamicDetail<ProfessionDetail, ProfessionDetailField, 'key'>
           data={detail || DETAIL_PLACEHOLDER}
           fields={DETAIL_FIELDS}
           property='key'
@@ -53,4 +53,4 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default NationalityDetailPage;
+export default ProfessionDetailPage;

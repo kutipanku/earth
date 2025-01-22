@@ -1,20 +1,34 @@
-import type { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
-import type { DynamicField } from '@/frontend/entity/core/types';
+import type {
+  DynamicField,
+  MultilanguageContent,
+  Timestamp,
+} from '../core/types';
 
-export interface Profession extends NodeActionTimestamps {
+export interface Profession {
   id: string;
   icon: string | null;
-  nameEn: string;
-  nameId: string;
+  name: MultilanguageContent;
   slug: string;
+  metadata: Timestamp;
 }
 
-export type ProfessionDetailField = DynamicField<keyof Profession, string>;
+export interface ProfessionDetail extends Timestamp {
+  id: string;
+  slug: string;
+  nameEng: string;
+  nameInd: string;
+  icon: string | null;
+}
+
+export type ProfessionDetailField = DynamicField<
+  keyof ProfessionDetail,
+  string
+>;
 
 export interface ProfessionVariables
-  extends Omit<Profession, 'id' | 'createdAt' | 'updatedAt'> {}
+  extends Omit<ProfessionDetail, 'id' | 'createdAt' | 'updatedAt'> {}
 
-export type ProfessionInputFIeld = DynamicField<
+export type ProfessionInputField = DynamicField<
   keyof ProfessionVariables,
   string
 >;

@@ -1,10 +1,10 @@
-import type { Filter } from '@/frontend/entity/core/types';
+import type { Filter } from '@frontend/entity/core/types';
 import type {
-  Profession,
+  ProfessionDetail,
   ProfessionDetailField,
   ProfessionInputFIeld,
   ProfessionVariables,
-} from '@/frontend/entity/profession/types';
+} from '@frontend/entity/profession/types';
 // ================================================================
 
 // Page Meta
@@ -33,13 +33,13 @@ export const INITIAL_FILTER_STATE: Filter[] = [
 // Detail Properties
 export const DETAIL_FIELDS: ProfessionDetailField[] = [
   {
-    key: 'nameEn',
+    key: 'nameEng',
     label: 'Name (EN)',
     type: 'text',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
-    key: 'nameId',
+    key: 'nameInd',
     label: 'Name (ID)',
     type: 'text',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
@@ -53,10 +53,10 @@ export const DETAIL_FIELDS: ProfessionDetailField[] = [
   },
 ];
 
-export const DETAIL_PLACEHOLDER: Profession = {
+export const DETAIL_PLACEHOLDER: ProfessionDetail = {
   id: '',
-  nameEn: '',
-  nameId: '',
+  nameEng: '',
+  nameInd: '',
   slug: '',
   icon: '',
   createdAt: '',
@@ -67,14 +67,14 @@ export const DETAIL_PLACEHOLDER: Profession = {
 // Update Properties
 export const INPUT_FIELDS: ProfessionInputFIeld[] = [
   {
-    key: 'nameEn',
+    key: 'nameEng',
     label: 'Name (EN)',
     type: 'text',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
     prefix: 'english_icon',
   },
   {
-    key: 'nameId',
+    key: 'nameInd',
     label: 'Name (ID)',
     type: 'text',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
@@ -90,8 +90,8 @@ export const INPUT_FIELDS: ProfessionInputFIeld[] = [
 ];
 
 export const INPUT_VARIABLE: ProfessionVariables = {
-  nameId: '',
-  nameEn: '',
+  nameInd: '',
+  nameEng: '',
   slug: '',
   icon: '',
 };

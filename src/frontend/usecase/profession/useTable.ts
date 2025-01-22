@@ -1,10 +1,10 @@
-import { removeNationality } from '@frontend/repository/api/nationality';
+import { removeProfession } from '@frontend/repository/api/profession';
 import type { TableRowProps } from '@frontend/entity/core/types';
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
 
 interface Props {
-  selectedRow: NationalityListItem | null;
-  doSetSelectedRow: (value: NationalityListItem | null) => void;
+  selectedRow: ProfessionListItem | null;
+  doSetSelectedRow: (value: ProfessionListItem | null) => void;
   doReplaceState: (value: string) => void;
   doNavigate: (url: string) => void;
   doOpenNotification: (
@@ -28,11 +28,11 @@ const useTable = ({
 }: Props) => {
   const handleOnDelete = () => {
     if (selectedRow !== null) {
-      removeNationality({ id: selectedRow?.id }).then(() => {
+      removeProfession({ id: selectedRow?.id }).then(() => {
         doSetDeleteDialogOpen(false);
         doOpenNotification(
           'success',
-          `Successfully delete nationality with name: ${selectedRow?.name.eng}`
+          `Successfully delete profession with name: ${selectedRow?.name.eng}`
         );
         doSetSelectedRow(null);
 
@@ -45,12 +45,12 @@ const useTable = ({
 
   const handleTriggerAction = (
     type: string,
-    rowData: TableRowProps<NationalityListItem>
+    rowData: TableRowProps<ProfessionListItem>
   ) => {
     if (type === 'view') {
-      doNavigate(`/dashboard/nationality/${rowData.row.id}`);
+      doNavigate(`/dashboard/profession/${rowData.row.id}`);
     } else if (type === 'edit') {
-      doNavigate(`/dashboard/nationality/${rowData.row.id}/edit`);
+      doNavigate(`/dashboard/profession/${rowData.row.id}/edit`);
     } else {
       doSetSelectedRow(rowData.row);
       doSetDeleteDialogOpen(true);
@@ -64,7 +64,7 @@ const useTable = ({
   };
 
   const handleRedirectToAddPage = () => {
-    doNavigate(`/dashboard/nationality/add`);
+    doNavigate(`/dashboard/profession/add`);
   };
 
   return {

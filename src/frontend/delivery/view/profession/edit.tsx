@@ -4,8 +4,8 @@ import {
   EDIT_PAGE_TITLE,
   INPUT_FIELDS,
   INPUT_VARIABLE,
-} from '@frontend/entity/nationality/constants';
-import { useEdit, useShowDetail } from '@frontend/usecase/nationality';
+} from '@frontend/entity/profession/constants';
+import { useEdit, useShowDetail } from '@frontend/usecase/profession';
 import { useEffect, useState, useRef } from '../../lib/react';
 import { useRouter } from '../../lib/next';
 import { useNotificationContext } from '../../view/notification';
@@ -17,27 +17,27 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  NationalityDetail,
-  NationalityInputField,
-  NationalityVariables,
-} from '@frontend/entity/nationality/types';
+  ProfessionDetail,
+  ProfessionInputField,
+  ProfessionVariables,
+} from '@frontend/entity/profession/types';
 
-interface NationalityVariablesForEdit extends NationalityVariables {
+interface ProfessionVariablesForEdit extends ProfessionVariables {
   id: string;
 }
 
-const EditNationalityPage = ({ params }: { params: { id: string } }) => {
+const EditProfessionPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<NationalityVariablesForEdit>();
+  const [detail, setDetail] = useState<ProfessionVariablesForEdit>();
   const errorRef = useRef<string[] | null>(null);
 
   const { handleGetDetail } = useShowDetail({
     id,
     doSetLoading: (value: boolean) => setLoading(value),
-    doSetDetail: (value: NationalityDetail) => setDetail(value),
+    doSetDetail: (value: ProfessionDetail) => setDetail(value),
   });
 
   const { handleSubmit } = useEdit({
@@ -67,7 +67,7 @@ const EditNationalityPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={EDIT_PAGE_TITLE} />
 
-        <DynamicInput<NationalityVariables, NationalityInputField, 'key'>
+        <DynamicInput<ProfessionVariables, ProfessionInputField, 'key'>
           data={detail || INPUT_VARIABLE}
           fields={INPUT_FIELDS}
           errors={errorRef.current ?? []}
@@ -80,4 +80,4 @@ const EditNationalityPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default EditNationalityPage;
+export default EditProfessionPage;

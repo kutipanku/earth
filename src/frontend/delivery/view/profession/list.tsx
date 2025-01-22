@@ -4,8 +4,8 @@ import {
   INITIAL_FILTER_STATE,
   HOME_PAGE_TITLE,
   HOME_PAGE_REDIRECT_ADD,
-} from '@frontend/entity/nationality/constants';
-import { useList, useTable } from '@frontend/usecase/nationality';
+} from '@frontend/entity/profession/constants';
+import { useList, useTable } from '@frontend/usecase/profession';
 import { useEffect, useState, useMemo } from '../../lib/react';
 import { useRouter, useSearchParams } from '../../lib/next';
 import { Box } from '../../lib/mui';
@@ -20,20 +20,20 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 import { TABLE_HEADER } from './constants';
 
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
 
-const NationalityPage = () => {
+const ProfessionPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [dispatch] = useNotificationContext();
 
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<NationalityListItem[]>([]);
+  const [data, setData] = useState<ProfessionListItem[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(10);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<NationalityListItem | null>(
+  const [selectedRow, setSelectedRow] = useState<ProfessionListItem | null>(
     null
   );
 
@@ -77,7 +77,7 @@ const NationalityPage = () => {
           severity,
         },
       }),
-    doSetSelectedRow: (value: NationalityListItem | null) =>
+    doSetSelectedRow: (value: ProfessionListItem | null) =>
       setSelectedRow(value),
     doSetLoading: (value: boolean) => setLoading(value),
     doSetDeleteDialogOpen: (value: boolean) => setDeleteDialogOpen(value),
@@ -133,4 +133,4 @@ const NationalityPage = () => {
   );
 };
 
-export default NationalityPage;
+export default ProfessionPage;
