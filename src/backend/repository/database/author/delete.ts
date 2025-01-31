@@ -1,21 +1,18 @@
 import prisma from '@/backend/repository/lib/prisma';
-import type { Author } from '@/backend/entity/author/type';
-import type { AuthorForOne, DeleteOneProps } from './types';
 import { normalizeForOne } from './normalizer';
 
-interface Result {
-  status: number;
-  data: Author | null;
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Author } from '@/backend/entity/author/type';
+import type { InputAuthorDelete, ResponseAuthorExtended } from './types';
+import type { ResultOne } from '../types';
 
-export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
+type AuthorResultOne = ResultOne<Author>;
+
+export const deleteOne = async (
+  props: InputAuthorDelete
+): Promise<AuthorResultOne> => {
   try {
-    const deletedAuthor: AuthorForOne = await prisma.author.delete({
-      where: {
-        id: id,
-      },
+    const deletedAuthor: ResponseAuthorExtended = await prisma.author.delete({
+      ...props,
       include: {
         nationality: true,
         profession: true,

@@ -4,6 +4,11 @@ export interface Metadata {
 }
 
 export interface MultilingualContent {
-  ind: string;
-  eng: string;
+  ind: string | null;
+  eng: string | null;
+}
+
+export interface GenericItem {
+  id: string;
+  name: string;
 }

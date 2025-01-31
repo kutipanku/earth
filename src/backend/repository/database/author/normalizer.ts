@@ -1,20 +1,10 @@
-import type {
-  Author,
-  AuthorListItem,
-  AuthorOptionItem,
-  AuthorAtOtherEntity,
-} from '@/backend/entity/author/type';
-import { normalizeForOne as normalizeForOneNationality } from '@/backend/repository/database/nationality/normalizer';
-import { normalizeForOne as normalizeForOneProfession } from '@/backend/repository/database/profession/normalizer';
-import type {
-  AuthorForOne,
-  AuthorForMany,
-  AuthorForManyOptions,
-  AuthorForOtherEntity,
-  AuthorForOtherEntityList,
-} from './types';
+import { normalizeForOne as normalizeForOneNationality } from '../nationality/normalizer';
+import { normalizeForOne as normalizeForOneProfession } from '../profession/normalizer';
 
-export const normalizeForOne = (itemOnDB: AuthorForOne | null) => {
+import type { Author, AuthorSimplified } from '@/backend/entity/author/type';
+import type { ResponseAuthor, ResponseAuthorExtended } from './types';
+
+export const normalizeForOne = (itemOnDB: ResponseAuthorExtended | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Author = {
@@ -39,26 +29,35 @@ export const normalizeForOne = (itemOnDB: AuthorForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizeFoList = (itemsOnDB: AuthorForMany[] | null) => {
+export const normalizeFoList = (itemsOnDB: ResponseAuthorExtended[] | null) => {
   if (itemsOnDB === null) return [];
 
-  const normalizedItem: AuthorListItem[] = itemsOnDB.map((item) => ({
+  const normalizedItem: Author[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: item.name,
     slug: item.slug,
-    nationality: item.nationality?.name_en || '',
-    profession: item.profession?.name_en || '',
+    description: {
+      eng: item.description_en,
+      ind: item.description_id,
+    },
+    dob: item.dob,
+    nationality: normalizeForOneNationality(item.nationality),
+    profession: normalizeForOneProfession(item.profession),
+    picture_url: item.picture_url,
+    metadata: {
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+    },
   }));
 
   return normalizedItem;
 };
 
-export const normalizeForOption = (
-  itemsOnDB: AuthorForManyOptions[] | null
-) => {
+export const normalizeForOption = (itemsOnDB: ResponseAuthor[] | null) => {
   if (itemsOnDB === null) return [];
+  const date = new Date();
 
-  const normalizedItem: AuthorOptionItem[] = itemsOnDB.map((item) => ({
+  const normalizedItem: AuthorSimplified[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: item.name,
   }));
@@ -66,25 +65,10 @@ export const normalizeForOption = (
   return normalizedItem;
 };
 
-export const normalizeForOtherEntity = (
-  itemOnDB: AuthorForOtherEntity | null
-) => {
+export const normalizeForOtherEntity = (itemOnDB: Author | null) => {
   if (itemOnDB === null) return null;
 
-  const normalizedItem: AuthorAtOtherEntity = {
-    id: itemOnDB.id,
-    name: itemOnDB.name,
-  };
-
-  return normalizedItem;
-};
-
-export const normalizeForOtherEntityList = (
-  itemOnDB: AuthorForOtherEntityList | null
-) => {
-  if (itemOnDB === null) return null;
-
-  const normalizedItem: AuthorAtOtherEntity = {
+  const normalizedItem: AuthorSimplified = {
     id: itemOnDB.id,
     name: itemOnDB.name,
   };

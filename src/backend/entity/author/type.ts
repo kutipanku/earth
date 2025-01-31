@@ -1,9 +1,6 @@
-import type {
-  Metadata,
-  MultilingualContent,
-} from '@/backend/entity/general/type';
-import type { Nationality } from '@/backend/entity/nationality/type';
-import type { Profession } from '@/backend/entity/profession/type';
+import type { Metadata, MultilingualContent } from '../general/type';
+import type { Nationality } from '../nationality/type';
+import type { Profession } from '../profession/type';
 
 export interface Author {
   id: string;
@@ -17,17 +14,7 @@ export interface Author {
   metadata: Metadata;
 }
 
-export interface AuthorListItem {
-  id: string;
-  name: string;
-  slug: string;
-  nationality: string;
-  profession: string;
-}
-
-export interface AuthorOptionItem {
+export interface AuthorSimplified {
   id: string;
   name: string;
 }
-
-export type AuthorAtOtherEntity = AuthorOptionItem;

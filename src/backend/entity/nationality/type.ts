@@ -1,7 +1,4 @@
-import type {
-  Metadata,
-  MultilingualContent,
-} from '@/backend/entity/general/type';
+import type { Metadata, MultilingualContent } from '../general/type';
 
 export interface Nationality {
   id: string;

@@ -8,13 +8,23 @@ import {
 
 export async function retrieveAuthors(req: NextRequest) {
   const response = await getAuthors({
-    page: req.nextUrl.searchParams.get('page'),
-    limit: req.nextUrl.searchParams.get('limit'),
-    filterName: req.nextUrl.searchParams.get('name'),
-    filterSlug: req.nextUrl.searchParams.get('slug'),
+    page: Number(req.nextUrl.searchParams.get('page')),
+    limit: Number(req.nextUrl.searchParams.get('limit')),
+    filter_name: req.nextUrl.searchParams.get('name') || '',
+    filter_slug: req.nextUrl.searchParams.get('slug') || '',
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function addAuthor(req: NextRequest) {
@@ -35,16 +45,40 @@ export async function addAuthor(req: NextRequest) {
 
   const response = await addNewAuthor({
     sessionToken: sessionToken?.value,
-    payload: body,
+    data: body,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function retrieveAuthorsAsOptions(req: NextRequest) {
   const response = await getAuthorOptions({
-    name: req.nextUrl.searchParams.get('name'),
+    name: req.nextUrl.searchParams.get('name') || '',
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }

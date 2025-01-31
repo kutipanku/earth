@@ -20,7 +20,17 @@ export async function retrieveAuthorById(
     id,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function changeAuthorDetail(
@@ -55,7 +65,7 @@ export async function changeAuthorDetail(
   const response = await editAuthor({
     sessionToken: sessionToken?.value,
     id,
-    payload: {
+    data: {
       name,
       slug,
       dob,
@@ -67,7 +77,21 @@ export async function changeAuthorDetail(
     },
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function removeAuthor(
@@ -84,5 +108,19 @@ export async function removeAuthor(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: null,
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
