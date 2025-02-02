@@ -11,7 +11,11 @@ export interface Author {
   nationality: Nationality | null;
   profession: Profession | null;
   picture_url: string | null;
-  metadata: Metadata;
+  metadata: Metadata | null;
+  ids?: {
+    nationality_id?: string;
+    profession_id?: string;
+  };
 }
 
 export interface AuthorSimplified {

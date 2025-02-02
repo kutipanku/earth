@@ -34,7 +34,7 @@ const InputAutocomplete = ({
 
   useEffect(() => {
     if (!optionsRef.current.length) {
-      fetch(`/api/${entity}/list`)
+      fetch(`/api/${entity}/options`)
         .then((res) => res.json())
         .then((options) => {
           optionsRef.current = options.data;

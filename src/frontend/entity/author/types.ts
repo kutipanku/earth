@@ -1,27 +1,42 @@
-import type { Nationality } from '@/frontend/entity/nationality/types';
-import type { Profession } from '@/frontend/entity/profession/types';
-import type { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
-import type { DynamicField } from '@/frontend/entity/core/types';
+import type { DynamicField, GenericItem, Timestamp } from '../core/types';
 
-export interface Author extends NodeActionTimestamps {
+/**
+ * Used for Table
+ */
+export interface AuthorRow {
   id: string;
   name: string;
-  dob: string | null;
-  descriptionEn: string | null;
-  descriptionId: string | null;
-  pictureUrl: string | null;
-  slug: string;
-  nationalityId: string | null;
-  professionId: string | null;
-  nationality: Pick<Nationality, 'id' | 'nameEn'> | null;
-  profession: Pick<Profession, 'id' | 'nameEn'> | null;
+  nationality: GenericItem | null;
+  profession: GenericItem | null;
 }
 
-export type AuthorDetailField = DynamicField<keyof Author, string>;
-export interface AuthorVariables
-  extends Omit<
-    Author,
-    'id' | 'createdAt' | 'updatedAt' | 'author' | 'profession' | 'nationality'
-  > {}
+/**
+ * Used for Detail Page and Edit Page
+ */
+export interface AuthorDetail extends Timestamp {
+  id: string;
+  name: string;
+  slug: string;
+  dob: string | null;
+  pictureUrl: string | null;
+  descriptionEng: string | null;
+  descriptionInd: string | null;
+  nationality: string | null;
+  profession: string | null;
+}
+export type AuthorDetailField = DynamicField<keyof AuthorDetail, string>;
 
-export type AuthorInputFIeld = DynamicField<keyof AuthorVariables, string>;
+/**
+ * Used for Add Page
+ */
+export interface AuthorInput {
+  name: string;
+  slug: string;
+  dob: string | null;
+  pictureUrl: string | null;
+  descriptionEng: string | null;
+  descriptionInd: string | null;
+  nationality: string | null;
+  profession: string | null;
+}
+export type AuthorInputField = DynamicField<keyof AuthorInput, string>;

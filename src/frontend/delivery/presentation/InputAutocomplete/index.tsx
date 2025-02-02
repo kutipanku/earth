@@ -33,11 +33,17 @@ const InputAutocomplete = ({
   const [isLoadingValue, setIsLoadingValue] = useState(true);
 
   useEffect(() => {
+    if (currentValue) return;
     if (!optionsRef.current.length) {
-      fetch(`/api/${entity}/list`)
+      fetch(`/api/${entity}/options`)
         .then((res) => res.json())
         .then((options) => {
-          optionsRef.current = options.data;
+          optionsRef.current = options.data.map((option: any) => {
+            return {
+              id: option.id,
+              name_en: option.name.eng,
+            };
+          });
           setIsLoadingField(false);
         });
     }
@@ -46,16 +52,17 @@ const InputAutocomplete = ({
       const defaultCurrentValue = optionsRef.current.find(
         (option: { id: string }) => option.id === value
       );
-
       setCurrentValue(defaultCurrentValue);
+
       setIsLoadingValue(false);
     } else if (!isLoadingField && !isLoading && !value) {
       setIsLoadingValue(false);
     }
-  }, [entity, isLoading, isLoadingField, value]);
+  }, [entity, isLoading, isLoadingField, value, currentValue]);
 
-  const handleChange = (newValue: SelectOption) => {
-    setCurrentValue(currentValue);
+  const handleChange = (newValue: SelectOption | null) => {
+    if (newValue === null) return;
+    setCurrentValue(newValue);
     handleInputChange(keyName, newValue.id);
   };
 

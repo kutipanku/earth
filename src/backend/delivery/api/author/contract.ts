@@ -11,15 +11,16 @@ export interface GetAuthor {
     body: null;
   };
   response: {
+    success: boolean;
     data: {
       id: string;
       name: string;
       slug: string;
       description: {
-        ind: string;
-        eng: string;
+        ind: string | null;
+        eng: string | null;
       };
-      dob: string;
+      dob: string | null;
       nationality: {
         id: string;
         name: string;
@@ -31,7 +32,7 @@ export interface GetAuthor {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
       picture_url: string | null;
     } | null;
   };
@@ -53,19 +54,22 @@ export interface GetAuthors {
     body: null;
   };
   response: {
-    data: Array<{
-      id: string;
-      name: string;
-      slug: string;
-      nationality: {
+    success: boolean;
+    data: {
+      list: Array<{
         id: string;
         name: string;
-      } | null;
-      profession: {
-        id: string;
-        name: string;
-      } | null;
-    }>;
+        nationality: {
+          id: string;
+          name: string;
+        } | null;
+        profession: {
+          id: string;
+          name: string;
+        } | null;
+      }>;
+      total: number;
+    };
   };
 }
 
@@ -82,6 +86,7 @@ export interface GetAuthorOptions {
     body: null;
   };
   response: {
+    success: boolean;
     data: Array<{
       id: string;
       name: string;
@@ -110,6 +115,7 @@ export interface AddAuthor {
       profession_id?: string;
     };
     response: {
+      success: boolean;
       data: {
         id: string;
         name: string;
@@ -144,7 +150,9 @@ export interface AddAuthor {
  */
 export interface EditAuthor {
   request: {
-    params: null;
+    params: {
+      id: string;
+    };
     search_params: null;
     body: {
       name: string;
@@ -160,6 +168,7 @@ export interface EditAuthor {
     };
   };
   response: {
+    success: boolean;
     data: {
       id: string;
       name: string;
@@ -200,6 +209,7 @@ export interface RemoveAuthor {
     body: null;
   };
   response: {
+    success: boolean;
     data: {
       id: string;
       name: string;

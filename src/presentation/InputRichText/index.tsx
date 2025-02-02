@@ -5,7 +5,10 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
-const CustomEditor = dynamic(() => import('../CustomEditor'), { ssr: false, loading: () => <Skeleton variant='rounded' height={89} /> } );
+const CustomEditor = dynamic(() => import('../CustomEditor'), {
+  ssr: false,
+  loading: () => <Skeleton variant='rounded' height={89} />,
+});
 
 interface Props {
   index: number;

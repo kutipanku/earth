@@ -1,17 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   addNewAuthor,
   getAuthors,
   getAuthorOptions,
-} from '@/backend/usecase/author';
+} from '@backend/usecase/author';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeForList } from './normalizer';
+
+import type { AddAuthor, GetAuthorOptions, GetAuthors } from './contract';
+
+type AddAuthorRequestBody = AddAuthor['request']['body'];
+type GetAuthorRequestSearchParams = GetAuthors['request']['search_params'];
+type GetAuthorOptionsRequestSearchParams =
+  GetAuthorOptions['request']['search_params'];
 
 export async function retrieveAuthors(req: NextRequest) {
+  const searchParams: GetAuthorRequestSearchParams = {
+    page: req.nextUrl.searchParams.get('page'),
+    limit: req.nextUrl.searchParams.get('limit'),
+    name: req.nextUrl.searchParams.get('name'),
+    slug: req.nextUrl.searchParams.get('slug'),
+  };
+
   const response = await getAuthors({
-    page: Number(req.nextUrl.searchParams.get('page')),
-    limit: Number(req.nextUrl.searchParams.get('limit')),
-    filter_name: req.nextUrl.searchParams.get('name') || '',
-    filter_slug: req.nextUrl.searchParams.get('slug') || '',
+    page: Number(searchParams.page),
+    limit: Number(searchParams.limit),
+    filter_name: searchParams.name,
+    filter_slug: searchParams.slug,
   });
 
   if (response.error) {
@@ -22,7 +36,13 @@ export async function retrieveAuthors(req: NextRequest) {
   }
 
   return NextResponse.json(
-    { success: true, data: response.data },
+    {
+      success: true,
+      data: {
+        list: normalizeForList(response.data.list),
+        total: response.data.total,
+      },
+    },
     { status: 200 }
   );
 }
@@ -32,20 +52,28 @@ export async function addAuthor(req: NextRequest) {
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const body: {
-    name?: string;
-    slug?: string;
-    dob?: string;
-    description_en?: string;
-    description_id?: string;
-    picture_url?: string;
-    nationality_id?: string;
-    profession_id?: string;
-  } = await req.json();
+  const body: AddAuthorRequestBody = await req.json();
 
   const response = await addNewAuthor({
     sessionToken: sessionToken?.value,
-    data: body,
+    data: {
+      id: '',
+      name: body.name,
+      slug: body.slug,
+      dob: body.dob ? new Date(body.dob) : null,
+      description: {
+        eng: body.description?.eng || null,
+        ind: body.description?.ind || null,
+      },
+      picture_url: body.picture_url || null,
+      ids: {
+        nationality_id: body.nationality_id,
+        profession_id: body.profession_id,
+      },
+      nationality: null,
+      profession: null,
+      metadata: null,
+    },
   });
 
   if (response.error) {
@@ -66,8 +94,12 @@ export async function addAuthor(req: NextRequest) {
 }
 
 export async function retrieveAuthorsAsOptions(req: NextRequest) {
+  const searchParams: GetAuthorOptionsRequestSearchParams = {
+    name: req.nextUrl.searchParams.get('name'),
+  };
+
   const response = await getAuthorOptions({
-    name: req.nextUrl.searchParams.get('name') || '',
+    name: searchParams.name,
   });
 
   if (response.error) {

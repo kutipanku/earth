@@ -1,10 +1,10 @@
-import type { Filter } from '@/frontend/entity/core/types';
+import type { Filter } from '@frontend/entity/core/types';
 import type {
-  Author,
+  AuthorDetail,
   AuthorDetailField,
-  AuthorInputFIeld,
-  AuthorVariables,
-} from '@/frontend/entity/author/types';
+  AuthorInputField,
+  AuthorInput,
+} from '@frontend/entity/author/types';
 // ================================================================
 
 // Page Meta
@@ -48,54 +48,46 @@ export const DETAIL_FIELDS: AuthorDetailField[] = [
   {
     key: 'nationality',
     label: 'Nationality',
-    type: 'autocomplete',
+    type: 'text',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
   },
   {
     key: 'profession',
     label: 'Profession',
-    type: 'autocomplete',
+    type: 'text',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
   },
   {
-    key: 'descriptionEn',
+    key: 'descriptionEng',
     label: 'Description in English (EN)',
     type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
   {
-    key: 'descriptionId',
+    key: 'descriptionInd',
     label: 'Description in Bahasa (ID)',
     type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
 ];
 
-export const DETAIL_PLACEHOLDER: Author = {
+export const DETAIL_PLACEHOLDER: AuthorDetail = {
   id: '',
   name: '',
   dob: null,
-  descriptionEn: '',
-  descriptionId: '',
+  descriptionEng: '',
+  descriptionInd: '',
   pictureUrl: null,
   slug: '',
-  nationalityId: null,
-  nationality: {
-    id: '',
-    nameEn: '',
-  },
-  professionId: null,
-  profession: {
-    id: '',
-    nameEn: '',
-  },
+  nationality: null,
+  profession: null,
   createdAt: '',
   updatedAt: '',
 };
 // ================================================================
 
 // Update Properties
-export const INPUT_FIELDS: AuthorInputFIeld[] = [
+export const INPUT_FIELDS: AuthorInputField[] = [
   {
     key: 'name',
     label: 'Name',
@@ -112,7 +104,7 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
     prefix: '/',
   },
   {
-    key: 'nationalityId',
+    key: 'nationality',
     label: 'Nationality',
     type: 'autocomplete',
     style: { width: '50%', marginBottom: 2, paddingRight: 1 },
@@ -122,7 +114,7 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
     },
   },
   {
-    key: 'professionId',
+    key: 'profession',
     label: 'Profession',
     type: 'autocomplete',
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
@@ -144,27 +136,27 @@ export const INPUT_FIELDS: AuthorInputFIeld[] = [
     style: { width: '50%', marginBottom: 2, paddingLeft: 1 },
   },
   {
-    key: 'descriptionEn',
+    key: 'descriptionEng',
     label: 'Description in English (EN)',
     type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
   {
-    key: 'descriptionId',
+    key: 'descriptionInd',
     label: 'Description in Bahasa (ID)',
     type: 'richtext',
     style: { width: '100%', marginBottom: 2 },
   },
 ];
 
-export const INPUT_VARIABLE: AuthorVariables = {
+export const INPUT_VARIABLE: AuthorInput = {
   name: '',
   slug: '',
-  nationalityId: '',
-  professionId: '',
+  nationality: null,
+  profession: null,
   dob: null,
-  descriptionEn: null,
-  descriptionId: null,
+  descriptionEng: null,
+  descriptionInd: null,
   pictureUrl: null,
 };
 // ================================================================

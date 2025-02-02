@@ -1,21 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   getAuthorById,
   editAuthor,
   removeAuthorById,
 } from '@/backend/usecase/author';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeOne } from './normalizer';
 
-interface Params {
-  id: string;
-}
+import type { GetAuthor, EditAuthor, RemoveAuthor } from './contract';
+
+type RetrieveAuthorRequest = GetAuthor['request'];
+type RemoveAuthorRequest = RemoveAuthor['request'];
+type ChangeAuthorRequest = EditAuthor['request'];
+type ChangeAuthorRequestBody = EditAuthor['request']['body'];
 
 export async function retrieveAuthorById(
   _: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: RetrieveAuthorRequest
 ) {
-  const { id } = params;
-
   const response = await getAuthorById({
     id,
   });
@@ -28,52 +29,41 @@ export async function retrieveAuthorById(
   }
 
   return NextResponse.json(
-    { success: true, data: response.data },
+    { success: true, data: normalizeOne(response.data) },
     { status: 200 }
   );
 }
 
 export async function changeAuthorDetail(
   req: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: ChangeAuthorRequest
 ) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const { id } = params;
-  const {
-    name,
-    slug,
-    dob,
-    description_en,
-    description_id,
-    picture_url,
-    nationality_id,
-    profession_id,
-  }: {
-    name?: string;
-    slug?: string;
-    dob?: string;
-    description_en?: string;
-    description_id?: string;
-    picture_url?: string;
-    nationality_id?: string;
-    profession_id?: string;
-  } = await req.json();
+  const body: ChangeAuthorRequestBody = await req.json();
 
   const response = await editAuthor({
     sessionToken: sessionToken?.value,
     id,
     data: {
-      name,
-      slug,
-      dob,
-      description_en,
-      description_id,
-      picture_url,
-      nationality_id,
-      profession_id,
+      id,
+      name: body.name,
+      slug: body.slug,
+      dob: body.dob ? new Date(body.dob) : null,
+      description: {
+        eng: body.description?.eng || null,
+        ind: body.description?.ind || null,
+      },
+      picture_url: body.picture_url || null,
+      ids: {
+        nationality_id: body.nationality_id,
+        profession_id: body.profession_id,
+      },
+      nationality: null,
+      profession: null,
+      metadata: null,
     },
   });
 
@@ -96,9 +86,8 @@ export async function changeAuthorDetail(
 
 export async function removeAuthor(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params: { id } }: RemoveAuthorRequest
 ) {
-  const { id } = params;
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );

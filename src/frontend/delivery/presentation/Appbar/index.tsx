@@ -1,4 +1,4 @@
-import { TITLE, DRAWER_WIDTH } from '@frontend/entity/core/constants';
+import { TITLE, DRAWER_WIDTH } from '@/frontend/entity/core/ui/constants';
 import {
   Box,
   MuiAppBar,
@@ -14,12 +14,18 @@ import { dynamic } from '../../lib/next';
 import { styled } from '../../lib/mui-systems';
 import type { AppBarProps, CustomizedAppBarProps } from './types';
 
-const ChevronLeftIcon = dynamic(() =>
-  import('../../lib/mui-icons').then((module) => module.ChevronLeftIcon)
+const ChevronLeftIcon = dynamic(
+  () => import('../../lib/mui-icons').then((module) => module.ChevronLeftIcon),
+  {
+    ssr: false,
+  }
 );
 
-const MenuIcon = dynamic(() =>
-  import('../../lib/mui-icons').then((module) => module.MenuIcon)
+const MenuIcon = dynamic(
+  () => import('../../lib/mui-icons').then((module) => module.MenuIcon),
+  {
+    ssr: false,
+  }
 );
 
 const CustomizedAppBar = styled(MuiAppBar, {

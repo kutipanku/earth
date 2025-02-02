@@ -1,7 +1,7 @@
 import { findOptions } from '@/backend/repository/database/author';
 
 interface Props {
-  name: string;
+  name: string | null;
 }
 
 const getAuthorOptions = async (props: Props) => {

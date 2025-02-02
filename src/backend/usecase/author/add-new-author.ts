@@ -1,19 +1,11 @@
-import { createOne } from '@/backend/repository/database/author/create';
-
+import { createOne } from '@backend/repository/database/author/create';
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';
 
+import type { Author } from '@backend/entity/author/type';
+
 interface Props {
-  data: {
-    name?: string;
-    slug?: string;
-    dob?: string;
-    description_en?: string;
-    description_id?: string;
-    picture_url?: string;
-    nationality_id?: string;
-    profession_id?: string;
-  };
+  data: Author;
   sessionToken?: string;
 }
 
@@ -40,28 +32,20 @@ const addNewAuthor = async (props: Props) => {
     };
   }
 
-  const payload: {
-    name: string;
-    slug: string;
-    dob?: string;
-    description_en?: string;
-    description_id?: string;
-    picture_url?: string;
-    nationality_id?: string;
-    profession_id?: string;
-  } = {
-    name: data.name,
-    slug: data.slug,
-  };
-
-  if (data.dob) payload.dob = new Date(data.dob).toISOString();
-  if (data.description_en) payload.description_en = data.description_en;
-  if (data.description_id) payload.description_id = data.description_id;
-  if (data.picture_url) payload.picture_url = data.picture_url;
-  if (data.nationality_id) payload.nationality_id = data.nationality_id;
-  if (data.profession_id) payload.profession_id = data.profession_id;
-
-  const result = await createOne({ data: payload });
+  const result = await createOne({
+    data: {
+      name: data.name,
+      slug: data.slug,
+      ...(data.dob && { dob: data.dob.toISOString() }),
+      ...(data.description.eng && { description_en: data.description.eng }),
+      ...(data.description.ind && { description_id: data.description.ind }),
+      ...(data.picture_url && { picture_url: data.picture_url }),
+      ...(data.ids?.profession_id && { profession_id: data.ids.profession_id }),
+      ...(data.ids?.nationality_id && {
+        nationality_id: data.ids.nationality_id,
+      }),
+    },
+  });
 
   if (result.status === 201)
     saveToLog({

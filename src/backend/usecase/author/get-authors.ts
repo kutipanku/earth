@@ -3,8 +3,8 @@ import { findMany } from '@/backend/repository/database/author/read';
 interface Props {
   page: number;
   limit: number;
-  filter_name: string;
-  filter_slug: string;
+  filter_name: string | null;
+  filter_slug: string | null;
 }
 
 const getAuthors = async (props: Props) => {

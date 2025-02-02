@@ -1,4 +1,4 @@
-import { TITLE, DESCRIPTION } from '@frontend/entity/core/constants';
+import { TITLE, DESCRIPTION } from '@/frontend/entity/core/ui/constants';
 import { Head } from '../../lib/next';
 
 interface Props {

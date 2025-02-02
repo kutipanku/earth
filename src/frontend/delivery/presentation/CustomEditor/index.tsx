@@ -1,3 +1,5 @@
+'use client';
+
 import { ClassicEditor, CKEditor } from '../../lib/ckeditor';
 
 interface Props {

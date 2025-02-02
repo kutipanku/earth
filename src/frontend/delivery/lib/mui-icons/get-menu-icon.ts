@@ -4,59 +4,92 @@ import type { DrawerIcon } from '@frontend/entity/core/types';
 const getMenuIcon = (name: DrawerIcon) => {
   switch (name) {
     case 'account':
-      const AccountIcon = dynamic(() =>
-        import('.').then((module) => module.AccountIcon)
+      const AccountIcon = dynamic(
+        () => import('.').then((module) => module.AccountIcon),
+        {
+          ssr: false,
+        }
       );
       return AccountIcon;
     case 'book':
-      const BookIcon = dynamic(() =>
-        import('.').then((module) => module.BookIcon)
+      const BookIcon = dynamic(
+        () => import('.').then((module) => module.BookIcon),
+        {
+          ssr: false,
+        }
       );
       return BookIcon;
     case 'category':
-      const CategoryIcon = dynamic(() =>
-        import('.').then((module) => module.CategoryIcon)
+      const CategoryIcon = dynamic(
+        () => import('.').then((module) => module.CategoryIcon),
+        {
+          ssr: false,
+        }
       );
       return CategoryIcon;
     case 'flag':
-      const FlagIcon = dynamic(() =>
-        import('.').then((module) => module.FlagIcon)
+      const FlagIcon = dynamic(
+        () => import('.').then((module) => module.FlagIcon),
+        {
+          ssr: false,
+        }
       );
       return FlagIcon;
     case 'log':
-      const LogIcon = dynamic(() =>
-        import('.').then((module) => module.LogIcon)
+      const LogIcon = dynamic(
+        () => import('.').then((module) => module.LogIcon),
+        {
+          ssr: false,
+        }
       );
       return LogIcon;
     case 'multimedia':
-      const MultimediaIcon = dynamic(() =>
-        import('.').then((module) => module.MultimediaIcon)
+      const MultimediaIcon = dynamic(
+        () => import('.').then((module) => module.MultimediaIcon),
+        {
+          ssr: false,
+        }
       );
       return MultimediaIcon;
     case 'offer':
-      const OfferIcon = dynamic(() =>
-        import('.').then((module) => module.OfferIcon)
+      const OfferIcon = dynamic(
+        () => import('.').then((module) => module.OfferIcon),
+        {
+          ssr: false,
+        }
       );
       return OfferIcon;
     case 'paid':
-      const PaidIcon = dynamic(() =>
-        import('.').then((module) => module.PaidIcon)
+      const PaidIcon = dynamic(
+        () => import('.').then((module) => module.PaidIcon),
+        {
+          ssr: false,
+        }
       );
       return PaidIcon;
     case 'quote':
-      const QuoteIcon = dynamic(() =>
-        import('.').then((module) => module.QuoteIcon)
+      const QuoteIcon = dynamic(
+        () => import('.').then((module) => module.QuoteIcon),
+        {
+          ssr: false,
+        }
       );
       return QuoteIcon;
     case 'work':
-      const WorkIcon = dynamic(() =>
-        import('.').then((module) => module.WorkIcon)
+      const WorkIcon = dynamic(
+        () => import('.').then((module) => module.WorkIcon),
+        {
+          ssr: false,
+        }
       );
       return WorkIcon;
 
     default:
-      const BrokenIcon = dynamic(() =>
-        import('.').then((module) => module.BrokenImageIcon)
+      const BrokenIcon = dynamic(
+        () => import('.').then((module) => module.BrokenImageIcon),
+        {
+          ssr: false,
+        }
       );
       return BrokenIcon;
   }

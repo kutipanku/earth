@@ -5,24 +5,32 @@ import { useEffect, useState } from '../../lib/react';
 import { Box, InputAdornment, Skeleton, TextField } from '../../lib/mui';
 import type { StaticImageData } from '../../lib/next';
 
-const EnglishIcon = dynamic(() =>
-  import('/public/icons/gb.png').then((image) => {
-    return function Icon() {
-      return (
-        <Image src={image} priority alt='English' width={16} height={16} />
-      );
-    };
-  })
+const EnglishIcon = dynamic(
+  () =>
+    import('/public/icons/gb.png').then((image) => {
+      return function Icon() {
+        return (
+          <Image src={image} priority alt='English' width={16} height={16} />
+        );
+      };
+    }),
+  {
+    ssr: false,
+  }
 );
 
-const IndonesiaIcon = dynamic(() =>
-  import('/public/icons/id.png').then((image) => {
-    return function Icon() {
-      return (
-        <Image src={image} priority alt='Indonesia' width={16} height={16} />
-      );
-    };
-  })
+const IndonesiaIcon = dynamic(
+  () =>
+    import('/public/icons/id.png').then((image) => {
+      return function Icon() {
+        return (
+          <Image src={image} priority alt='Indonesia' width={16} height={16} />
+        );
+      };
+    }),
+  {
+    ssr: false,
+  }
 );
 
 import { useCallback } from 'react';
