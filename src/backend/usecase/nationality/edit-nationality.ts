@@ -65,8 +65,8 @@ const editNationality = async (props: Props) => {
       entity: 'nationality',
       userId,
       dataId: id,
-      newData: JSON.stringify(result),
-      oldData: JSON.stringify(nationality),
+      newData: JSON.stringify(result.data),
+      oldData: JSON.stringify(nationality.data),
     });
 
   return {

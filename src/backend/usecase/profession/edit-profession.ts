@@ -65,8 +65,8 @@ const editProfession = async (props: Props) => {
       entity: 'profession',
       userId,
       dataId: id,
-      newData: JSON.stringify(result),
-      oldData: JSON.stringify(profession),
+      newData: JSON.stringify(result.data),
+      oldData: JSON.stringify(profession.data),
     });
 
   return {

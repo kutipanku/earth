@@ -1,25 +1,14 @@
-import type {
-  Metadata,
-  MultilingualContent,
-} from '@/backend/entity/general/type';
+import type { Metadata, MultilingualContent } from '../general/type';
 
 export interface Category {
   id: string;
   slug: string;
   name: MultilingualContent;
   description: MultilingualContent;
-  metadata: Metadata;
+  metadata: Metadata | null;
 }
 
-export interface CategoryListItem {
-  id: string;
-  slug: string;
-  name: MultilingualContent;
-}
-
-export interface CategoryOptionItem {
+export interface CategorySimplified {
   id: string;
   name: MultilingualContent;
 }
-
-export type CategoryAtOtherEntity = CategoryOptionItem;

@@ -1,72 +1,88 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   getCategoryById,
   editCategory,
   removeCategoryById,
-} from '@/backend/usecase/category';
+} from '@backend/usecase/category';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeOne } from './normalizer';
 
-interface Params {
-  id: string;
-}
+import type { EditCategory, GetCategory, RemoveCategory } from './contract';
+
+type RetrieveCategoryRequest = GetCategory['request'];
+type RemoveCategoryRequest = RemoveCategory['request'];
+type ChangeCategoryRequest = EditCategory['request'];
+type ChangeCategoryRequestBody = EditCategory['request']['body'];
 
 export async function retrieveCategoryById(
   _: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: RetrieveCategoryRequest
 ) {
-  const { id } = params;
-
   const response = await getCategoryById({
     id,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: normalizeOne(response.data) },
+    { status: 200 }
+  );
 }
 
 export async function changeCategoryDetail(
   req: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: ChangeCategoryRequest
 ) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const { id } = params;
-  const {
-    name_en,
-    name_id,
-    description_en,
-    description_id,
-    slug,
-  }: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
-    description_en?: string;
-    description_id?: string;
-  } = await req.json();
+  const body: ChangeCategoryRequestBody = await req.json();
 
   const response = await editCategory({
     sessionToken: sessionToken?.value,
     id,
-    payload: {
-      name_en,
-      name_id,
-      description_en,
-      description_id,
-      slug,
+    data: {
+      id,
+      name: {
+        eng: body.name?.eng || null,
+        ind: body.name?.ind || null,
+      },
+      description: {
+        eng: body.description?.eng || null,
+        ind: body.description?.ind || null,
+      },
+      slug: body.slug || '',
+      metadata: null,
     },
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function removeCategory(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params: { id } }: RemoveCategoryRequest
 ) {
-  const { id } = params;
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -76,5 +92,19 @@ export async function removeCategory(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: null,
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }

@@ -72,7 +72,7 @@ const editAuthor = async (props: Props) => {
       userId,
       dataId: id,
       newData: JSON.stringify(result.data),
-      oldData: JSON.stringify(author),
+      oldData: JSON.stringify(author.data),
     });
 
   return {

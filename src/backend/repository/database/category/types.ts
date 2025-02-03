@@ -1,53 +1,22 @@
-import type { Prisma } from '@/backend/repository/lib/prisma-types';
+import type { Prisma } from '../../lib/prisma-types';
 
-export type CategoryForMany = Prisma.CategoryGetPayload<{}>;
+//////////////////////////////////////////////////////////
+// Request
+//////////////////////////////////////////////////////////
+export type InputCategoryCreate = Prisma.CategoryCreateArgs;
+export type InputCategoryUpdate = Prisma.CategoryUpdateArgs;
+export type InputCategoryDelete = Prisma.CategoryDeleteArgs;
+export type InputCategoryGetMany = Prisma.CategoryFindManyArgs;
+export type InputCategoryGetOne = Prisma.CategoryFindFirstArgs;
 
-export type CategoryForOne = Prisma.CategoryGetPayload<{}>;
-export type CategoryForOtherEntity = Prisma.CategoryGetPayload<{}>;
-export type CategoryForOtherEntityList = Prisma.CategoryGetPayload<{
+//////////////////////////////////////////////////////////
+// Response
+//////////////////////////////////////////////////////////
+export type ResponseCategory = Prisma.CategoryGetPayload<{}>;
+export type ResponseCategorySimplified = Prisma.CategoryGetPayload<{
   select: {
     id: true;
     name_en: true;
     name_id: true;
   };
 }>;
-
-export interface CreateOneProps {
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    description_en?: string;
-    description_id?: string;
-    slug?: string;
-  };
-}
-
-export interface DeleteOneProps {
-  id: string;
-}
-
-export interface FindManyProps {
-  page: string | null;
-  limit: string | null;
-  filterName?: string | null;
-  filterSlug?: string | null;
-}
-
-export interface FindOneProps {
-  id: string;
-}
-
-export interface FindOptionsProps {
-  name: string | null;
-}
-
-export interface UpdateOneProps {
-  id: string;
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    slug?: string;
-    description_en?: string;
-    description_id?: string;
-  };
-}

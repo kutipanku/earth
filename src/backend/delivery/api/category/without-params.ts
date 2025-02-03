@@ -1,20 +1,54 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   addNewCategory,
   getCategories,
   getCategoryOptions,
 } from '@/backend/usecase/category';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeForList } from './normalizer';
+
+import type {
+  AddCategory,
+  GetCategories,
+  GetCategoryOptions,
+} from './contract';
+
+type AddCategoryRequestBody = AddCategory['request']['body'];
+type GetCategoryRequestSearchParams = GetCategories['request']['search_params'];
+type GetCategoryOptionsRequestSearchParams =
+  GetCategoryOptions['request']['search_params'];
 
 export async function retrieveCategories(req: NextRequest) {
-  const response = await getCategories({
+  const searchParams: GetCategoryRequestSearchParams = {
     page: req.nextUrl.searchParams.get('page'),
     limit: req.nextUrl.searchParams.get('limit'),
-    filterName: req.nextUrl.searchParams.get('name'),
-    filterSlug: req.nextUrl.searchParams.get('slug'),
+    name: req.nextUrl.searchParams.get('name'),
+    slug: req.nextUrl.searchParams.get('slug'),
+  };
+
+  const response = await getCategories({
+    page: Number(searchParams.page),
+    limit: Number(searchParams.limit),
+    filter_name: searchParams.name,
+    filter_slug: searchParams.slug,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    {
+      success: true,
+      data: {
+        list: normalizeForList(response.data.list),
+        total: response.data.total,
+      },
+    },
+    { status: 200 }
+  );
 }
 
 export async function addCategory(req: NextRequest) {
@@ -22,25 +56,54 @@ export async function addCategory(req: NextRequest) {
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const body: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
-  } = await req.json();
+  const body: AddCategoryRequestBody = await req.json();
 
   const response = await addNewCategory({
     sessionToken: sessionToken?.value,
-    payload: body,
+    data: {
+      id: '',
+      name: body.name,
+      slug: body.slug,
+      description: body.description,
+      metadata: null,
+    },
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function retrieveCategoriesAsOptions(req: NextRequest) {
-  const response = await getCategoryOptions({
+  const searchParams: GetCategoryOptionsRequestSearchParams = {
     name: req.nextUrl.searchParams.get('name'),
+  };
+
+  const response = await getCategoryOptions({
+    name: searchParams.name,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
