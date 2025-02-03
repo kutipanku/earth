@@ -93,6 +93,17 @@ export async function removeNationality(
     sessionToken: sessionToken?.value,
   });
 
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: null,
+      },
+      { status: response.status }
+    );
+  }
+
   return NextResponse.json(
     { success: true, data: response.data },
     { status: 200 }

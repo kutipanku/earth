@@ -1,43 +1,22 @@
-import type { Prisma } from '@/backend/repository/lib/prisma-types';
+import type { Prisma } from '../../lib/prisma-types';
 
-export type ProfessionForMany = Prisma.ProfessionGetPayload<{}>;
+//////////////////////////////////////////////////////////
+// Request
+//////////////////////////////////////////////////////////
+export type InputProfessionCreate = Prisma.ProfessionCreateArgs;
+export type InputProfessionUpdate = Prisma.ProfessionUpdateArgs;
+export type InputProfessionDelete = Prisma.ProfessionDeleteArgs;
+export type InputProfessionGetMany = Prisma.ProfessionFindManyArgs;
+export type InputProfessionGetOne = Prisma.ProfessionFindFirstArgs;
 
-export type ProfessionForOne = Prisma.ProfessionGetPayload<{}>;
-
-export interface CreateOneProps {
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    icon?: string;
-    slug?: string;
+//////////////////////////////////////////////////////////
+// Response
+//////////////////////////////////////////////////////////
+export type ResponseProfession = Prisma.ProfessionGetPayload<{}>;
+export type ResponseProfessionSimplified = Prisma.ProfessionGetPayload<{
+  select: {
+    id: true;
+    name_en: true;
+    name_id: true;
   };
-}
-
-export interface DeleteOneProps {
-  id: string;
-}
-
-export interface FindManyProps {
-  page: string | null;
-  limit: string | null;
-  filterName?: string | null;
-  filterSlug?: string | null;
-}
-
-export interface FindOneProps {
-  id: string;
-}
-
-export interface FindOptionsProps {
-  name: string | null;
-}
-
-export interface UpdateOneProps {
-  id: string;
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    icon?: string;
-    slug?: string;
-  };
-}
+}>;

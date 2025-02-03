@@ -1,23 +1,14 @@
-import type {
-  Metadata,
-  MultilingualContent,
-} from '@/backend/entity/general/type';
+import type { Metadata, MultilingualContent } from '../general/type';
 
 export interface Profession {
   id: string;
   slug: string;
   name: MultilingualContent;
   icon: string | null;
-  metadata: Metadata;
+  metadata: Metadata | null;
 }
 
-export interface ProfessionListItem {
-  id: string;
-  slug: string;
-  name: MultilingualContent;
-}
-
-export interface ProfessionOptionItem {
+export interface ProfessionSimplified {
   id: string;
   name: MultilingualContent;
 }

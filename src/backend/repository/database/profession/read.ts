@@ -1,122 +1,87 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type {
-  Profession,
-  ProfessionListItem,
-  ProfessionOptionItem,
-} from '@/backend/entity/profession/type';
-import type {
-  ProfessionForOne,
-  ProfessionForMany,
-  FindManyProps,
-  FindOneProps,
-  FindOptionsProps,
-} from './types';
+import prisma from '../../lib/prisma';
 import {
   normalizeForOne,
   normalizeFoList,
   normalizeForOption,
 } from './normalizer';
 
-interface ResultMany {
-  status: number;
-  data: {
-    list: ProfessionListItem[];
-    total: number;
-  };
-  error: string | null;
-  errorFields?: string[];
-}
+import type {
+  Profession,
+  ProfessionSimplified,
+} from '@backend/entity/profession/type';
+import type { ResultOne, ResultMany, ResultOptions } from '../types';
+import type {
+  InputProfessionGetOne,
+  InputProfessionGetMany,
+  ResponseProfession,
+} from './types';
 
-interface ResultOne {
-  status: number;
-  data: Profession | null;
-  error: string | null;
-  errorFields?: string[];
-}
+type ProfessionResultOne = ResultOne<Profession>;
+type ProfessionResultMany = ResultMany<Profession>;
+type ProfessionResultManyOptions = ResultOptions<ProfessionSimplified>;
 
-interface ResultOptions {
-  status: number;
-  data: ProfessionOptionItem[];
-  error: string | null;
-  errorFields?: string[];
-}
+export const findMany = async (
+  props: InputProfessionGetMany
+): Promise<ProfessionResultMany> => {
+  try {
+    const professions: ResponseProfession[] =
+      await prisma.profession.findMany(props);
 
-export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
-  const { page, limit, filterName = '', filterSlug = '' } = props;
+    const count = await prisma.profession.count({
+      where: props.where,
+    });
 
-  const professions: ProfessionForMany[] = await prisma.profession.findMany({
-    skip: Number(page) * Number(limit),
-    take: Number(limit),
-    orderBy: {
-      created_at: 'desc',
-    },
-    where: {
-      ...(filterName && {
-        OR: [
-          { name_en: { contains: filterName, mode: 'insensitive' } },
-          { name_id: { contains: filterName, mode: 'insensitive' } },
-        ],
-      }),
-      ...(filterSlug && {
-        slug: { contains: filterSlug, mode: 'insensitive' },
-      }),
-    },
-  });
-
-  const count = await prisma.profession.count({
-    where: {
-      ...(filterName && {
-        OR: [
-          { name_en: { contains: filterName, mode: 'insensitive' } },
-          { name_id: { contains: filterName, mode: 'insensitive' } },
-        ],
-      }),
-      ...(filterSlug && {
-        slug: { contains: filterSlug, mode: 'insensitive' },
-      }),
-    },
-  });
-
-  return {
-    data: { list: normalizeFoList(professions), total: count },
-    error: null,
-    status: 200,
-  };
+    return {
+      data: { list: normalizeFoList(professions), total: count },
+      error: null,
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      data: { list: [], total: 0 },
+      error: JSON.stringify(error),
+      status: 500,
+    };
+  }
 };
 
-export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
-  const { id } = props;
+export const finOne = async (
+  props: InputProfessionGetOne
+): Promise<ProfessionResultOne> => {
+  try {
+    const profession: ResponseProfession | null =
+      await prisma.profession.findFirst(props);
 
-  const profession: ProfessionForOne | null = await prisma.profession.findFirst(
-    {
-      where: { id },
+    if (profession === null) {
+      return { data: null, error: 'Not found', status: 404 };
     }
-  );
-
-  if (profession === null) {
-    return { data: null, error: 'Not found', status: 404 };
+    return { data: normalizeForOne(profession), error: null, status: 200 };
+  } catch (error) {
+    return {
+      data: null,
+      error: JSON.stringify(error),
+      status: 500,
+    };
   }
-  return { data: normalizeForOne(profession), error: null, status: 200 };
 };
 
 export const findOptions = async (
-  props: FindOptionsProps
-): Promise<ResultOptions> => {
-  const { name } = props;
+  props: InputProfessionGetMany
+): Promise<ProfessionResultManyOptions> => {
+  try {
+    const professions = await prisma.profession.findMany({
+      orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
+      skip: 0,
+      take: 100,
+      ...props,
+    });
 
-  const professions = await prisma.profession.findMany({
-    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
-    skip: 0,
-    take: 100,
-    where: {
-      ...(name && {
-        OR: [
-          { name_en: { contains: name, mode: 'insensitive' } },
-          { name_id: { contains: name, mode: 'insensitive' } },
-        ],
-      }),
-    },
-  });
-
-  return { data: normalizeForOption(professions), error: null, status: 200 };
+    return { data: normalizeForOption(professions), error: null, status: 200 };
+  } catch (error) {
+    return {
+      data: null,
+      error: JSON.stringify(error),
+      status: 500,
+    };
+  }
 };

@@ -1,68 +1,89 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   getProfessionById,
   editProfession,
   removeProfessionById,
 } from '@backend/usecase/profession';
-import type { EditProfession } from './contract';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeOne } from './normalizer';
 
-interface Params {
-  id: string;
-}
+import type {
+  EditProfession,
+  GetProfession,
+  RemoveProfession,
+} from './contract';
+
+type RetrieveProfessionRequest = GetProfession['request'];
+type RemoveProfessionRequest = RemoveProfession['request'];
+type ChangeProfessionRequest = EditProfession['request'];
+type ChangeProfessionRequestBody = EditProfession['request']['body'];
 
 export async function retrieveProfessionById(
   _: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: RetrieveProfessionRequest
 ) {
-  const { id } = params;
-
   const response = await getProfessionById({
     id,
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: normalizeOne(response.data) },
+    { status: 200 }
+  );
 }
 
 export async function changeProfessionDetail(
   req: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: ChangeProfessionRequest
 ) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const { id } = params;
-  const body: EditProfession = await req.json();
-
-  const payload: {
-    name_en?: string;
-    name_id?: string;
-    icon?: string;
-    slug?: string;
-  } = {};
-
-  if (body.icon) payload.icon = body.icon;
-  if (body.slug) payload.slug = body.slug;
-  if (body.name) {
-    if (body.name.eng) payload.name_en = body.name.eng;
-    if (body.name.eng) payload.name_id = body.name.eng;
-  }
+  const body: ChangeProfessionRequestBody = await req.json();
 
   const response = await editProfession({
     sessionToken: sessionToken?.value,
     id,
-    payload,
+    data: {
+      id,
+      name: {
+        eng: body.name?.eng || null,
+        ind: body.name?.ind || null,
+      },
+      slug: body.slug || '',
+      icon: body.icon || null,
+      metadata: null,
+    },
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function removeProfession(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params: { id } }: RemoveProfessionRequest
 ) {
-  const { id } = params;
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -72,5 +93,19 @@ export async function removeProfession(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: null,
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }

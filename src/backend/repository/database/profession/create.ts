@@ -1,46 +1,18 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type { Profession } from '@/backend/entity/profession/type';
-import type { ProfessionForOne, CreateOneProps } from './types';
+import prisma from '../../lib/prisma';
 import { normalizeForOne } from './normalizer';
 
-interface Result {
-  status: number;
-  data: Profession | null;
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Profession } from '@/backend/entity/profession/type';
+import type { ResultOne } from '../types';
+import type { InputProfessionCreate, ResponseProfession } from './types';
 
-export const createOne = async (props: CreateOneProps): Promise<Result> => {
-  const { payload } = props;
+type ProfessionResultOne = ResultOne<Profession>;
 
-  type BodyKey = keyof typeof payload;
-  const requiredFields: BodyKey[] = ['name_en', 'name_id', 'slug'];
-
-  const errorFields = requiredFields.filter((key) => !payload[key]);
-
-  if (
-    errorFields.length ||
-    !payload.name_en ||
-    !payload.name_id ||
-    !payload.slug
-  ) {
-    return {
-      status: 404,
-      data: null,
-      error: `Missing ${errorFields.join(', ')} on body`,
-      errorFields,
-    };
-  }
-
+export const createOne = async (
+  props: InputProfessionCreate
+): Promise<ProfessionResultOne> => {
   try {
-    const profession: ProfessionForOne = await prisma.profession.create({
-      data: {
-        name_en: payload.name_en,
-        name_id: payload.name_id,
-        slug: payload.slug,
-        icon: payload.icon,
-      },
-    });
+    const profession: ResponseProfession =
+      await prisma.profession.create(props);
     return { status: 201, data: normalizeForOne(profession), error: null };
   } catch (error) {
     return { status: 400, data: null, error: JSON.stringify(error) };

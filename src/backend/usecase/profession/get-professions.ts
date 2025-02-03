@@ -1,14 +1,34 @@
-import { findMany } from '@/backend/repository/database/profession';
-import type { FindManyProps } from '@/backend/repository/database/profession/types';
+import { findMany } from '@backend/repository/database/profession';
 
-const getProfessions = async (props: FindManyProps) => {
-  const { page, limit, filterName, filterSlug } = props;
-  const result = await findMany({ page, limit, filterName, filterSlug });
+interface Props {
+  page: number;
+  limit: number;
+  filter_name: string | null;
+  filter_slug: string | null;
+}
 
-  return [
-    { data: result.data, error: result.error },
-    { status: result.status },
-  ];
+const getProfessions = async (props: Props) => {
+  const { page, limit, filter_name, filter_slug } = props;
+  const result = await findMany({
+    skip: page * limit,
+    take: limit,
+    orderBy: {
+      created_at: 'desc',
+    },
+    where: {
+      ...(filter_name && {
+        OR: [
+          { name_en: { contains: filter_name, mode: 'insensitive' } },
+          { name_id: { contains: filter_name, mode: 'insensitive' } },
+        ],
+      }),
+      ...(filter_slug && {
+        slug: { contains: filter_slug, mode: 'insensitive' },
+      }),
+    },
+  });
+
+  return { data: result.data, error: result.error, status: result.status };
 };
 
 export default getProfessions;

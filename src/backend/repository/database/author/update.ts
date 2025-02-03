@@ -1,4 +1,4 @@
-import prisma from '@backend/repository/lib/prisma';
+import prisma from '../../lib/prisma';
 import { normalizeForOne } from './normalizer';
 
 import type { Author } from '@backend/entity/author/type';

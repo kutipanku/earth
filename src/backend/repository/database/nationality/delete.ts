@@ -1,6 +1,7 @@
-import prisma from '@backend/repository/lib/prisma';
-import type { Nationality } from '@/backend/entity/nationality/type';
+import prisma from '../../lib/prisma';
 import { normalizeForOne } from './normalizer';
+
+import type { Nationality } from '@/backend/entity/nationality/type';
 import type { ResultOne } from '../types';
 import type { InputNationalityDelete, ResponseNationality } from './types';
 

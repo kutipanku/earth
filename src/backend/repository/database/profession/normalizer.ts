@@ -1,11 +1,10 @@
 import type {
   Profession,
-  ProfessionListItem,
-  ProfessionOptionItem,
-} from '@/backend/entity/profession/type';
-import type { ProfessionForMany, ProfessionForOne } from './types';
+  ProfessionSimplified,
+} from '@backend/entity/profession/type';
+import type { ResponseProfession, ResponseProfessionSimplified } from './types';
 
-export const normalizeForOne = (itemOnDB: ProfessionForMany | null) => {
+export const normalizeForOne = (itemOnDB: ResponseProfession | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Profession = {
@@ -26,25 +25,32 @@ export const normalizeForOne = (itemOnDB: ProfessionForMany | null) => {
   return normalizedItem;
 };
 
-export const normalizeFoList = (itemsOnDB: ProfessionForOne[] | null) => {
+export const normalizeFoList = (itemsOnDB: ResponseProfession[] | null) => {
   if (itemsOnDB === null) return [];
 
-  const normalizedItem: ProfessionListItem[] = itemsOnDB.map((item) => ({
+  const normalizedItem: Profession[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
       ind: item.name_id || '',
       eng: item.name_en || '',
     },
+    icon: item.icon,
     slug: item.slug,
+    metadata: {
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+    },
   }));
 
   return normalizedItem;
 };
 
-export const normalizeForOption = (itemsOnDB: ProfessionForOne[] | null) => {
+export const normalizeForOption = (
+  itemsOnDB: ResponseProfessionSimplified[] | null
+) => {
   if (itemsOnDB === null) return [];
 
-  const normalizedItem: ProfessionOptionItem[] = itemsOnDB.map((item) => ({
+  const normalizedItem: ProfessionSimplified[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
       ind: item.name_id || '',

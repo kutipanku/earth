@@ -1,22 +1,18 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type { Profession } from '@/backend/entity/profession/type';
-import type { ProfessionForOne, DeleteOneProps } from './types';
+import prisma from '../../lib/prisma';
 import { normalizeForOne } from './normalizer';
 
-interface Result {
-  status: number;
-  data: Profession | null;
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Profession } from '@/backend/entity/profession/type';
+import type { ResultOne } from '../types';
+import type { InputProfessionDelete, ResponseProfession } from './types';
 
-export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
+type ProfessionResultOne = ResultOne<Profession>;
+
+export const deleteOne = async (
+  props: InputProfessionDelete
+): Promise<ProfessionResultOne> => {
   try {
-    const deletedProfession: ProfessionForOne = await prisma.profession.delete({
-      where: {
-        id: id,
-      },
-    });
+    const deletedProfession: ResponseProfession =
+      await prisma.profession.delete(props);
     return {
       status: 200,
       data: normalizeForOne(deletedProfession),

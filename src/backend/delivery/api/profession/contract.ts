@@ -1,57 +1,183 @@
 /**
  * [GET] Get Profession
  * @description Retrieve detailed data of a profession by it's ID
- * @requires id as parameter
  */
-export interface GetProfession {}
+export interface GetProfession {
+  request: {
+    params: {
+      id: string;
+    };
+    search_params: null;
+    body: null;
+  };
+  response: {
+    success: boolean;
+    data: {
+      id: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      slug: string;
+      icon: string | null;
+      metadata: {
+        created_at: string;
+        updated_at: string;
+      } | null;
+    } | null;
+  };
+}
 
 /**
  * [GET] Get Professions
  * @description Retrieve list of profession
- * @param page as search param
- * @param limit as search param
- * @param name as search param
- * @param slug as search param
  */
-export interface GetProfessions {}
+export interface GetProfessions {
+  request: {
+    params: null;
+    search_params: {
+      page: string | null;
+      limit: string | null;
+      name: string | null;
+      slug: string | null;
+    };
+    body: null;
+  };
+  response: {
+    success: boolean;
+    data: {
+      list: Array<{
+        id: string;
+        name: {
+          eng: string | null;
+          ind: string | null;
+        };
+        icon: string | null;
+      }>;
+      total: number;
+    };
+  };
+}
 
 /**
  * [GET] Get Profession Options
  * @description Retrieve simpler list of profession based on it's name
- * @param name as search param
  */
-export interface GetProfessionOptions {}
+export interface GetProfessionOptions {
+  request: {
+    params: null;
+    search_params: {
+      name: string | null;
+    };
+    body: null;
+  };
+  response: {
+    success: boolean;
+    data: Array<{
+      id: string;
+      name: string;
+    }>;
+  };
+}
 
 /**
  * [POST] Add Profession
  * @description Create new profession according to request body
  */
 export interface AddProfession {
-  name?: {
-    eng?: string;
-    ind?: string;
+  request: {
+    params: null;
+    search_params: null;
+    body: {
+      name: {
+        eng: string;
+        ind: string;
+      };
+      slug: string;
+      icon: string | null;
+    };
+    response: {
+      success: boolean;
+      data: {
+        id: string;
+        name: {
+          eng: string | null;
+          ind: string | null;
+        };
+        slug: string;
+        icon: string | null;
+        metadata: {
+          created_at: string;
+          updated_at: string;
+        };
+      } | null;
+    };
   };
-  icon?: string;
-  slug?: string;
 }
 
 /**
  * [PUT] Edit Profession
  * @description Update profession data according to request body
- * @requires id as parameter
  */
 export interface EditProfession {
-  name?: {
-    eng?: string;
-    ind?: string;
+  request: {
+    params: {
+      id: string;
+    };
+    search_params: null;
+    body: {
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      slug: string | null;
+      icon: string | null;
+    };
   };
-  icon?: string;
-  slug?: string;
+  response: {
+    success: boolean;
+    data: {
+      id: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      slug: string;
+      icon: string | null;
+      metadata: {
+        created_at: string;
+        updated_at: string;
+      };
+    } | null;
+  };
 }
 
 /**
  * [DELETE] Remove Profession
  * @description Delete profession by it's ID
- * @requires id as parameter
  */
-export interface RemoveProfession {}
+export interface RemoveProfession {
+  request: {
+    params: {
+      id: string;
+    };
+    search_params: null;
+    body: null;
+  };
+  response: {
+    success: boolean;
+    data: {
+      id: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      slug: string;
+      icon: string | null;
+      metadata: {
+        created_at: string;
+        updated_at: string;
+      };
+    } | null;
+  };
+}

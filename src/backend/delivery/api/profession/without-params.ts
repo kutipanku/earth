@@ -1,21 +1,55 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   addNewProfession,
   getProfessions,
   getProfessionOptions,
 } from '@backend/usecase/profession';
-import type { AddProfession } from './contract';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeForList } from './normalizer';
+
+import type {
+  AddProfession,
+  GetProfessions,
+  GetProfessionOptions,
+} from './contract';
+
+type AddProfessionRequestBody = AddProfession['request']['body'];
+type GetProfessionRequestSearchParams =
+  GetProfessions['request']['search_params'];
+type GetProfessionOptionsRequestSearchParams =
+  GetProfessionOptions['request']['search_params'];
 
 export async function retrieveProfessions(req: NextRequest) {
-  const response = await getProfessions({
+  const searchParams: GetProfessionRequestSearchParams = {
     page: req.nextUrl.searchParams.get('page'),
     limit: req.nextUrl.searchParams.get('limit'),
-    filterName: req.nextUrl.searchParams.get('name'),
-    filterSlug: req.nextUrl.searchParams.get('slug'),
+    name: req.nextUrl.searchParams.get('name'),
+    slug: req.nextUrl.searchParams.get('slug'),
+  };
+
+  const response = await getProfessions({
+    page: Number(searchParams.page),
+    limit: Number(searchParams.limit),
+    filter_name: searchParams.name,
+    filter_slug: searchParams.slug,
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    {
+      success: true,
+      data: {
+        list: normalizeForList(response.data.list),
+        total: response.data.total,
+      },
+    },
+    { status: 200 }
+  );
 }
 
 export async function addProfession(req: NextRequest) {
@@ -23,27 +57,54 @@ export async function addProfession(req: NextRequest) {
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const body: AddProfession = await req.json();
-
-  const normalizedBody = {
-    name_en: body.name?.eng,
-    name_id: body.name?.ind,
-    icon: body.icon,
-    slug: body.slug,
-  };
+  const body: AddProfessionRequestBody = await req.json();
 
   const response = await addNewProfession({
     sessionToken: sessionToken?.value,
-    payload: normalizedBody,
+    data: {
+      id: '',
+      name: body.name,
+      slug: body.slug,
+      icon: body.icon,
+      metadata: null,
+    },
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function retrieveProfessionsAsOptions(req: NextRequest) {
-  const response = await getProfessionOptions({
+  const searchParams: GetProfessionOptionsRequestSearchParams = {
     name: req.nextUrl.searchParams.get('name'),
+  };
+
+  const response = await getProfessionOptions({
+    name: searchParams.name,
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
