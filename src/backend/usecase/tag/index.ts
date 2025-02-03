@@ -1,15 +1,6 @@
-import addNewTag from './add-new-tag';
-import editTag from './edit-tag';
-import getTags from './get-tags';
-import getTagById from './get-tag-by-id';
-import getTagOptions from './get-tag-options';
-import removeTagById from './remove-tag-by-id';
-
-export {
-  addNewTag,
-  editTag,
-  getTags,
-  getTagById,
-  getTagOptions,
-  removeTagById,
-};
+export { default as addNewTag } from './add-new-tag';
+export { default as editTag } from './edit-tag';
+export { default as getTags } from './get-tags';
+export { default as getTagById } from './get-tag-by-id';
+export { default as getTagOptions } from './get-tag-options';
+export { default as removeTagById } from './remove-tag-by-id';

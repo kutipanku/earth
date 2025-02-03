@@ -1,15 +1,6 @@
-import addNewCategory from './add-new-category';
-import editCategory from './edit-category';
-import getCategories from './get-categories';
-import getCategoryById from './get-category-by-id';
-import getCategoryOptions from './get-category-options';
-import removeCategoryById from './remove-category-by-id';
-
-export {
-  addNewCategory,
-  editCategory,
-  getCategories,
-  getCategoryById,
-  getCategoryOptions,
-  removeCategoryById,
-};
+export { default as addNewCategory } from './add-new-category';
+export { default as editCategory } from './edit-category';
+export { default as getCategories } from './get-categories';
+export { default as getCategoryById } from './get-category-by-id';
+export { default as getCategoryOptions } from './get-category-options';
+export { default as removeCategoryById } from './remove-category-by-id';

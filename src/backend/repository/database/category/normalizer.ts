@@ -1,7 +1,7 @@
 import type {
   Category,
   CategorySimplified,
-} from '@/backend/entity/category/type';
+} from '@backend/entity/category/type';
 
 import type { ResponseCategory, ResponseCategorySimplified } from './types';
 

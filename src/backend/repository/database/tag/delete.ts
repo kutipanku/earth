@@ -1,22 +1,17 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type { Tag } from '@/backend/entity/tag/type';
-import type { TagForOne, DeleteOneProps } from './types';
+import prisma from '../../lib/prisma';
 import { normalizeForOne } from './normalizer';
 
-interface Result {
-  status: number;
-  data: Tag | null;
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Tag } from '@/backend/entity/tag/type';
+import type { ResultOne } from '../types';
+import type { InputTagDelete, ResponseTag } from './types';
 
-export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
+type TagResultOne = ResultOne<Tag>;
+
+export const deleteOne = async (
+  props: InputTagDelete
+): Promise<TagResultOne> => {
   try {
-    const deletedTag: TagForOne = await prisma.tag.delete({
-      where: {
-        id: id,
-      },
-    });
+    const deletedTag: ResponseTag = await prisma.tag.delete(props);
     return {
       status: 200,
       data: normalizeForOne(deletedTag),

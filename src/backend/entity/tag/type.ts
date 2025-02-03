@@ -1,25 +1,14 @@
-import type {
-  Metadata,
-  MultilingualContent,
-} from '@/backend/entity/general/type';
+import type { Metadata, MultilingualContent } from '../general/type';
 
 export interface Tag {
   id: string;
   slug: string;
   name: MultilingualContent;
   description: MultilingualContent;
-  metadata: Metadata;
+  metadata: Metadata | null;
 }
 
-export interface TagListItem {
-  id: string;
-  slug: string;
-  name: MultilingualContent;
-}
-
-export interface TagOptionItem {
+export interface TagSimplified {
   id: string;
   name: MultilingualContent;
 }
-
-export type TagAtOtherEntity = TagOptionItem;

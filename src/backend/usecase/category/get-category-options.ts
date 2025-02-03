@@ -1,4 +1,4 @@
-import { findOptions } from '@/backend/repository/database/category';
+import { findOptions } from '@backend/repository/database/category';
 
 interface Props {
   name: string | null;

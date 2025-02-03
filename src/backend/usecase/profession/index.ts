@@ -1,15 +1,6 @@
-import addNewProfession from './add-new-profession';
-import editProfession from './edit-profession';
-import getProfessions from './get-professions';
-import getProfessionById from './get-profession-by-id';
-import getProfessionOptions from './get-profession-options';
-import removeProfessionById from './remove-profession-by-id';
-
-export {
-  addNewProfession,
-  editProfession,
-  getProfessions,
-  getProfessionById,
-  getProfessionOptions,
-  removeProfessionById,
-};
+export { default as addNewProfession } from './add-new-profession';
+export { default as editProfession } from './edit-profession';
+export { default as getProfessions } from './get-professions';
+export { default as getProfessionById } from './get-profession-by-id';
+export { default as getProfessionOptions } from './get-profession-options';
+export { default as removeProfessionById } from './remove-profession-by-id';

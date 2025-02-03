@@ -1,16 +1,46 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { addNewTag, getTags, getTagOptions } from '@backend/usecase/tag';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeForList } from './normalizer';
 
-import { addNewTag, getTags, getTagOptions } from '@/backend/usecase/tag';
+import type { AddTag, GetTags, GetTagOptions } from './contract';
+
+type AddTagRequestBody = AddTag['request']['body'];
+type GetTagRequestSearchParams = GetTags['request']['search_params'];
+type GetTagOptionsRequestSearchParams =
+  GetTagOptions['request']['search_params'];
 
 export async function retrieveTags(req: NextRequest) {
-  const response = await getTags({
+  const searchParams: GetTagRequestSearchParams = {
     page: req.nextUrl.searchParams.get('page'),
     limit: req.nextUrl.searchParams.get('limit'),
-    filterName: req.nextUrl.searchParams.get('name'),
-    filterSlug: req.nextUrl.searchParams.get('slug'),
+    name: req.nextUrl.searchParams.get('name'),
+    slug: req.nextUrl.searchParams.get('slug'),
+  };
+
+  const response = await getTags({
+    page: Number(searchParams.page),
+    limit: Number(searchParams.limit),
+    filter_name: searchParams.name,
+    filter_slug: searchParams.slug,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    {
+      success: true,
+      data: {
+        list: normalizeForList(response.data.list),
+        total: response.data.total,
+      },
+    },
+    { status: 200 }
+  );
 }
 
 export async function addTag(req: NextRequest) {
@@ -18,25 +48,54 @@ export async function addTag(req: NextRequest) {
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const body: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
-  } = await req.json();
+  const body: AddTagRequestBody = await req.json();
 
   const response = await addNewTag({
     sessionToken: sessionToken?.value,
-    payload: body,
+    data: {
+      id: '',
+      name: body.name,
+      slug: body.slug,
+      description: body.description,
+      metadata: null,
+    },
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function retrieveTagsAsOptions(req: NextRequest) {
-  const response = await getTagOptions({
+  const searchParams: GetTagOptionsRequestSearchParams = {
     name: req.nextUrl.searchParams.get('name'),
+  };
+
+  const response = await getTagOptions({
+    name: searchParams.name,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }

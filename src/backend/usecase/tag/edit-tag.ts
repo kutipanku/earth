@@ -1,23 +1,64 @@
-import { updateOne } from '@/backend/repository/database/tag';
-import type { UpdateOneProps } from '@/backend/repository/database/tag/types';
-
+import { finOne, updateOne } from '@backend/repository/database/tag';
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';
 
-interface Props extends UpdateOneProps {
+import type { Tag } from '@backend/entity/tag/type';
+
+interface Props {
+  id: string;
   sessionToken?: string;
+  data: Tag;
 }
 
 const editTag = async (props: Props) => {
-  const { id, sessionToken, payload } = props;
+  const { id, sessionToken, data } = props;
 
   // Check for authorization
   const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
   if (!isAuthorized) {
-    return [{ data: null, error: 'Unauthorized' }, { status: 401 }];
+    return { data: null, error: 'Unauthorized', status: 401 };
   }
 
-  const result = await updateOne({ id, payload });
+  const tag = await finOne({
+    where: {
+      id,
+    },
+  });
+
+  if (!tag || tag === null)
+    return {
+      status: 404,
+      data: null,
+      error: 'Unable to find tag to edit',
+      errorFields: [],
+    };
+
+  type BodyKey = keyof typeof data;
+  const requiredFields: BodyKey[] = ['name', 'description', 'slug'];
+
+  const errorFields = requiredFields.filter((key) => !data[key]);
+
+  if (errorFields.length || !data.name || !data.description || !data.slug) {
+    return {
+      status: 404,
+      data: null,
+      error: `Missing ${errorFields.join(', ')} on body`,
+      errorFields,
+    };
+  }
+
+  const result = await updateOne({
+    where: {
+      id,
+    },
+    data: {
+      slug: data.slug,
+      name_en: data.name.eng ?? '',
+      name_id: data.name.ind ?? '',
+      description_en: data.description.eng ?? '',
+      description_id: data.description.ind ?? '',
+    },
+  });
 
   if (result.status === 200)
     saveToLog({
@@ -25,14 +66,16 @@ const editTag = async (props: Props) => {
       entity: 'tag',
       userId,
       dataId: id,
-      newData: JSON.stringify(result.data?.new),
-      oldData: JSON.stringify(result.data?.old),
+      newData: JSON.stringify(result.data),
+      oldData: JSON.stringify(tag.data),
     });
 
-  return [
-    { data: result.data, error: result.error, fields: result.errorFields },
-    { status: result.status },
-  ];
+  return {
+    data: result.data,
+    error: result.error,
+    fields: result.errorFields,
+    status: result.status,
+  };
 };
 
 export default editTag;

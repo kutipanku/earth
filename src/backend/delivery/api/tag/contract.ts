@@ -1,8 +1,8 @@
 /**
- * [GET] Get Category
- * @description Retrieve detailed data of a category by it's ID
+ * [GET] Get Tag
+ * @description Retrieve detailed data of a tag by it's ID
  */
-export interface GetCategory {
+export interface GetTag {
   request: {
     params: {
       id: string;
@@ -32,10 +32,10 @@ export interface GetCategory {
 }
 
 /**
- * [GET] Get Categories
- * @description Retrieve list of category
+ * [GET] Get Tagss
+ * @description Retrieve list of tag
  */
-export interface GetCategories {
+export interface GetTags {
   request: {
     params: null;
     search_params: {
@@ -62,10 +62,10 @@ export interface GetCategories {
 }
 
 /**
- * [GET] Get Category options
- * @description Retrieve simpler list of category based on it's name
+ * [GET] Get Tag options
+ * @description Retrieve simpler list of tag based on it's name
  */
-export interface GetCategoryOptions {
+export interface GetTagOptions {
   request: {
     params: null;
     search_params: {
@@ -83,10 +83,10 @@ export interface GetCategoryOptions {
 }
 
 /**
- * [POST] Add Category
- * @description Create new category according to request body
+ * [POST] Add Tag
+ * @description Create new tag according to request body
  */
-export interface AddCategory {
+export interface AddTag {
   request: {
     params: null;
     search_params: null;
@@ -124,10 +124,10 @@ export interface AddCategory {
 }
 
 /**
- * [PUT] Edit Category
- * @description Update category data according to request body
+ * [PUT] Edit Tag
+ * @description Update tag data according to request body
  */
-export interface EditCategory {
+export interface EditTag {
   request: {
     params: {
       id: string;
@@ -167,10 +167,10 @@ export interface EditCategory {
 }
 
 /**
- * [DELETE] Remove Category
- * @description Delete category by it's ID
+ * [DELETE] Remove Tag
+ * @description Delete tag by it's ID
  */
-export interface RemoveCategory {
+export interface RemoveTag {
   request: {
     params: {
       id: string;

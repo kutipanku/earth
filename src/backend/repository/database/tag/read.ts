@@ -1,95 +1,44 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type {
-  Tag,
-  TagListItem,
-  TagOptionItem,
-} from '@/backend/entity/tag/type';
-import type {
-  TagForOne,
-  TagForMany,
-  FindManyProps,
-  FindOneProps,
-  FindOptionsProps,
-} from './types';
+import prisma from '../../lib/prisma';
 import {
   normalizeForOne,
   normalizeFoList,
   normalizeForOption,
 } from './normalizer';
 
-interface ResultMany {
-  status: number;
-  data: {
-    list: TagListItem[];
-    total: number;
-  };
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Tag, TagSimplified } from '@backend/entity/tag/type';
+import type { ResultOne, ResultMany, ResultOptions } from '../types';
+import type { InputTagGetOne, InputTagGetMany, ResponseTag } from './types';
 
-interface ResultOne {
-  status: number;
-  data: Tag | null;
-  error: string | null;
-  errorFields?: string[];
-}
+type TagResultOne = ResultOne<Tag>;
+type TagResultMany = ResultMany<Tag>;
+type TagResultManyOptions = ResultOptions<TagSimplified>;
 
-interface ResultOptions {
-  status: number;
-  data: TagOptionItem[];
-  error: string | null;
-  errorFields?: string[];
-}
+export const findMany = async (
+  props: InputTagGetMany
+): Promise<TagResultMany> => {
+  try {
+    const tags: ResponseTag[] = await prisma.tag.findMany(props);
 
-export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
-  const { page, limit, filterName = '', filterSlug = '' } = props;
+    const count = await prisma.tag.count({
+      where: props.where,
+    });
 
-  const categories: TagForMany[] = await prisma.tag.findMany({
-    skip: Number(page) * Number(limit),
-    take: Number(limit),
-    orderBy: {
-      created_at: 'desc',
-    },
-    where: {
-      ...(filterName && {
-        OR: [
-          { name_en: { contains: filterName, mode: 'insensitive' } },
-          { name_id: { contains: filterName, mode: 'insensitive' } },
-        ],
-      }),
-      ...(filterSlug && {
-        slug: { contains: filterSlug, mode: 'insensitive' },
-      }),
-    },
-  });
-
-  const count = await prisma.tag.count({
-    where: {
-      ...(filterName && {
-        OR: [
-          { name_en: { contains: filterName, mode: 'insensitive' } },
-          { name_id: { contains: filterName, mode: 'insensitive' } },
-        ],
-      }),
-      ...(filterSlug && {
-        slug: { contains: filterSlug, mode: 'insensitive' },
-      }),
-    },
-  });
-
-  return {
-    data: { list: normalizeFoList(categories), total: count },
-    error: null,
-    status: 200,
-  };
+    return {
+      data: { list: normalizeFoList(tags), total: count },
+      error: null,
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      data: { list: [], total: 0 },
+      error: JSON.stringify(error),
+      status: 500,
+    };
+  }
 };
 
-export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
-  const { id } = props;
-
-  const tag: TagForOne | null = await prisma.tag.findFirst({
-    where: { id },
-  });
+export const finOne = async (props: InputTagGetOne): Promise<TagResultOne> => {
+  const tag: ResponseTag | null = await prisma.tag.findFirst(props);
 
   if (tag === null) {
     return { data: null, error: 'Not found', status: 404 };
@@ -98,23 +47,21 @@ export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
 };
 
 export const findOptions = async (
-  props: FindOptionsProps
-): Promise<ResultOptions> => {
-  const { name } = props;
-
-  const categories = await prisma.tag.findMany({
-    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
-    skip: 0,
-    take: 100,
-    where: {
-      ...(name && {
-        OR: [
-          { name_en: { contains: name, mode: 'insensitive' } },
-          { name_id: { contains: name, mode: 'insensitive' } },
-        ],
-      }),
-    },
-  });
-
-  return { data: normalizeForOption(categories), error: null, status: 200 };
+  props: InputTagGetMany
+): Promise<TagResultManyOptions> => {
+  try {
+    const tags = await prisma.tag.findMany({
+      orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
+      skip: 0,
+      take: 100,
+      ...props,
+    });
+    return { data: normalizeForOption(tags), error: null, status: 200 };
+  } catch (error) {
+    return {
+      data: null,
+      error: JSON.stringify(error),
+      status: 500,
+    };
+  }
 };

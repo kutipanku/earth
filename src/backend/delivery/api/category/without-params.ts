@@ -2,7 +2,7 @@ import {
   addNewCategory,
   getCategories,
   getCategoryOptions,
-} from '@/backend/usecase/category';
+} from '@backend/usecase/category';
 import { NextRequest, NextResponse } from '../../lib/next';
 import { normalizeForList } from './normalizer';
 

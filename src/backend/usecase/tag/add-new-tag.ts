@@ -1,23 +1,46 @@
-import { createOne } from '@/backend/repository/database/category';
-import type { CreateOneProps } from '@/backend/repository/database/category/types';
-
+import { createOne } from '@backend/repository/database/category';
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';
 
-interface Props extends CreateOneProps {
+import type { Tag } from '@backend/entity/tag/type';
+
+interface Props {
+  data: Tag;
   sessionToken?: string;
 }
 
 const addNewTag = async (props: Props) => {
-  const { sessionToken, payload } = props;
+  const { sessionToken, data } = props;
 
   // Check for authorization
   const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
   if (!isAuthorized) {
-    return [{ data: null, error: 'Unauthorized' }, { status: 401 }];
+    return { data: null, error: 'Unauthorized', status: 401 };
   }
 
-  const result = await createOne({ payload });
+  type BodyKey = keyof typeof data;
+  const requiredFields: BodyKey[] = ['name', 'slug'];
+
+  const errorFields = requiredFields.filter((key) => !data[key]);
+
+  if (errorFields.length || !data.name || !data.slug) {
+    return {
+      data: null,
+      error: `Missing ${errorFields.join(', ')} on body`,
+      fields: errorFields,
+      status: 404,
+    };
+  }
+
+  const result = await createOne({
+    data: {
+      slug: data.slug,
+      name_en: data.name.eng ?? '',
+      name_id: data.name.ind ?? '',
+      description_en: data.description.eng ?? '',
+      description_id: data.description.ind ?? '',
+    },
+  });
 
   if (result.status === 201)
     saveToLog({
@@ -29,10 +52,7 @@ const addNewTag = async (props: Props) => {
       oldData: JSON.stringify({}),
     });
 
-  return [
-    { data: result.data, error: result.error, fields: result.errorFields },
-    { status: result.status },
-  ];
+  return { data: result.data, error: result.error, status: result.status };
 };
 
 export default addNewTag;

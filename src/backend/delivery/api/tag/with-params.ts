@@ -1,68 +1,84 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { getTagById, editTag, removeTagById } from '@backend/usecase/tag';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeOne } from './normalizer';
 
-import { getTagById, editTag, removeTagById } from '@/backend/usecase/tag';
+import type { EditTag, GetTag, RemoveTag } from './contract';
 
-interface Params {
-  id: string;
-}
+type RetrieveTagRequest = GetTag['request'];
+type RemoveTagRequest = RemoveTag['request'];
+type ChangeTagRequest = EditTag['request'];
+type ChangeTagRequestBody = EditTag['request']['body'];
 
 export async function retrieveTagById(
   _: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: RetrieveTagRequest
 ) {
-  const { id } = params;
-
   const response = await getTagById({
     id,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: normalizeOne(response.data) },
+    { status: 200 }
+  );
 }
 
 export async function changeTagDetail(
   req: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: ChangeTagRequest
 ) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const { id } = params;
-  const {
-    name_en,
-    name_id,
-    description_en,
-    description_id,
-    slug,
-  }: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
-    description_en?: string;
-    description_id?: string;
-  } = await req.json();
+  const body: ChangeTagRequestBody = await req.json();
 
   const response = await editTag({
     sessionToken: sessionToken?.value,
     id,
-    payload: {
-      name_en,
-      name_id,
-      description_en,
-      description_id,
-      slug,
+    data: {
+      id,
+      name: {
+        eng: body.name?.eng || null,
+        ind: body.name?.ind || null,
+      },
+      description: {
+        eng: body.description?.eng || null,
+        ind: body.description?.ind || null,
+      },
+      slug: body.slug || '',
+      metadata: null,
     },
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function removeTag(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params: { id } }: RemoveTagRequest
 ) {
-  const { id } = params;
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -72,5 +88,19 @@ export async function removeTag(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: null,
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
