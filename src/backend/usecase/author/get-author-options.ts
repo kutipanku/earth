@@ -1,4 +1,4 @@
-import { findOptions } from '@/backend/repository/database/author';
+import { findOptions } from '@backend/repository/database/author';
 
 interface Props {
   name: string | null;

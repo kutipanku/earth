@@ -1,22 +1,55 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   addNewNationality,
   getNationalities,
   getNationalityOptions,
 } from '@backend/usecase/nationality';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeForList } from './normalizer';
 
-import type { AddNationality } from './contract';
+import type {
+  AddNationality,
+  GetNationalities,
+  GetNationalityOptions,
+} from './contract';
+
+type AddNationalityRequestBody = AddNationality['request']['body'];
+type GetNationalityRequestSearchParams =
+  GetNationalities['request']['search_params'];
+type GetNationalityOptionsRequestSearchParams =
+  GetNationalityOptions['request']['search_params'];
 
 export async function retrieveNationalities(req: NextRequest) {
-  const response = await getNationalities({
+  const searchParams: GetNationalityRequestSearchParams = {
     page: req.nextUrl.searchParams.get('page'),
     limit: req.nextUrl.searchParams.get('limit'),
-    filterName: req.nextUrl.searchParams.get('name'),
-    filterSlug: req.nextUrl.searchParams.get('slug'),
+    name: req.nextUrl.searchParams.get('name'),
+    slug: req.nextUrl.searchParams.get('slug'),
+  };
+
+  const response = await getNationalities({
+    page: Number(searchParams.page),
+    limit: Number(searchParams.limit),
+    filter_name: searchParams.name,
+    filter_slug: searchParams.slug,
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    {
+      success: true,
+      data: {
+        list: normalizeForList(response.data.list),
+        total: response.data.total,
+      },
+    },
+    { status: 200 }
+  );
 }
 
 export async function addNationality(req: NextRequest) {
@@ -24,27 +57,54 @@ export async function addNationality(req: NextRequest) {
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const body: AddNationality = await req.json();
-
-  const normalizedBody = {
-    name_en: body.name?.eng,
-    name_id: body.name?.ind,
-    flag: body.flag,
-    slug: body.slug,
-  };
+  const body: AddNationalityRequestBody = await req.json();
 
   const response = await addNewNationality({
     sessionToken: sessionToken?.value,
-    payload: normalizedBody,
+    data: {
+      id: '',
+      name: body.name,
+      slug: body.slug,
+      flag: body.flag,
+      metadata: null,
+    },
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function retrieveNationalitiesAsOptions(req: NextRequest) {
-  const response = await getNationalityOptions({
+  const searchParams: GetNationalityOptionsRequestSearchParams = {
     name: req.nextUrl.searchParams.get('name'),
+  };
+
+  const response = await getNationalityOptions({
+    name: searchParams.name,
   });
 
-  return NextResponse.json(response[0]);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }

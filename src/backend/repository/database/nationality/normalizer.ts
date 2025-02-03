@@ -1,18 +1,20 @@
 import type {
   Nationality,
-  NationalityListItem,
-  NationalityOptionItem,
-} from '@/backend/entity/nationality/type';
-import type { NationalityForOne, NationalityForMany } from './types';
+  NationalitySimplified,
+} from '@backend/entity/nationality/type';
+import type {
+  ResponseNationality,
+  ResponseNationalitySimplified,
+} from './types';
 
-export const normalizeForOne = (itemOnDB: NationalityForOne | null) => {
+export const normalizeForOne = (itemOnDB: ResponseNationality | null) => {
   if (itemOnDB === null) return null;
 
   const normalizedItem: Nationality = {
     id: itemOnDB.id,
     name: {
-      ind: itemOnDB.name_id || '',
-      eng: itemOnDB.name_en || '',
+      ind: itemOnDB.name_id,
+      eng: itemOnDB.name_en,
     },
     slug: itemOnDB.slug,
     flag: itemOnDB.flag,
@@ -26,29 +28,36 @@ export const normalizeForOne = (itemOnDB: NationalityForOne | null) => {
   return normalizedItem;
 };
 
-export const normalizeFoList = (itemsOnDB: NationalityForMany[] | null) => {
+export const normalizeFoList = (itemsOnDB: ResponseNationality[] | null) => {
   if (itemsOnDB === null) return [];
 
-  const normalizedItem: NationalityListItem[] = itemsOnDB.map((item) => ({
+  const normalizedItem: Nationality[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      ind: item.name_id || '',
-      eng: item.name_en || '',
+      ind: item.name_id,
+      eng: item.name_en,
     },
     slug: item.slug,
+    flag: item.flag,
+    metadata: {
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+    },
   }));
 
   return normalizedItem;
 };
 
-export const normalizeForOption = (itemsOnDB: NationalityForMany[] | null) => {
+export const normalizeForOption = (
+  itemsOnDB: ResponseNationalitySimplified[] | null
+) => {
   if (itemsOnDB === null) return [];
 
-  const normalizedItem: NationalityOptionItem[] = itemsOnDB.map((item) => ({
+  const normalizedItem: NationalitySimplified[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      ind: item.name_id || '',
-      eng: item.name_en || '',
+      ind: item.name_id,
+      eng: item.name_en,
     },
   }));
 

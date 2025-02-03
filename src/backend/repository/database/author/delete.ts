@@ -1,9 +1,9 @@
-import prisma from '@/backend/repository/lib/prisma';
+import prisma from '@backend/repository/lib/prisma';
 import { normalizeForOne } from './normalizer';
 
-import type { Author } from '@/backend/entity/author/type';
-import type { InputAuthorDelete, ResponseAuthorExtended } from './types';
+import type { Author } from '@backend/entity/author/type';
 import type { ResultOne } from '../types';
+import type { InputAuthorDelete, ResponseAuthorExtended } from './types';
 
 type AuthorResultOne = ResultOne<Author>;
 

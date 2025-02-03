@@ -5,16 +5,10 @@ export interface Nationality {
   slug: string;
   name: MultilingualContent;
   flag: string | null;
-  metadata: Metadata;
+  metadata: Metadata | null;
 }
 
-export interface NationalityListItem {
-  id: string;
-  slug: string;
-  name: MultilingualContent;
-}
-
-export interface NationalityOptionItem {
+export interface NationalitySimplified {
   id: string;
   name: MultilingualContent;
 }

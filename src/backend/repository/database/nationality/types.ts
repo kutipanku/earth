@@ -1,43 +1,22 @@
-import type { Prisma } from '@/backend/repository/lib/prisma-types';
+import type { Prisma } from '@backend/repository/lib/prisma-types';
 
-export type NationalityForMany = Prisma.NationalityGetPayload<{}>;
+//////////////////////////////////////////////////////////
+// Request
+//////////////////////////////////////////////////////////
+export type InputNationalityCreate = Prisma.NationalityCreateArgs;
+export type InputNationalityUpdate = Prisma.NationalityUpdateArgs;
+export type InputNationalityDelete = Prisma.NationalityDeleteArgs;
+export type InputNationalityGetMany = Prisma.NationalityFindManyArgs;
+export type InputNationalityGetOne = Prisma.NationalityFindFirstArgs;
 
-export type NationalityForOne = Prisma.NationalityGetPayload<{}>;
-
-export interface CreateOneProps {
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
+//////////////////////////////////////////////////////////
+// Response
+//////////////////////////////////////////////////////////
+export type ResponseNationality = Prisma.NationalityGetPayload<{}>;
+export type ResponseNationalitySimplified = Prisma.NationalityGetPayload<{
+  select: {
+    id: true;
+    name_en: true;
+    name_id: true;
   };
-}
-
-export interface DeleteOneProps {
-  id: string;
-}
-
-export interface FindManyProps {
-  page: string | null;
-  limit: string | null;
-  filterName?: string | null;
-  filterSlug?: string | null;
-}
-
-export interface FindOneProps {
-  id: string;
-}
-
-export interface FindOptionsProps {
-  name: string | null;
-}
-
-export interface UpdateOneProps {
-  id: string;
-  payload: {
-    name_en?: string;
-    name_id?: string;
-    flag?: string;
-    slug?: string;
-  };
-}
+}>;

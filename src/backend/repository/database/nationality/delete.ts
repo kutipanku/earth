@@ -1,23 +1,17 @@
-import prisma from '@/backend/repository/lib/prisma';
+import prisma from '@backend/repository/lib/prisma';
 import type { Nationality } from '@/backend/entity/nationality/type';
-import type { NationalityForOne, DeleteOneProps } from './types';
 import { normalizeForOne } from './normalizer';
+import type { ResultOne } from '../types';
+import type { InputNationalityDelete, ResponseNationality } from './types';
 
-interface Result {
-  status: number;
-  data: Nationality | null;
-  error: string | null;
-  errorFields?: string[];
-}
+type NationalityResultOne = ResultOne<Nationality>;
 
-export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
+export const deleteOne = async (
+  props: InputNationalityDelete
+): Promise<NationalityResultOne> => {
   try {
-    const deletedNationality: NationalityForOne =
-      await prisma.nationality.delete({
-        where: {
-          id: id,
-        },
-      });
+    const deletedNationality: ResponseNationality =
+      await prisma.nationality.delete(props);
     return {
       status: 200,
       data: normalizeForOne(deletedNationality),

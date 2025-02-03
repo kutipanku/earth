@@ -1,15 +1,6 @@
-import addNewAuthor from './add-new-author';
-import editAuthor from './edit-author';
-import getAuthors from './get-authors';
-import getAuthorById from './get-author-by-id';
-import getAuthorOptions from './get-author-options';
-import removeAuthorById from './remove-author-by-id';
-
-export {
-  addNewAuthor,
-  editAuthor,
-  getAuthors,
-  getAuthorById,
-  getAuthorOptions,
-  removeAuthorById,
-};
+export { default as addNewAuthor } from './add-new-author';
+export { default as editAuthor } from './edit-author';
+export { default as getAuthors } from './get-authors';
+export { default as getAuthorById } from './get-author-by-id';
+export { default as getAuthorOptions } from './get-author-options';
+export { default as removeAuthorById } from './remove-author-by-id';

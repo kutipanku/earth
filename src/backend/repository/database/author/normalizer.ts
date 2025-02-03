@@ -1,7 +1,7 @@
 import { normalizeForOne as normalizeForOneNationality } from '../nationality/normalizer';
 import { normalizeForOne as normalizeForOneProfession } from '../profession/normalizer';
 
-import type { Author, AuthorSimplified } from '@/backend/entity/author/type';
+import type { Author, AuthorSimplified } from '@backend/entity/author/type';
 import type { ResponseAuthor, ResponseAuthorExtended } from './types';
 
 export const normalizeForOne = (itemOnDB: ResponseAuthorExtended | null) => {

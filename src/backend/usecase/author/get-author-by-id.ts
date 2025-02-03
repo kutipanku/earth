@@ -1,4 +1,4 @@
-import { finOne } from '@/backend/repository/database/author/read';
+import { finOne } from '@backend/repository/database/author/read';
 
 interface Props {
   id: string;

@@ -1,17 +1,17 @@
-import prisma from '@/backend/repository/lib/prisma';
+import prisma from '../../lib/prisma';
 import {
   normalizeForOne,
   normalizeFoList,
   normalizeForOption,
 } from './normalizer';
 
-import type { Author, AuthorSimplified } from '@/backend/entity/author/type';
-import type { ResultOne, ResultMany, ResultOptions } from '../types';
+import type { Author, AuthorSimplified } from '@backend/entity/author/type';
 import type {
   InputAuthorGetOne,
   InputAuthorGetMany,
   ResponseAuthorExtended,
 } from './types';
+import type { ResultOne, ResultMany, ResultOptions } from '../types';
 
 type AuthorResultOne = ResultOne<Author>;
 type AuthorResultMany = ResultMany<Author>;

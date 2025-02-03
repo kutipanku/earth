@@ -60,7 +60,6 @@ const addNewAuthor = async (props: Props) => {
   return {
     data: result.data,
     error: result.error,
-    fields: result.errorFields,
     status: result.status,
   };
 };

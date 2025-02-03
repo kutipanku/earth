@@ -1,4 +1,4 @@
-import { findMany } from '@/backend/repository/database/author/read';
+import { findMany } from '@backend/repository/database/author/read';
 
 interface Props {
   page: number;
