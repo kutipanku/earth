@@ -1,23 +1,25 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type { Quote } from '@/backend/entity/quote/type';
-import type { QuoteForOne, DeleteOneProps } from './types';
+import prisma from '../../lib/prisma';
 import { normalizeForOne } from './normalizer';
 
-interface Result {
-  status: number;
-  data: Quote | null;
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Quote } from '@backend/entity/quote/type';
+import type { ResultOne } from '../types';
+import type { InputQuoteDelete, ResponseQuote } from './types';
 
-export const deleteOne = async ({ id }: DeleteOneProps): Promise<Result> => {
+type QuoteResultOne = ResultOne<Quote>;
+
+export const deleteOne = async (
+  props: InputQuoteDelete
+): Promise<QuoteResultOne> => {
   try {
-    const deletedQuote: QuoteForOne = await prisma.quote.delete({
-      where: {
-        id: id,
-      },
+    const deletedQuote: ResponseQuote = await prisma.quote.delete({
+      ...props,
       include: {
-        author: true,
+        author: {
+          include: {
+            nationality: true,
+            profession: true,
+          },
+        },
         category: true,
         tags: true,
       },

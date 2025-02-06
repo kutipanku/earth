@@ -34,11 +34,11 @@ const editCategory = async (props: Props) => {
     };
 
   type BodyKey = keyof typeof data;
-  const requiredFields: BodyKey[] = ['name', 'slug'];
+  const requiredFields: BodyKey[] = ['name', 'description', 'slug'];
 
   const errorFields = requiredFields.filter((key) => !data[key]);
 
-  if (errorFields.length || !data.name || !data.slug) {
+  if (errorFields.length || !data.name || !data.description || !data.slug) {
     return {
       status: 404,
       data: null,

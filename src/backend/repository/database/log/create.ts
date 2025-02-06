@@ -1,4 +1,4 @@
-import prisma from '@/backend/repository/lib/prisma';
+import prisma from '../../lib/prisma';
 
 export interface CreateOneProps {
   action: 'create' | 'update' | 'delete';

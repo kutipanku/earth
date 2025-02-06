@@ -1,163 +1,80 @@
-import prisma from '@/backend/repository/lib/prisma';
-import type { Quote, QuoteListItem } from '@/backend/entity/quote/type';
-import type {
-  QuoteForOne,
-  QuoteForMany,
-  FindOneProps,
-  FindManyProps,
-} from './types';
+import prisma from '../../lib/prisma';
 import { normalizeForOne, normalizeForList } from './normalizer';
 
-interface ResultMany {
-  status: number;
-  data: {
-    list: QuoteListItem[];
-    total: number;
-  };
-  error: string | null;
-  errorFields?: string[];
-}
+import type { Quote } from '@backend/entity/quote/type';
+import type {
+  InputQuoteGetOne,
+  InputQuoteGetMany,
+  ResponseQuote,
+} from './types';
+import type { ResultOne, ResultMany } from '../types';
 
-interface ResultOne {
-  status: number;
-  data: Quote | null;
-  error: string | null;
-  errorFields?: string[];
-}
+type QuoteResultOne = ResultOne<Quote>;
+type QuoteResultMany = ResultMany<Quote>;
 
-export const findMany = async (props: FindManyProps): Promise<ResultMany> => {
-  const {
-    page,
-    limit,
-    filter_content_id = '',
-    filter_content_en = '',
-    filter_category_id = '',
-    filter_category_en = '',
-    filter_tag_id = '',
-    filter_tag_en = '',
-    filter_author = '',
-  } = props;
-
-  const quotes: QuoteForMany[] = await prisma.quote.findMany({
-    skip: Number(page) * Number(limit),
-    take: Number(limit),
-    orderBy: {
-      created_at: 'desc',
-    },
-    where: {
-      ...(filter_content_id && {
-        content_id: { contains: filter_content_id, mode: 'insensitive' },
-      }),
-      ...(filter_content_en && {
-        content_en: { contains: filter_content_en, mode: 'insensitive' },
-      }),
-      ...((filter_category_id || filter_category_en) && {
-        category: {
-          ...(filter_category_id && {
-            name_id: { contains: filter_category_id, mode: 'insensitive' },
-          }),
-          ...(filter_category_en && {
-            name_en: { contains: filter_category_en, mode: 'insensitive' },
-          }),
-        },
-      }),
-      ...((filter_tag_id || filter_tag_en) && {
-        tag: {
-          ...(filter_tag_id && {
-            name_id: { contains: filter_tag_id, mode: 'insensitive' },
-          }),
-          ...(filter_tag_en && {
-            name_en: { contains: filter_tag_en, mode: 'insensitive' },
-          }),
-        },
-      }),
-      ...(filter_author && {
+export const findMany = async (
+  props: InputQuoteGetMany
+): Promise<QuoteResultMany> => {
+  try {
+    const quotes: ResponseQuote[] = await prisma.quote.findMany({
+      ...props,
+      include: {
         author: {
-          name: { contains: filter_author, mode: 'insensitive' },
+          include: {
+            nationality: true,
+            profession: true,
+          },
         },
-      }),
-    },
-    include: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-        },
+        category: true,
+        tags: true,
       },
-      category: {
-        select: {
-          id: true,
-          name_id: true,
-          name_en: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          name_id: true,
-          name_en: true,
-        },
-      },
-    },
-  });
+    });
 
-  const count = await prisma.quote.count({
-    where: {
-      ...(filter_content_id && {
-        content_id: { contains: filter_content_id, mode: 'insensitive' },
-      }),
-      ...(filter_content_en && {
-        content_en: { contains: filter_content_en, mode: 'insensitive' },
-      }),
-      ...((filter_category_id || filter_category_en) && {
-        category: {
-          ...(filter_category_id && {
-            name_id: { contains: filter_category_id, mode: 'insensitive' },
-          }),
-          ...(filter_category_en && {
-            name_en: { contains: filter_category_en, mode: 'insensitive' },
-          }),
-        },
-      }),
-      ...((filter_tag_id || filter_tag_en) && {
-        tag: {
-          ...(filter_tag_id && {
-            name_id: { contains: filter_tag_id, mode: 'insensitive' },
-          }),
-          ...(filter_tag_en && {
-            name_en: { contains: filter_tag_en, mode: 'insensitive' },
-          }),
-        },
-      }),
-      ...(filter_author && {
-        author: {
-          name: { contains: filter_author, mode: 'insensitive' },
-        },
-      }),
-    },
-  });
+    const count = await prisma.quote.count({
+      where: props.where,
+    });
 
-  return {
-    data: { list: normalizeForList(quotes), total: count },
-    error: null,
-    status: 200,
-  };
+    return {
+      data: { list: normalizeForList(quotes), total: count },
+      error: null,
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      data: { list: [], total: 0 },
+      error: JSON.stringify(error),
+      status: 500,
+    };
+  }
 };
 
-export const finOne = async (props: FindOneProps): Promise<ResultOne> => {
-  const { id } = props;
+export const finOne = async (
+  props: InputQuoteGetOne
+): Promise<QuoteResultOne> => {
+  try {
+    const quote: ResponseQuote | null = await prisma.quote.findFirst({
+      ...props,
+      include: {
+        author: {
+          include: {
+            nationality: true,
+            profession: true,
+          },
+        },
+        category: true,
+        tags: true,
+      },
+    });
 
-  const quote: QuoteForOne | null = await prisma.quote.findFirst({
-    where: { id },
-    include: {
-      author: true,
-      category: true,
-      tags: true,
-    },
-  });
-
-  if (quote === null) {
-    return { data: null, error: 'Not found', status: 404 };
+    if (quote === null) {
+      return { data: null, error: 'Not found', status: 404 };
+    }
+    return { data: normalizeForOne(quote), error: null, status: 200 };
+  } catch (error) {
+    return {
+      data: null,
+      error: JSON.stringify(error),
+      status: 500,
+    };
   }
-  return { data: normalizeForOne(quote), error: null, status: 200 };
 };

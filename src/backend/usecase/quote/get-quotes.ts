@@ -1,34 +1,59 @@
-import { findMany } from '@/backend/repository/database/quote/read';
-import type { FindManyProps } from '@/backend/repository/database/quote/types';
+import { findMany } from '@backend/repository/database/quote/read';
 
-const getQuotes = async (props: FindManyProps) => {
+interface Props {
+  page: number;
+  limit: number;
+  filter_author: string | null;
+  filter_content: string | null;
+  filter_category: string | null;
+  filter_tag: string | null;
+}
+
+const getQuotes = async (props: Props) => {
   const {
     page,
     limit,
-    filter_content_id,
-    filter_content_en,
-    filter_category_id,
-    filter_category_en,
-    filter_tag_id,
-    filter_tag_en,
     filter_author,
+    filter_content,
+    filter_category,
+    filter_tag,
   } = props;
   const result = await findMany({
-    page,
-    limit,
-    filter_content_id,
-    filter_content_en,
-    filter_category_id,
-    filter_category_en,
-    filter_tag_id,
-    filter_tag_en,
-    filter_author,
+    skip: page * limit,
+    take: limit,
+    orderBy: {
+      created_at: 'desc',
+    },
+    where: {
+      ...(filter_author && {
+        author: {
+          id: filter_author,
+        },
+      }),
+      ...(filter_category && {
+        category: {
+          id: filter_category,
+        },
+      }),
+      ...(filter_tag && {
+        tags: {
+          some: {
+            id: {
+              in: [filter_tag], // TODO: this should be array
+            },
+          },
+        },
+      }),
+      ...(filter_content && {
+        OR: [
+          { content_en: { contains: filter_content, mode: 'insensitive' } },
+          { content_id: { contains: filter_content, mode: 'insensitive' } },
+        ],
+      }),
+    },
   });
 
-  return [
-    { data: result.data, error: result.error },
-    { status: result.status },
-  ];
+  return { data: result.data, error: result.error, status: result.status };
 };
 
 export default getQuotes;

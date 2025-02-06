@@ -1,86 +1,100 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import {
   getQuoteById,
   editQuote,
   removeQuoteById,
-} from '@/backend/usecase/quote';
+} from '@backend/usecase/quote';
+import { NextRequest, NextResponse } from '../../lib/next';
+import { normalizeOne } from './normalizer';
 
-interface Params {
-  id: string;
-}
+import type { GetQuote, EditQuote, RemoveQuote } from './contract';
+
+type RetrieveQuoteRequest = GetQuote['request'];
+type RemoveQuoteRequest = RemoveQuote['request'];
+type ChangeQuoteRequest = EditQuote['request'];
+type ChangeQuoteRequestBody = EditQuote['request']['body'];
 
 export async function retrieveQuoteById(
   _: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: RetrieveQuoteRequest
 ) {
-  const { id } = params;
-
   const response = await getQuoteById({
     id,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      { success: false, message: response.error },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: normalizeOne(response.data) },
+    { status: 200 }
+  );
 }
 
 export async function changeQuoteDetail(
   req: NextRequest,
-  { params }: { params: Params }
+  { params: { id } }: ChangeQuoteRequest
 ) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
 
-  const { id } = params;
-  const {
-    slug,
-    content_id,
-    content_en,
-    description_en,
-    description_id,
-    image_id_url,
-    image_en_url,
-    author_id,
-    category_id,
-    tag_ids,
-  }: {
-    slug?: string;
-    content_id?: string;
-    content_en?: string;
-    description_en?: string;
-    description_id?: string;
-    image_id_url?: string;
-    image_en_url?: string;
-    author_id?: string;
-    category_id?: string;
-    tag_ids?: string[];
-  } = await req.json();
+  const body: ChangeQuoteRequestBody = await req.json();
 
   const response = await editQuote({
     sessionToken: sessionToken?.value,
     id,
-    payload: {
-      slug,
-      content_id,
-      content_en,
-      description_en,
-      description_id,
-      image_id_url,
-      image_en_url,
-      author_id,
-      category_id,
-      tag_ids,
+    data: {
+      id,
+      slug: body.slug,
+      content: {
+        eng: body.content?.eng || null,
+        ind: body.content?.ind || null,
+      },
+      description: {
+        eng: body.description?.eng || null,
+        ind: body.description?.ind || null,
+      },
+      ids: {
+        author_id: body.author_id,
+        category_id: body.category_id,
+        tags_id: JSON.parse(body.tags_id || '[]'),
+      },
+      url: {
+        eng: null,
+        ind: null,
+      },
+      author: null,
+      category: null,
+      tags: null,
+      metadata: null,
     },
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: { fields: response.fields },
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }
 
 export async function removeQuote(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params: { id } }: RemoveQuoteRequest
 ) {
-  const { id } = params;
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
@@ -90,5 +104,19 @@ export async function removeQuote(
     sessionToken: sessionToken?.value,
   });
 
-  return NextResponse.json(response);
+  if (response.error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: response.error,
+        data: null,
+      },
+      { status: response.status }
+    );
+  }
+
+  return NextResponse.json(
+    { success: true, data: response.data },
+    { status: 200 }
+  );
 }

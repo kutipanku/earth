@@ -1,28 +1,21 @@
-import type {
-  Metadata,
-  MultilingualContent,
-} from '@/backend/entity/general/type';
-import type { AuthorAtOtherEntity } from '@/backend/entity/author/type';
-import type { CategoryAtOtherEntity } from '@/backend/entity/category/type';
-import type { TagAtOtherEntity } from '@/backend/entity/tag/type';
+import type { Metadata, MultilingualContent } from '../general/type';
+import type { Author } from '../author/type';
+import type { Category } from '../category/type';
+import type { Tag } from '../tag/type';
 
 export interface Quote {
   id: string;
   slug: string;
-  author: AuthorAtOtherEntity | null;
+  content: MultilingualContent;
   description: MultilingualContent;
-  content: MultilingualContent;
   url: MultilingualContent;
-  category: CategoryAtOtherEntity | null;
-  tags: TagAtOtherEntity[];
-  metadata: Metadata;
-}
-
-export interface QuoteListItem {
-  id: string;
-  slug: string;
-  content: MultilingualContent;
-  author: AuthorAtOtherEntity | null;
-  category: CategoryAtOtherEntity | null;
-  tags: TagAtOtherEntity[];
+  author: Author | null;
+  category: Category | null;
+  tags: Tag[] | null;
+  metadata: Metadata | null;
+  ids?: {
+    author_id?: string;
+    category_id?: string;
+    tags_id?: string[];
+  };
 }

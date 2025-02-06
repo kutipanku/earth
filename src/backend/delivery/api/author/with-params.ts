@@ -2,7 +2,7 @@ import {
   getAuthorById,
   editAuthor,
   removeAuthorById,
-} from '@/backend/usecase/author';
+} from '@backend/usecase/author';
 import { NextRequest, NextResponse } from '../../lib/next';
 import { normalizeOne } from './normalizer';
 
