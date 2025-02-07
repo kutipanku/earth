@@ -8,6 +8,8 @@ import {
 import type {
   Profession,
   ProfessionSimplified,
+  Filter,
+  Find,
 } from '@backend/entity/profession/type';
 import type { ResultOne, ResultMany, ResultOptions } from '../types';
 import type {
@@ -21,67 +23,113 @@ type ProfessionResultMany = ResultMany<Profession>;
 type ProfessionResultManyOptions = ResultOptions<ProfessionSimplified>;
 
 export const findMany = async (
-  props: InputProfessionGetMany
+  props: Filter
 ): Promise<ProfessionResultMany> => {
+  const payload: InputProfessionGetMany = {
+    skip: props.page * props.limit,
+    take: props.limit,
+    orderBy: {
+      created_at: 'desc',
+    },
+    where: {
+      ...(props.name && {
+        OR: [
+          { name_en: { contains: props.name, mode: 'insensitive' } },
+          { name_id: { contains: props.name, mode: 'insensitive' } },
+        ],
+      }),
+      ...(props.slug && {
+        slug: { contains: props.slug, mode: 'insensitive' },
+      }),
+    },
+  };
+
   try {
     const professions: ResponseProfession[] =
-      await prisma.profession.findMany(props);
+      await prisma.profession.findMany(payload);
 
     const count = await prisma.profession.count({
-      where: props.where,
+      where: payload.where,
     });
 
     return {
+      success: true,
+      status: 200,
       data: { list: normalizeFoList(professions), total: count },
       error: null,
-      status: 200,
     };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: { list: [], total: 0 },
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };
 
-export const finOne = async (
-  props: InputProfessionGetOne
-): Promise<ProfessionResultOne> => {
+export const finOne = async (props: Find): Promise<ProfessionResultOne> => {
+  const payload: InputProfessionGetOne = {
+    where: {
+      id: props.id || '',
+    },
+  };
+
   try {
     const profession: ResponseProfession | null =
-      await prisma.profession.findFirst(props);
+      await prisma.profession.findFirst(payload);
 
     if (profession === null) {
-      return { data: null, error: 'Not found', status: 404 };
+      return { success: false, data: null, error: 'Not found', status: 404 };
     }
-    return { data: normalizeForOne(profession), error: null, status: 200 };
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOne(profession),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };
 
 export const findOptions = async (
-  props: InputProfessionGetMany
+  props: Filter
 ): Promise<ProfessionResultManyOptions> => {
-  try {
-    const professions = await prisma.profession.findMany({
-      orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
-      skip: 0,
-      take: 100,
-      ...props,
-    });
+  const payload: InputProfessionGetMany = {
+    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
+    skip: props.page * props.limit,
+    take: props.limit,
+    where: {
+      ...(props.name && {
+        OR: [
+          { name_en: { contains: props.name, mode: 'insensitive' } },
+          { name_id: { contains: props.name, mode: 'insensitive' } },
+        ],
+      }),
+    },
+  };
 
-    return { data: normalizeForOption(professions), error: null, status: 200 };
+  try {
+    const professions = await prisma.profession.findMany(payload);
+
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOption(professions),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };

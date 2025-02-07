@@ -9,25 +9,23 @@ type RemoveTagRequest = RemoveTag['request'];
 type ChangeTagRequest = EditTag['request'];
 type ChangeTagRequestBody = EditTag['request']['body'];
 
+type GetTagResponse = GetTag['response'];
+type EditTagResponse = EditTag['response'];
+type RemoveTagResponse = RemoveTag['response'];
+
 export async function retrieveTagById(
   _: NextRequest,
-  { params: { id } }: RetrieveTagRequest
+  { params }: RetrieveTagRequest
 ) {
-  const response = await getTagById({
-    id,
-  });
+  const response = await getTagById(params);
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetTagResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: normalizeOne(response.data) },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function changeTagDetail(
@@ -58,21 +56,14 @@ export async function changeTagDetail(
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: EditTagResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function removeTag(
@@ -88,19 +79,11 @@ export async function removeTag(
     sessionToken: sessionToken?.value,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: null,
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: RemoveTagResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

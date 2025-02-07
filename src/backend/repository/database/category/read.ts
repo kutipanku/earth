@@ -8,6 +8,8 @@ import {
 import type {
   Category,
   CategorySimplified,
+  Filter,
+  Find,
 } from '@backend/entity/category/type';
 import type { ResultOne, ResultMany, ResultOptions } from '../types';
 import type {
@@ -20,24 +22,43 @@ type CategoryResultOne = ResultOne<Category>;
 type CategoryResultMany = ResultMany<Category>;
 type CategoryResultManyOptions = ResultOptions<CategorySimplified>;
 
-export const findMany = async (
-  props: InputCategoryGetMany
-): Promise<CategoryResultMany> => {
+export const findMany = async (props: Filter): Promise<CategoryResultMany> => {
+  const payload: InputCategoryGetMany = {
+    skip: props.page * props.limit,
+    take: props.limit,
+    orderBy: {
+      created_at: 'desc',
+    },
+    where: {
+      ...(props.name && {
+        OR: [
+          { name_en: { contains: props.name, mode: 'insensitive' } },
+          { name_id: { contains: props.name, mode: 'insensitive' } },
+        ],
+      }),
+      ...(props.slug && {
+        slug: { contains: props.slug, mode: 'insensitive' },
+      }),
+    },
+  };
+
   try {
     const categories: ResponseCategory[] =
-      await prisma.category.findMany(props);
+      await prisma.category.findMany(payload);
 
     const count = await prisma.category.count({
-      where: props.where,
+      where: payload.where,
     });
 
     return {
+      success: true,
+      status: 200,
       data: { list: normalizeFoList(categories), total: count },
       error: null,
-      status: 200,
     };
   } catch (error) {
     return {
+      success: false,
       data: { list: [], total: 0 },
       error: JSON.stringify(error),
       status: 500,
@@ -45,42 +66,67 @@ export const findMany = async (
   }
 };
 
-export const finOne = async (
-  props: InputCategoryGetOne
-): Promise<CategoryResultOne> => {
+export const finOne = async (props: Find): Promise<CategoryResultOne> => {
+  const payload: InputCategoryGetOne = {
+    where: {
+      id: props.id || '',
+    },
+  };
+
   try {
     const category: ResponseCategory | null =
-      await prisma.category.findFirst(props);
+      await prisma.category.findFirst(payload);
 
     if (category === null) {
-      return { data: null, error: 'Not found', status: 404 };
+      return { success: false, status: 404, data: null, error: 'Not found' };
     }
-    return { data: normalizeForOne(category), error: null, status: 200 };
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOne(category),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };
 
 export const findOptions = async (
-  props: InputCategoryGetMany
+  props: Filter
 ): Promise<CategoryResultManyOptions> => {
+  const payload: InputCategoryGetMany = {
+    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
+    skip: props.page * props.limit,
+    take: props.limit,
+    where: {
+      ...(props.name && {
+        OR: [
+          { name_en: { contains: props.name, mode: 'insensitive' } },
+          { name_id: { contains: props.name, mode: 'insensitive' } },
+        ],
+      }),
+    },
+  };
+
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
-      skip: 0,
-      take: 100,
-      ...props,
-    });
-    return { data: normalizeForOption(categories), error: null, status: 200 };
+    const categories = await prisma.category.findMany(payload);
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOption(categories),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };

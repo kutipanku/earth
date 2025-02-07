@@ -4,7 +4,11 @@ import {
   getCategoryOptions,
 } from '@backend/usecase/category';
 import { NextRequest, NextResponse } from '../../lib/next';
-import { normalizeForList } from './normalizer';
+import {
+  normalizeForList,
+  normalizeOne,
+  normalizeForOption,
+} from './normalizer';
 
 import type {
   AddCategory,
@@ -17,6 +21,10 @@ type GetCategoryRequestSearchParams = GetCategories['request']['search_params'];
 type GetCategoryOptionsRequestSearchParams =
   GetCategoryOptions['request']['search_params'];
 
+type AddCategoryResponse = AddCategory['response'];
+type GetCategoriesResponse = GetCategories['response'];
+type GetCategoryOptionsResponse = GetCategoryOptions['response'];
+
 export async function retrieveCategories(req: NextRequest) {
   const searchParams: GetCategoryRequestSearchParams = {
     page: req.nextUrl.searchParams.get('page'),
@@ -28,27 +36,20 @@ export async function retrieveCategories(req: NextRequest) {
   const response = await getCategories({
     page: Number(searchParams.page),
     limit: Number(searchParams.limit),
-    filter_name: searchParams.name,
-    filter_slug: searchParams.slug,
+    name: searchParams.name,
+    slug: searchParams.slug,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: {
-        list: normalizeForList(response.data.list),
-        total: response.data.total,
-      },
+  const processedResponse: GetCategoriesResponse = {
+    success: response.success,
+    message: response.error,
+    data: {
+      list: normalizeForList(response.data.list),
+      total: response.data.total,
     },
-    { status: 200 }
-  );
+  };
+
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function addCategory(req: NextRequest) {
@@ -69,21 +70,14 @@ export async function addCategory(req: NextRequest) {
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: AddCategoryResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function retrieveCategoriesAsOptions(req: NextRequest) {
@@ -93,17 +87,16 @@ export async function retrieveCategoriesAsOptions(req: NextRequest) {
 
   const response = await getCategoryOptions({
     name: searchParams.name,
+    page: 0,
+    limit: 100,
+    slug: null,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetCategoryOptionsResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeForOption(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

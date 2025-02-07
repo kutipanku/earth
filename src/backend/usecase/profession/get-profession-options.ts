@@ -1,23 +1,9 @@
 import { findOptions } from '@/backend/repository/database/profession';
+import type { Filter } from '@backend/entity/profession/type';
 
-interface Props {
-  name: string | null;
-}
-
-const getProfessionOptions = async (props: Props) => {
-  const { name } = props;
-  const result = await findOptions({
-    where: {
-      ...(name && {
-        OR: [
-          { name_en: { contains: name, mode: 'insensitive' } },
-          { name_id: { contains: name, mode: 'insensitive' } },
-        ],
-      }),
-    },
-  });
-
-  return { data: result.data, error: null, status: 200 };
+const getProfessionOptions = async (props: Filter) => {
+  // Begin profession collection
+  return findOptions(props);
 };
 
 export default getProfessionOptions;

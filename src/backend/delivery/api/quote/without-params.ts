@@ -1,48 +1,46 @@
 import { NextRequest, NextResponse } from '../../lib/next';
 import { addNewQuote, getQuotes } from '@/backend/usecase/quote';
-import { normalizeForList } from './normalizer';
+import { normalizeForList, normalizeOne } from './normalizer';
 
 import type { AddQuote, GetQuotes } from './contract';
 
 type AddQuoteRequestBody = AddQuote['request']['body'];
 type GetQuoteRequestSearchParams = GetQuotes['request']['search_params'];
 
+type AddQuoteResponse = AddQuote['response'];
+type GetQuotesResponse = GetQuotes['response'];
+
 export async function retrieveQuotes(req: NextRequest) {
   const searchParams: GetQuoteRequestSearchParams = {
     page: req.nextUrl.searchParams.get('name'),
     limit: req.nextUrl.searchParams.get('limit'),
-    filter_author: req.nextUrl.searchParams.get('filter_author'),
-    filter_content: req.nextUrl.searchParams.get('filter_content'),
-    filter_category: req.nextUrl.searchParams.get('filter_category'),
-    filter_tag: req.nextUrl.searchParams.get('filter_tag'),
+    author: req.nextUrl.searchParams.get('author'),
+    content: req.nextUrl.searchParams.get('content'),
+    category: req.nextUrl.searchParams.get('category'),
+    tags: JSON.stringify(
+      req.nextUrl.searchParams.get('tags') ?? '[]'
+    ) as unknown as string[],
   };
 
   const response = await getQuotes({
     page: Number(searchParams.page),
     limit: Number(searchParams.limit),
-    filter_author: searchParams.filter_author,
-    filter_content: searchParams.filter_content,
-    filter_category: searchParams.filter_category,
-    filter_tag: searchParams.filter_tag,
+    author: searchParams.author,
+    content: searchParams.content,
+    category: searchParams.category,
+    tags: searchParams.tags,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: {
-        list: normalizeForList(response.data.list),
-        total: response.data.total,
-      },
+  const processedResponse: GetQuotesResponse = {
+    success: response.success,
+    message: response.error,
+    data: {
+      list: normalizeForList(response.data.list),
+      total: response.data.total,
     },
-    { status: 200 }
-  );
+  };
+
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function addQuote(req: NextRequest) {
@@ -81,5 +79,12 @@ export async function addQuote(req: NextRequest) {
     },
   });
 
-  return NextResponse.json(response);
+  const processedResponse: AddQuoteResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
+
+  return NextResponse.json(processedResponse, { status: response.status });
 }

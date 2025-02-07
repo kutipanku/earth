@@ -1,18 +1,9 @@
 import { finOne } from '@backend/repository/database/nationality';
+import type { Find } from '@backend/entity/nationality/type';
 
-interface Props {
-  id: string;
-}
-
-const getNationalityById = async (props: Props) => {
-  const { id } = props;
-  const result = await finOne({
-    where: {
-      id,
-    },
-  });
-
-  return { data: result.data, error: null, status: 200 };
+const getNationalityById = async (props: Find) => {
+  // Begin nationality collection
+  return finOne(props);
 };
 
 export default getNationalityById;

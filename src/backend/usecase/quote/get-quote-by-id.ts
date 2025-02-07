@@ -1,18 +1,9 @@
 import { finOne } from '@backend/repository/database/quote';
+import type { Find } from '@backend/entity/quote/type';
 
-interface Props {
-  id: string;
-}
-
-const getQuoteById = async (props: Props) => {
-  const { id } = props;
-  const result = await finOne({
-    where: {
-      id,
-    },
-  });
-
-  return { data: result.data, error: result.error, status: result.status };
+const getQuoteById = async (props: Find) => {
+  // Begin quote collection
+  return finOne(props);
 };
 
 export default getQuoteById;

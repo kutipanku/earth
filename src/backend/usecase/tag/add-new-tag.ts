@@ -10,39 +10,33 @@ interface Props {
 }
 
 const addNewTag = async (props: Props) => {
-  const { sessionToken, data } = props;
-
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
+  const { isAuthorized, userId } = await getAuthStatus({
+    sessionToken: props.sessionToken,
+  });
   if (!isAuthorized) {
-    return { data: null, error: 'Unauthorized', status: 401 };
+    return { success: false, status: 401, data: null, error: 'Unauthorized' };
   }
 
-  type BodyKey = keyof typeof data;
+  // Check for required fields
+  type BodyKey = keyof typeof props.data;
   const requiredFields: BodyKey[] = ['name', 'slug'];
-
-  const errorFields = requiredFields.filter((key) => !data[key]);
-
-  if (errorFields.length || !data.name || !data.slug) {
+  const errorFields = requiredFields.filter((key) => !props.data[key]);
+  if (errorFields.length || !props.data.name || !props.data.slug) {
     return {
+      success: false,
+      status: 404,
       data: null,
       error: `Missing ${errorFields.join(', ')} on body`,
-      fields: errorFields,
-      status: 404,
+      fields: errorFields as string[],
     };
   }
 
-  const result = await createOne({
-    data: {
-      slug: data.slug,
-      name_en: data.name.eng ?? '',
-      name_id: data.name.ind ?? '',
-      description_en: data.description.eng ?? '',
-      description_id: data.description.ind ?? '',
-    },
-  });
+  // Begin tag creation
+  const result = await createOne(props.data);
 
-  if (result.status === 201)
+  // Capture tag creation to logger only if succeed
+  if (result.success)
     saveToLog({
       action: 'create',
       entity: 'tag',
@@ -52,7 +46,7 @@ const addNewTag = async (props: Props) => {
       oldData: JSON.stringify({}),
     });
 
-  return { data: result.data, error: result.error, status: result.status };
+  return { ...result, fields: [] };
 };
 
 export default addNewTag;

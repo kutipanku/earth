@@ -11,86 +11,62 @@ interface Props {
 }
 
 const editQuote = async (props: Props) => {
-  const { id, sessionToken, data } = props;
-
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
+  const { isAuthorized, userId } = await getAuthStatus({
+    sessionToken: props.sessionToken,
+  });
   if (!isAuthorized) {
-    return { data: null, error: 'Unauthorized', status: 401 };
+    return { success: false, status: 401, data: null, error: 'Unauthorized' };
   }
 
+  // Check for data existence
   const quote = await finOne({
-    where: {
-      id,
-    },
+    id: props.id,
   });
-
   if (!quote || quote === null)
     return {
+      success: false,
+      status: 404,
       data: null,
       error: 'Unable to find quote to edit',
       fields: [],
-      status: 404,
     };
 
-  type BodyKey = keyof typeof data;
+  // Check for required fields
+  type BodyKey = keyof typeof props.data;
   const requiredFields: BodyKey[] = ['slug', 'content', 'description', 'url'];
-
-  const errorFields = requiredFields.filter((key) => !data[key]);
-
+  const errorFields = requiredFields.filter((key) => !props.data[key]);
   if (
     errorFields.length ||
-    !data.slug ||
-    !data.content ||
-    !data.description ||
-    !data.url
+    !props.data.slug ||
+    !props.data.content ||
+    !props.data.description ||
+    !props.data.url
   ) {
     return {
+      success: false,
+      status: 404,
       data: null,
       error: `Missing ${errorFields.join(', ')} on body`,
-      fields: errorFields,
-      status: 404,
+      fields: errorFields as string[],
     };
   }
 
-  const result = await updateOne({
-    where: {
-      id,
-    },
-    data: {
-      slug: data.slug,
-      content_en: data.content.eng,
-      content_id: data.content.ind,
-      description_en: data.description.eng,
-      description_id: data.description.ind,
-      image_en_url: data.url.eng,
-      image_id_url: data.url.ind,
-      ...(data.ids?.author_id && { author_id: data.ids.author_id }),
-      ...(data.ids?.category_id && { category_id: data.ids.category_id }),
-      ...(data.ids?.tags_id && {
-        tags: {
-          connect: data.ids.tags_id.map((tag_id) => ({ id: tag_id })),
-        },
-      }),
-    },
-  });
+  // Begin quote update
+  const result = await updateOne(props.data);
 
-  if (result.status === 200)
+  // Capture author modification to logger only if succeed
+  if (result.success)
     saveToLog({
       action: 'update',
       entity: 'quote',
       userId,
-      dataId: id,
+      dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(quote.data),
     });
 
-  return {
-    data: result.data,
-    error: result.error,
-    fields: result.errorFields,
-    status: result.status,
-  };
+  return { ...result, fields: [] };
 };
 
 export default editQuote;

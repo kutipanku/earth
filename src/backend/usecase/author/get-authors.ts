@@ -1,31 +1,9 @@
 import { findMany } from '@backend/repository/database/author/read';
+import type { Filter } from '@backend/entity/author/type';
 
-interface Props {
-  page: number;
-  limit: number;
-  filter_name: string | null;
-  filter_slug: string | null;
-}
-
-const getAuthors = async (props: Props) => {
-  const { page, limit, filter_name, filter_slug } = props;
-  const result = await findMany({
-    skip: page * limit,
-    take: limit,
-    orderBy: {
-      created_at: 'desc',
-    },
-    where: {
-      ...(filter_name && {
-        name: { contains: filter_name, mode: 'insensitive' },
-      }),
-      ...(filter_slug && {
-        slug: { contains: filter_slug, mode: 'insensitive' },
-      }),
-    },
-  });
-
-  return { data: result.data, error: result.error, status: result.status };
+const getAuthors = async (props: Filter) => {
+  // Begin author collection
+  return findMany(props);
 };
 
 export default getAuthors;

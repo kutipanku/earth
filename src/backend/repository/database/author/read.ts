@@ -5,7 +5,12 @@ import {
   normalizeForOption,
 } from './normalizer';
 
-import type { Author, AuthorSimplified } from '@backend/entity/author/type';
+import type {
+  Author,
+  AuthorSimplified,
+  Filter,
+  Find,
+} from '@backend/entity/author/type';
 import type {
   InputAuthorGetOne,
   InputAuthorGetMany,
@@ -17,12 +22,26 @@ type AuthorResultOne = ResultOne<Author>;
 type AuthorResultMany = ResultMany<Author>;
 type AuthorResultManyOptions = ResultOptions<AuthorSimplified>;
 
-export const findMany = async (
-  props: InputAuthorGetMany
-): Promise<AuthorResultMany> => {
+export const findMany = async (props: Filter): Promise<AuthorResultMany> => {
+  const payload: InputAuthorGetMany = {
+    skip: props.page * props.limit,
+    take: props.limit,
+    orderBy: {
+      created_at: 'desc',
+    },
+    where: {
+      ...(props.name && {
+        name: { contains: props.name, mode: 'insensitive' },
+      }),
+      ...(props.slug && {
+        slug: { contains: props.slug, mode: 'insensitive' },
+      }),
+    },
+  };
+
   try {
     const authors: ResponseAuthorExtended[] = await prisma.author.findMany({
-      ...props,
+      ...payload,
       include: {
         nationality: true,
         profession: true,
@@ -30,30 +49,36 @@ export const findMany = async (
     });
 
     const count = await prisma.author.count({
-      where: props.where,
+      where: payload.where,
     });
 
     return {
+      success: true,
+      status: 200,
       data: { list: normalizeFoList(authors), total: count },
       error: null,
-      status: 200,
     };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: { list: [], total: 0 },
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };
 
-export const finOne = async (
-  props: InputAuthorGetOne
-): Promise<AuthorResultOne> => {
+export const finOne = async (props: Find): Promise<AuthorResultOne> => {
+  const payload: InputAuthorGetOne = {
+    where: {
+      id: props.id ?? '',
+    },
+  };
+
   try {
     const author: ResponseAuthorExtended | null = await prisma.author.findFirst(
       {
-        ...props,
+        ...payload,
         include: {
           nationality: true,
           profession: true,
@@ -62,35 +87,53 @@ export const finOne = async (
     );
 
     if (author === null) {
-      return { data: null, error: 'Not found', status: 404 };
+      return { success: false, status: 404, data: null, error: 'Not found' };
     }
-    return { data: normalizeForOne(author), error: null, status: 200 };
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOne(author),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };
 
 export const findOptions = async (
-  props: InputAuthorGetMany
+  props: Filter
 ): Promise<AuthorResultManyOptions> => {
-  try {
-    const authors = await prisma.author.findMany({
-      orderBy: [{ name: 'asc' }],
-      skip: 0,
-      take: 100,
-      ...props,
-    });
+  const payload: InputAuthorGetMany = {
+    orderBy: [{ name: 'asc' }],
+    skip: props.page * props.limit,
+    take: props.limit,
+    where: {
+      ...(props.name && {
+        OR: [{ name: { contains: props.name, mode: 'insensitive' } }],
+      }),
+    },
+  };
 
-    return { data: normalizeForOption(authors), error: null, status: 200 };
+  try {
+    const authors = await prisma.author.findMany(payload);
+
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOption(authors),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };

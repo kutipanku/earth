@@ -8,37 +8,36 @@ interface Props {
 }
 
 const removeAuthorById = async (props: Props) => {
-  const { sessionToken, id } = props;
-
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
+  const { isAuthorized, userId } = await getAuthStatus({
+    sessionToken: props.sessionToken,
+  });
   if (!isAuthorized) {
-    return { data: null, error: 'Unauthorized', status: 401 };
+    return { success: false, status: 401, data: null, error: 'Unauthorized' };
   }
 
   // Check for missing params
-  if (!id) {
-    return { data: null, error: 'Missing Id', status: 404 };
+  if (!props.id) {
+    return { success: false, status: 404, data: null, error: 'Missing Id' };
   }
 
+  // Begin nationality deletion
   const result = await deleteOne({
-    where: {
-      id,
-    },
+    id: props.id,
   });
 
-  // Log for success only
-  if (result.status === 200)
+  // Capture profession deletion to logger only if succeed
+  if (result.success)
     saveToLog({
       action: 'delete',
       entity: 'author',
       userId,
-      dataId: id,
+      dataId: props.id,
       newData: JSON.stringify({}),
       oldData: JSON.stringify(result.data),
     });
 
-  return { data: result.data, error: result.error, status: result.status };
+  return result;
 };
 
 export default removeAuthorById;

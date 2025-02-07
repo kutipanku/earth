@@ -12,13 +12,14 @@ export interface GetProfession {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
+      slug: string;
       name: {
         eng: string | null;
         ind: string | null;
       };
-      slug: string;
       icon: string | null;
       metadata: {
         created_at: string;
@@ -45,6 +46,7 @@ export interface GetProfessions {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       list: Array<{
         id: string;
@@ -73,6 +75,7 @@ export interface GetProfessionOptions {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: Array<{
       id: string;
       name: string;
@@ -96,22 +99,24 @@ export interface AddProfession {
       slug: string;
       icon: string | null;
     };
-    response: {
-      success: boolean;
-      data: {
-        id: string;
-        name: {
-          eng: string | null;
-          ind: string | null;
-        };
-        slug: string;
-        icon: string | null;
-        metadata: {
-          created_at: string;
-          updated_at: string;
-        };
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      slug: string;
+      icon: string | null;
+      metadata: {
+        created_at: string;
+        updated_at: string;
       } | null;
-    };
+    } | null;
+    fields?: string[];
   };
 }
 
@@ -136,6 +141,7 @@ export interface EditProfession {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       name: {
@@ -147,8 +153,9 @@ export interface EditProfession {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
     } | null;
+    fields?: string[];
   };
 }
 
@@ -166,6 +173,7 @@ export interface RemoveProfession {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       name: {
@@ -177,7 +185,7 @@ export interface RemoveProfession {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
     } | null;
   };
 }

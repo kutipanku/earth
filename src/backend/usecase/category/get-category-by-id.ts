@@ -1,18 +1,9 @@
 import { finOne } from '@backend/repository/database/category';
+import type { Find } from '@backend/entity/category/type';
 
-interface Props {
-  id: string;
-}
-
-const getCategoryById = async (props: Props) => {
-  const { id } = props;
-  const result = await finOne({
-    where: {
-      id,
-    },
-  });
-
-  return { data: result.data, error: null, status: 200 };
+const getCategoryById = async (props: Find) => {
+  // Begin category collection
+  return finOne(props);
 };
 
 export default getCategoryById;

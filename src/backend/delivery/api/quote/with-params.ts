@@ -13,25 +13,23 @@ type RemoveQuoteRequest = RemoveQuote['request'];
 type ChangeQuoteRequest = EditQuote['request'];
 type ChangeQuoteRequestBody = EditQuote['request']['body'];
 
+type GetQuoteResponse = GetQuote['response'];
+type EditQuoteResponse = EditQuote['response'];
+type RemoveQuoteResponse = RemoveQuote['response'];
+
 export async function retrieveQuoteById(
   _: NextRequest,
-  { params: { id } }: RetrieveQuoteRequest
+  { params }: RetrieveQuoteRequest
 ) {
-  const response = await getQuoteById({
-    id,
-  });
+  const response = await getQuoteById(params);
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetQuoteResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: normalizeOne(response.data) },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function changeQuoteDetail(
@@ -74,21 +72,14 @@ export async function changeQuoteDetail(
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: EditQuoteResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function removeQuote(
@@ -104,19 +95,11 @@ export async function removeQuote(
     sessionToken: sessionToken?.value,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: null,
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: RemoveQuoteResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

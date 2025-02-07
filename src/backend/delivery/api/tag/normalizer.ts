@@ -1,11 +1,12 @@
-import type { Tag } from '@backend/entity/tag/type';
-import type { GetTag, GetTags } from './contract';
+import type { Tag, TagSimplified } from '@backend/entity/tag/type';
+import type { GetTag, GetTags, GetTagOptions } from './contract';
 
 type ResponseGetTag = GetTag['response']['data'];
 type ResponseGetTags = GetTags['response']['data']['list'];
+type ResponseGetTagOptions = GetTagOptions['response']['data'];
 
 export const normalizeOne = (item: Tag | null) => {
-  if (item === null) return [];
+  if (item === null) return null;
 
   const normalizedItem: ResponseGetTag = {
     id: item.id,
@@ -39,6 +40,17 @@ export const normalizeForList = (items: Tag[] | null) => {
       eng: item.name.eng,
       ind: item.name.ind,
     },
+  }));
+
+  return normalizedItem;
+};
+
+export const normalizeForOption = (items: TagSimplified[] | null) => {
+  if (items === null) return [];
+
+  const normalizedItem: ResponseGetTagOptions = items.map((item) => ({
+    id: item.id,
+    name: item.name.eng ?? '',
   }));
 
   return normalizedItem;

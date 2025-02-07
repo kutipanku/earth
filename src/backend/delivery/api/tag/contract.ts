@@ -12,6 +12,7 @@ export interface GetTag {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       slug: string;
@@ -48,6 +49,7 @@ export interface GetTags {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       list: Array<{
         id: string;
@@ -75,6 +77,7 @@ export interface GetTagOptions {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: Array<{
       id: string;
       name: string;
@@ -101,25 +104,27 @@ export interface AddTag {
         ind: string | null;
       };
     };
-    response: {
-      success: boolean;
-      data: {
-        id: string;
-        slug: string;
-        name: {
-          eng: string | null;
-          ind: string | null;
-        };
-        description: {
-          eng: string | null;
-          ind: string | null;
-        };
-        metadata: {
-          created_at: string;
-          updated_at: string;
-        } | null;
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      slug: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      description: {
+        eng: string | null;
+        ind: string | null;
+      };
+      metadata: {
+        created_at: string;
+        updated_at: string;
       } | null;
-    };
+    } | null;
+    fields?: string[];
   };
 }
 
@@ -147,6 +152,7 @@ export interface EditTag {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       slug: string;
@@ -163,6 +169,7 @@ export interface EditTag {
         updated_at: string;
       } | null;
     } | null;
+    fields?: string[];
   };
 }
 
@@ -180,6 +187,7 @@ export interface RemoveTag {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       slug: string;
@@ -194,7 +202,7 @@ export interface RemoveTag {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
     } | null;
   };
 }

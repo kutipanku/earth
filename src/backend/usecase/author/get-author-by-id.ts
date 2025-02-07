@@ -1,18 +1,9 @@
 import { finOne } from '@backend/repository/database/author/read';
+import type { Find } from '@backend/entity/author/type';
 
-interface Props {
-  id: string;
-}
-
-const getAuthorById = async (props: Props) => {
-  const { id } = props;
-  const result = await finOne({
-    where: {
-      id,
-    },
-  });
-
-  return { data: result.data, error: result.error, status: result.status };
+const getAuthorById = async (props: Find) => {
+  // Begin author collection
+  return finOne(props);
 };
 
 export default getAuthorById;

@@ -13,25 +13,23 @@ type RemoveAuthorRequest = RemoveAuthor['request'];
 type ChangeAuthorRequest = EditAuthor['request'];
 type ChangeAuthorRequestBody = EditAuthor['request']['body'];
 
+type GetAuthorResponse = GetAuthor['response'];
+type EditAuthorResponse = EditAuthor['response'];
+type RemoveAuthorResponse = RemoveAuthor['response'];
+
 export async function retrieveAuthorById(
   _: NextRequest,
-  { params: { id } }: RetrieveAuthorRequest
+  { params }: RetrieveAuthorRequest
 ) {
-  const response = await getAuthorById({
-    id,
-  });
+  const response = await getAuthorById(params);
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetAuthorResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: normalizeOne(response.data) },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function changeAuthorDetail(
@@ -67,21 +65,14 @@ export async function changeAuthorDetail(
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: EditAuthorResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function removeAuthor(
@@ -97,19 +88,11 @@ export async function removeAuthor(
     sessionToken: sessionToken?.value,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: null,
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: RemoveAuthorResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

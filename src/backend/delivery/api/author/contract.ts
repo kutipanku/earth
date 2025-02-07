@@ -12,10 +12,11 @@ export interface GetAuthor {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
-      name: string;
       slug: string;
+      name: string;
       description: {
         ind: string | null;
         eng: string | null;
@@ -55,6 +56,7 @@ export interface GetAuthors {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       list: Array<{
         id: string;
@@ -87,6 +89,7 @@ export interface GetAuthorOptions {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: Array<{
       id: string;
       name: string;
@@ -114,39 +117,40 @@ export interface AddAuthor {
       nationality_id?: string;
       profession_id?: string;
     };
-    response: {
-      success: boolean;
-      data: {
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      slug: string;
+      name: string;
+      description: {
+        ind: string | null;
+        eng: string | null;
+      };
+      dob: string | null;
+      nationality: {
         id: string;
         name: string;
-        slug: string;
-        description: {
-          ind: string;
-          eng: string;
-        };
-        dob: string;
-        nationality: {
-          id: string;
-          name: string;
-        } | null;
-        profession: {
-          id: string;
-          name: string;
-        } | null;
-        metadata: {
-          created_at: string;
-          updated_at: string;
-        };
-        picture_url: string | null;
       } | null;
-    };
+      profession: {
+        id: string;
+        name: string;
+      } | null;
+      metadata: {
+        created_at: string;
+        updated_at: string;
+      } | null;
+      picture_url: string | null;
+    } | null;
+    fields?: string[];
   };
 }
 
 /**
  * [PUT] Edit Author
  * @description Update author data according to request body
- * @requires id as parameter
  */
 export interface EditAuthor {
   request: {
@@ -169,15 +173,16 @@ export interface EditAuthor {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
-      name: string;
       slug: string;
+      name: string;
       description: {
-        ind: string;
-        eng: string;
+        ind: string | null;
+        eng: string | null;
       };
-      dob: string;
+      dob: string | null;
       nationality: {
         id: string;
         name: string;
@@ -189,16 +194,16 @@ export interface EditAuthor {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
       picture_url: string | null;
     } | null;
+    fields?: string[];
   };
 }
 
 /**
  * [DELETE] Remove Author
  * @description Delete author by it's ID
- * @requires id as parameter
  */
 export interface RemoveAuthor {
   request: {
@@ -210,15 +215,16 @@ export interface RemoveAuthor {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
-      name: string;
       slug: string;
+      name: string;
       description: {
-        ind: string;
-        eng: string;
+        ind: string | null;
+        eng: string | null;
       };
-      dob: string;
+      dob: string | null;
       nationality: {
         id: string;
         name: string;
@@ -230,7 +236,7 @@ export interface RemoveAuthor {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
       picture_url: string | null;
     } | null;
   };

@@ -11,70 +11,56 @@ interface Props {
 }
 
 const editNationality = async (props: Props) => {
-  const { id, sessionToken, data } = props;
-
-  // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
+  // Check for authorized account
+  const { isAuthorized, userId } = await getAuthStatus({
+    sessionToken: props.sessionToken,
+  });
   if (!isAuthorized) {
-    return { data: null, error: 'Unauthorized', status: 401 };
+    return { status: 401, success: false, data: null, error: 'Unauthorized' };
   }
 
+  // Check for data existence
   const nationality = await finOne({
-    where: {
-      id,
-    },
+    id: props.id,
   });
-
-  if (!nationality || nationality === null)
+  if (nationality.data === null)
     return {
+      success: false,
       status: 404,
       data: null,
       error: 'Unable to find nationality to edit',
-      errorFields: [],
+      fields: [],
     };
 
-  type BodyKey = keyof typeof data;
+  // Check for required fields
+  type BodyKey = keyof typeof props.data;
   const requiredFields: BodyKey[] = ['name', 'slug'];
-
-  const errorFields = requiredFields.filter((key) => !data[key]);
-
-  if (errorFields.length || !data.name || !data.slug) {
+  const errorFields = requiredFields.filter((key) => !props.data[key]);
+  if (errorFields.length || !props.data.name || !props.data.slug) {
     return {
+      success: false,
       status: 404,
       data: null,
       error: `Missing ${errorFields.join(', ')} on body`,
-      errorFields,
+      fields: errorFields as string[],
     };
   }
 
-  const result = await updateOne({
-    where: {
-      id,
-    },
-    data: {
-      slug: data.slug,
-      name_en: data.name.eng ?? '',
-      name_id: data.name.ind ?? '',
-      ...(data.flag && { flag: data.flag }),
-    },
-  });
+  // Begin nationality update
+  const result = await updateOne(props.data);
 
-  if (result.status === 200)
+  // Capture nationality modification to logger only if succeed
+  if (result.success)
     saveToLog({
       action: 'update',
       entity: 'nationality',
       userId,
-      dataId: id,
+      dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(nationality.data),
     });
 
-  return {
-    data: result.data,
-    error: result.error,
-    fields: result.errorFields,
-    status: result.status,
-  };
+  return { ...result, fields: [] };
 };
 
 export default editNationality;

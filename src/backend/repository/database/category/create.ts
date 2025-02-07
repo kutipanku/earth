@@ -8,12 +8,32 @@ import type { InputCategoryCreate, ResponseCategory } from './types';
 type CategoryResultOne = ResultOne<Category>;
 
 export const createOne = async (
-  props: InputCategoryCreate
+  props: Category
 ): Promise<CategoryResultOne> => {
+  const payload: InputCategoryCreate = {
+    data: {
+      slug: props.slug,
+      name_en: props.name.eng ?? '',
+      name_id: props.name.ind ?? '',
+      description_en: props.description.eng ?? '',
+      description_id: props.description.ind ?? '',
+    },
+  };
+
   try {
-    const category: ResponseCategory = await prisma.category.create(props);
-    return { status: 201, data: normalizeForOne(category), error: null };
+    const category: ResponseCategory = await prisma.category.create(payload);
+    return {
+      success: true,
+      status: 201,
+      data: normalizeForOne(category),
+      error: null,
+    };
   } catch (error) {
-    return { status: 400, data: null, error: JSON.stringify(error) };
+    return {
+      success: true,
+      status: 400,
+      data: null,
+      error: JSON.stringify(error),
+    };
   }
 };

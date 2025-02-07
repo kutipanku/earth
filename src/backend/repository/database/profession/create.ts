@@ -8,13 +8,32 @@ import type { InputProfessionCreate, ResponseProfession } from './types';
 type ProfessionResultOne = ResultOne<Profession>;
 
 export const createOne = async (
-  props: InputProfessionCreate
+  props: Profession
 ): Promise<ProfessionResultOne> => {
+  const payload: InputProfessionCreate = {
+    data: {
+      slug: props.slug,
+      name_en: props.name.eng ?? '',
+      name_id: props.name.ind ?? '',
+      ...(props.icon && { icon: props.icon }),
+    },
+  };
+
   try {
     const profession: ResponseProfession =
-      await prisma.profession.create(props);
-    return { status: 201, data: normalizeForOne(profession), error: null };
+      await prisma.profession.create(payload);
+    return {
+      success: true,
+      status: 201,
+      data: normalizeForOne(profession),
+      error: null,
+    };
   } catch (error) {
-    return { status: 400, data: null, error: JSON.stringify(error) };
+    return {
+      success: false,
+      status: 400,
+      data: null,
+      error: JSON.stringify(error),
+    };
   }
 };

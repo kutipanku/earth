@@ -1,20 +1,9 @@
 import { findOptions } from '@backend/repository/database/author';
+import type { Filter } from '@backend/entity/author/type';
 
-interface Props {
-  name: string | null;
-}
-
-const getAuthorOptions = async (props: Props) => {
-  const { name } = props;
-  const result = await findOptions({
-    where: {
-      ...(name && {
-        OR: [{ name: { contains: name, mode: 'insensitive' } }],
-      }),
-    },
-  });
-
-  return { data: result.data, error: result.error, status: result.status };
+const getAuthorOptions = async (props: Filter) => {
+  // Begin author collection
+  return findOptions(props);
 };
 
 export default getAuthorOptions;

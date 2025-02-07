@@ -1,11 +1,12 @@
-import type { Author } from '@backend/entity/author/type';
-import type { GetAuthor, GetAuthors } from './contract';
+import type { Author, AuthorSimplified } from '@backend/entity/author/type';
+import type { GetAuthor, GetAuthors, GetAuthorOptions } from './contract';
 
 type ResponseGetAuthor = GetAuthor['response']['data'];
 type ResponseGetAuthorsList = GetAuthors['response']['data']['list'];
+type ResponseGetAuthorOptions = GetAuthorOptions['response']['data'];
 
 export const normalizeOne = (item: Author | null) => {
-  if (item === null) return [];
+  if (item === null) return null;
 
   const normalizedItem: ResponseGetAuthor = {
     id: item.id,
@@ -65,6 +66,17 @@ export const normalizeForList = (items: Author[] | null) => {
         name: item.profession.name.eng ?? '',
       },
     }),
+  }));
+
+  return normalizedItem;
+};
+
+export const normalizeForOption = (items: AuthorSimplified[] | null) => {
+  if (items === null) return [];
+
+  const normalizedItem: ResponseGetAuthorOptions = items.map((item) => ({
+    id: item.id,
+    name: item.name,
   }));
 
   return normalizedItem;

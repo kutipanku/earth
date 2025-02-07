@@ -12,6 +12,7 @@ export interface GetNationality {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       name: {
@@ -45,6 +46,7 @@ export interface GetNationalities {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       list: Array<{
         id: string;
@@ -73,6 +75,7 @@ export interface GetNationalityOptions {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: Array<{
       id: string;
       name: string;
@@ -96,22 +99,24 @@ export interface AddNationality {
       slug: string;
       flag: string | null;
     };
-    response: {
-      success: boolean;
-      data: {
-        id: string;
-        name: {
-          eng: string | null;
-          ind: string | null;
-        };
-        slug: string;
-        flag: string | null;
-        metadata: {
-          created_at: string;
-          updated_at: string;
-        };
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      slug: string;
+      flag: string | null;
+      metadata: {
+        created_at: string;
+        updated_at: string;
       } | null;
-    };
+    } | null;
+    fields?: string[];
   };
 }
 
@@ -136,6 +141,7 @@ export interface EditNationality {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       name: {
@@ -147,8 +153,9 @@ export interface EditNationality {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
     } | null;
+    fields?: string[];
   };
 }
 
@@ -166,6 +173,7 @@ export interface RemoveNationality {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       name: {
@@ -177,7 +185,7 @@ export interface RemoveNationality {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
     } | null;
   };
 }

@@ -4,7 +4,11 @@ import {
   getProfessionOptions,
 } from '@backend/usecase/profession';
 import { NextRequest, NextResponse } from '../../lib/next';
-import { normalizeForList } from './normalizer';
+import {
+  normalizeForList,
+  normalizeOne,
+  normalizeForOption,
+} from './normalizer';
 
 import type {
   AddProfession,
@@ -18,6 +22,10 @@ type GetProfessionRequestSearchParams =
 type GetProfessionOptionsRequestSearchParams =
   GetProfessionOptions['request']['search_params'];
 
+type AddProfessionResponse = AddProfession['response'];
+type GetProfessionsResponse = GetProfessions['response'];
+type GetProfessionOptionsResponse = GetProfessionOptions['response'];
+
 export async function retrieveProfessions(req: NextRequest) {
   const searchParams: GetProfessionRequestSearchParams = {
     page: req.nextUrl.searchParams.get('page'),
@@ -29,27 +37,20 @@ export async function retrieveProfessions(req: NextRequest) {
   const response = await getProfessions({
     page: Number(searchParams.page),
     limit: Number(searchParams.limit),
-    filter_name: searchParams.name,
-    filter_slug: searchParams.slug,
+    name: searchParams.name,
+    slug: searchParams.slug,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: {
-        list: normalizeForList(response.data.list),
-        total: response.data.total,
-      },
+  const processedResponse: GetProfessionsResponse = {
+    success: response.success,
+    message: response.error,
+    data: {
+      list: normalizeForList(response.data.list),
+      total: response.data.total,
     },
-    { status: 200 }
-  );
+  };
+
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function addProfession(req: NextRequest) {
@@ -70,21 +71,14 @@ export async function addProfession(req: NextRequest) {
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: AddProfessionResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function retrieveProfessionsAsOptions(req: NextRequest) {
@@ -94,17 +88,16 @@ export async function retrieveProfessionsAsOptions(req: NextRequest) {
 
   const response = await getProfessionOptions({
     name: searchParams.name,
+    page: 0,
+    limit: 100,
+    slug: null,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetProfessionOptionsResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeForOption(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

@@ -10,44 +10,33 @@ interface Props {
 }
 
 const addNewAuthor = async (props: Props) => {
-  const { sessionToken, data } = props;
-
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({ sessionToken });
+  const { isAuthorized, userId } = await getAuthStatus({
+    sessionToken: props.sessionToken,
+  });
   if (!isAuthorized) {
-    return { data: null, error: 'Unauthorized', status: 401 };
+    return { success: false, status: 401, data: null, error: 'Unauthorized' };
   }
 
-  type BodyKey = keyof typeof data;
+  // Check for required fields
+  type BodyKey = keyof typeof props.data;
   const requiredFields: BodyKey[] = ['name', 'slug'];
-
-  const errorFields = requiredFields.filter((key) => !data[key]);
-
-  if (errorFields.length || !data.name || !data.slug) {
+  const errorFields = requiredFields.filter((key) => !props.data[key]);
+  if (errorFields.length || !props.data.name || !props.data.slug) {
     return {
+      success: false,
+      status: 404,
       data: null,
       error: `Missing ${errorFields.join(', ')} on body`,
       fields: errorFields,
-      status: 404,
     };
   }
 
-  const result = await createOne({
-    data: {
-      name: data.name,
-      slug: data.slug,
-      ...(data.dob && { dob: data.dob.toISOString() }),
-      ...(data.description.eng && { description_en: data.description.eng }),
-      ...(data.description.ind && { description_id: data.description.ind }),
-      ...(data.picture_url && { picture_url: data.picture_url }),
-      ...(data.ids?.profession_id && { profession_id: data.ids.profession_id }),
-      ...(data.ids?.nationality_id && {
-        nationality_id: data.ids.nationality_id,
-      }),
-    },
-  });
+  // Begin author creation
+  const result = await createOne(props.data);
 
-  if (result.status === 201)
+  // Capture author creation to logger only if succeed
+  if (result.success)
     saveToLog({
       action: 'create',
       entity: 'author',
@@ -57,11 +46,7 @@ const addNewAuthor = async (props: Props) => {
       oldData: JSON.stringify({}),
     });
 
-  return {
-    data: result.data,
-    error: result.error,
-    status: result.status,
-  };
+  return { ...result, fields: [] };
 };
 
 export default addNewAuthor;

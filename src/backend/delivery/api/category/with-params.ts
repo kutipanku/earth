@@ -13,25 +13,23 @@ type RemoveCategoryRequest = RemoveCategory['request'];
 type ChangeCategoryRequest = EditCategory['request'];
 type ChangeCategoryRequestBody = EditCategory['request']['body'];
 
+type GetCategoryResponse = GetCategory['response'];
+type EditCategoryResponse = EditCategory['response'];
+type RemoveCategoryResponse = RemoveCategory['response'];
+
 export async function retrieveCategoryById(
   _: NextRequest,
-  { params: { id } }: RetrieveCategoryRequest
+  { params }: RetrieveCategoryRequest
 ) {
-  const response = await getCategoryById({
-    id,
-  });
+  const response = await getCategoryById(params);
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetCategoryResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: normalizeOne(response.data) },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function changeCategoryDetail(
@@ -62,21 +60,14 @@ export async function changeCategoryDetail(
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: EditCategoryResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function removeCategory(
@@ -92,19 +83,11 @@ export async function removeCategory(
     sessionToken: sessionToken?.value,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: null,
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: RemoveCategoryResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

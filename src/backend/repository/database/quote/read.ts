@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma';
 import { normalizeForOne, normalizeForList } from './normalizer';
 
-import type { Quote } from '@backend/entity/quote/type';
+import type { Quote, Filter, Find } from '@backend/entity/quote/type';
 import type {
   InputQuoteGetOne,
   InputQuoteGetMany,
@@ -12,12 +12,45 @@ import type { ResultOne, ResultMany } from '../types';
 type QuoteResultOne = ResultOne<Quote>;
 type QuoteResultMany = ResultMany<Quote>;
 
-export const findMany = async (
-  props: InputQuoteGetMany
-): Promise<QuoteResultMany> => {
+export const findMany = async (props: Filter): Promise<QuoteResultMany> => {
+  const payload: InputQuoteGetMany = {
+    skip: props.page * props.limit,
+    take: props.limit,
+    orderBy: {
+      created_at: 'desc',
+    },
+    where: {
+      ...(props.author && {
+        author: {
+          id: props.author,
+        },
+      }),
+      ...(props.category && {
+        category: {
+          id: props.category,
+        },
+      }),
+      ...(props.tags && {
+        tags: {
+          some: {
+            id: {
+              in: props.tags,
+            },
+          },
+        },
+      }),
+      ...(props.content && {
+        OR: [
+          { content_en: { contains: props.content, mode: 'insensitive' } },
+          { content_id: { contains: props.content, mode: 'insensitive' } },
+        ],
+      }),
+    },
+  };
+
   try {
     const quotes: ResponseQuote[] = await prisma.quote.findMany({
-      ...props,
+      ...payload,
       include: {
         author: {
           include: {
@@ -31,29 +64,35 @@ export const findMany = async (
     });
 
     const count = await prisma.quote.count({
-      where: props.where,
+      where: payload.where,
     });
 
     return {
+      success: true,
+      status: 200,
       data: { list: normalizeForList(quotes), total: count },
       error: null,
-      status: 200,
     };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: { list: [], total: 0 },
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };
 
-export const finOne = async (
-  props: InputQuoteGetOne
-): Promise<QuoteResultOne> => {
+export const finOne = async (props: Find): Promise<QuoteResultOne> => {
+  const payload: InputQuoteGetOne = {
+    where: {
+      id: props.id ?? '',
+    },
+  };
+
   try {
     const quote: ResponseQuote | null = await prisma.quote.findFirst({
-      ...props,
+      ...payload,
       include: {
         author: {
           include: {
@@ -67,14 +106,20 @@ export const finOne = async (
     });
 
     if (quote === null) {
-      return { data: null, error: 'Not found', status: 404 };
+      return { success: false, status: 404, data: null, error: 'Not found' };
     }
-    return { data: normalizeForOne(quote), error: null, status: 200 };
+    return {
+      success: true,
+      status: 200,
+      data: normalizeForOne(quote),
+      error: null,
+    };
   } catch (error) {
     return {
+      success: false,
+      status: 500,
       data: null,
       error: JSON.stringify(error),
-      status: 500,
     };
   }
 };

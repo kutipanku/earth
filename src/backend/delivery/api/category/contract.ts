@@ -12,6 +12,7 @@ export interface GetCategory {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       slug: string;
@@ -48,6 +49,7 @@ export interface GetCategories {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       list: Array<{
         id: string;
@@ -75,6 +77,7 @@ export interface GetCategoryOptions {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: Array<{
       id: string;
       name: string;
@@ -101,25 +104,27 @@ export interface AddCategory {
         ind: string | null;
       };
     };
-    response: {
-      success: boolean;
-      data: {
-        id: string;
-        slug: string;
-        name: {
-          eng: string | null;
-          ind: string | null;
-        };
-        description: {
-          eng: string | null;
-          ind: string | null;
-        };
-        metadata: {
-          created_at: string;
-          updated_at: string;
-        } | null;
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      slug: string;
+      name: {
+        eng: string | null;
+        ind: string | null;
+      };
+      description: {
+        eng: string | null;
+        ind: string | null;
+      };
+      metadata: {
+        created_at: string;
+        updated_at: string;
       } | null;
-    };
+    } | null;
+    fields?: string[];
   };
 }
 
@@ -147,6 +152,7 @@ export interface EditCategory {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       slug: string;
@@ -163,6 +169,7 @@ export interface EditCategory {
         updated_at: string;
       } | null;
     } | null;
+    fields?: string[];
   };
 }
 
@@ -180,6 +187,7 @@ export interface RemoveCategory {
   };
   response: {
     success: boolean;
+    message: string | null;
     data: {
       id: string;
       slug: string;
@@ -194,7 +202,7 @@ export interface RemoveCategory {
       metadata: {
         created_at: string;
         updated_at: string;
-      };
+      } | null;
     } | null;
   };
 }

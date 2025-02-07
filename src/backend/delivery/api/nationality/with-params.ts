@@ -17,25 +17,23 @@ type RemoveNationalityRequest = RemoveNationality['request'];
 type ChangeNationalityRequest = EditNationality['request'];
 type ChangeNationalityRequestBody = EditNationality['request']['body'];
 
+type GetNationalityResponse = GetNationality['response'];
+type EditNationalityResponse = EditNationality['response'];
+type RemoveNationalityResponse = RemoveNationality['response'];
+
 export async function retrieveNationalityById(
   _: NextRequest,
-  { params: { id } }: RetrieveNationalityRequest
+  { params }: RetrieveNationalityRequest
 ) {
-  const response = await getNationalityById({
-    id,
-  });
+  const response = await getNationalityById(params);
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetNationalityResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: normalizeOne(response.data) },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function changeNationalityDetail(
@@ -54,8 +52,8 @@ export async function changeNationalityDetail(
     data: {
       id,
       name: {
-        eng: body.name?.eng || null,
-        ind: body.name?.ind || null,
+        eng: body.name?.eng || '',
+        ind: body.name?.ind || '',
       },
       slug: body.slug || '',
       flag: body.flag || null,
@@ -63,21 +61,14 @@ export async function changeNationalityDetail(
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: EditNationalityResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function removeNationality(
@@ -93,19 +84,11 @@ export async function removeNationality(
     sessionToken: sessionToken?.value,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: null,
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: RemoveNationalityResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

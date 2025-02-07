@@ -4,7 +4,11 @@ import {
   getNationalityOptions,
 } from '@backend/usecase/nationality';
 import { NextRequest, NextResponse } from '../../lib/next';
-import { normalizeForList } from './normalizer';
+import {
+  normalizeOne,
+  normalizeForList,
+  normalizeForOption,
+} from './normalizer';
 
 import type {
   AddNationality,
@@ -12,11 +16,15 @@ import type {
   GetNationalityOptions,
 } from './contract';
 
-type AddNationalityRequestBody = AddNationality['request']['body'];
 type GetNationalityRequestSearchParams =
   GetNationalities['request']['search_params'];
 type GetNationalityOptionsRequestSearchParams =
   GetNationalityOptions['request']['search_params'];
+type AddNationalityRequestBody = AddNationality['request']['body'];
+
+type AddNationalityResponse = AddNationality['response'];
+type GetNationalitiesResponse = GetNationalities['response'];
+type GetNationalityOptionsResponse = GetNationalityOptions['response'];
 
 export async function retrieveNationalities(req: NextRequest) {
   const searchParams: GetNationalityRequestSearchParams = {
@@ -29,35 +37,27 @@ export async function retrieveNationalities(req: NextRequest) {
   const response = await getNationalities({
     page: Number(searchParams.page),
     limit: Number(searchParams.limit),
-    filter_name: searchParams.name,
-    filter_slug: searchParams.slug,
+    name: searchParams.name,
+    slug: searchParams.slug,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: {
-        list: normalizeForList(response.data.list),
-        total: response.data.total,
-      },
+  const processedResponse: GetNationalitiesResponse = {
+    success: response.success,
+    message: response.error,
+    data: {
+      list: normalizeForList(response.data.list),
+      total: response.data.total,
     },
-    { status: 200 }
-  );
+  };
+
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function addNationality(req: NextRequest) {
+  const body: AddNationalityRequestBody = await req.json();
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
-
-  const body: AddNationalityRequestBody = await req.json();
 
   const response = await addNewNationality({
     sessionToken: sessionToken?.value,
@@ -70,21 +70,14 @@ export async function addNationality(req: NextRequest) {
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: AddNationalityResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function retrieveNationalitiesAsOptions(req: NextRequest) {
@@ -94,17 +87,16 @@ export async function retrieveNationalitiesAsOptions(req: NextRequest) {
 
   const response = await getNationalityOptions({
     name: searchParams.name,
+    page: 0,
+    limit: 100,
+    slug: null,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetNationalityOptionsResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeForOption(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

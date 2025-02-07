@@ -1,18 +1,9 @@
 import { finOne } from '@backend/repository/database/tag';
+import type { Find } from '@backend/entity/tag/type';
 
-interface Props {
-  id: string;
-}
-
-const getTagById = async (props: Props) => {
-  const { id } = props;
-  const result = await finOne({
-    where: {
-      id,
-    },
-  });
-
-  return { data: result.data, error: null, status: 200 };
+const getTagById = async (props: Find) => {
+  // Begin tag collection
+  return finOne(props);
 };
 
 export default getTagById;

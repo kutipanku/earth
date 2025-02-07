@@ -19,3 +19,17 @@ export interface Quote {
     tags_id?: string[];
   };
 }
+
+export interface Filter {
+  page: number;
+  limit: number;
+  author: string | null;
+  content: string | null;
+  category: string | null;
+  tags: string[] | null;
+}
+
+export interface Find {
+  id?: string;
+  slug?: string;
+}

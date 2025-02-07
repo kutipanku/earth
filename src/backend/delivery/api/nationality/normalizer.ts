@@ -1,11 +1,19 @@
-import type { Nationality } from '@backend/entity/nationality/type';
-import type { GetNationality, GetNationalities } from './contract';
+import type {
+  Nationality,
+  NationalitySimplified,
+} from '@backend/entity/nationality/type';
+import type {
+  GetNationality,
+  GetNationalities,
+  GetNationalityOptions,
+} from './contract';
 
 type ResponseGetNationality = GetNationality['response']['data'];
 type ResponseGetNationalities = GetNationalities['response']['data']['list'];
+type ResponseGetNationalityOptions = GetNationalityOptions['response']['data'];
 
 export const normalizeOne = (item: Nationality | null) => {
-  if (item === null) return [];
+  if (item === null) return null;
 
   const normalizedItem: ResponseGetNationality = {
     id: item.id,
@@ -37,6 +45,17 @@ export const normalizeForList = (items: Nationality[] | null) => {
       ind: item.name.ind,
     },
     flag: item.flag,
+  }));
+
+  return normalizedItem;
+};
+
+export const normalizeForOption = (items: NationalitySimplified[] | null) => {
+  if (items === null) return [];
+
+  const normalizedItem: ResponseGetNationalityOptions = items.map((item) => ({
+    id: item.id,
+    name: item.name.eng ?? '',
   }));
 
   return normalizedItem;

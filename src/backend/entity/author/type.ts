@@ -22,3 +22,16 @@ export interface AuthorSimplified {
   id: string;
   name: string;
 }
+
+export interface Filter {
+  page: number;
+  limit: number;
+  name: string | null;
+  slug: string | null;
+  // TODO: add filter by nationality and profession
+}
+
+export interface Find {
+  id?: string;
+  slug?: string;
+}

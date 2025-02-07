@@ -17,25 +17,23 @@ type RemoveProfessionRequest = RemoveProfession['request'];
 type ChangeProfessionRequest = EditProfession['request'];
 type ChangeProfessionRequestBody = EditProfession['request']['body'];
 
+type GetProfessionResponse = GetProfession['response'];
+type EditProfessionResponse = EditProfession['response'];
+type RemoveProfessionResponse = RemoveProfession['response'];
+
 export async function retrieveProfessionById(
   _: NextRequest,
-  { params: { id } }: RetrieveProfessionRequest
+  { params }: RetrieveProfessionRequest
 ) {
-  const response = await getProfessionById({
-    id,
-  });
+  const response = await getProfessionById(params);
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetProfessionResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: normalizeOne(response.data) },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function changeProfessionDetail(
@@ -63,21 +61,14 @@ export async function changeProfessionDetail(
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: EditProfessionResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function removeProfession(
@@ -93,19 +84,11 @@ export async function removeProfession(
     sessionToken: sessionToken?.value,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: null,
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: RemoveProfessionResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

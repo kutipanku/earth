@@ -4,7 +4,11 @@ import {
   getAuthorOptions,
 } from '@backend/usecase/author';
 import { NextRequest, NextResponse } from '../../lib/next';
-import { normalizeForList } from './normalizer';
+import {
+  normalizeForList,
+  normalizeOne,
+  normalizeForOption,
+} from './normalizer';
 
 import type { AddAuthor, GetAuthorOptions, GetAuthors } from './contract';
 
@@ -12,6 +16,10 @@ type AddAuthorRequestBody = AddAuthor['request']['body'];
 type GetAuthorRequestSearchParams = GetAuthors['request']['search_params'];
 type GetAuthorOptionsRequestSearchParams =
   GetAuthorOptions['request']['search_params'];
+
+type AddAuthorResponse = AddAuthor['response'];
+type GetAuthorsResponse = GetAuthors['response'];
+type GetAuthorOptionsResponse = GetAuthorOptions['response'];
 
 export async function retrieveAuthors(req: NextRequest) {
   const searchParams: GetAuthorRequestSearchParams = {
@@ -24,27 +32,20 @@ export async function retrieveAuthors(req: NextRequest) {
   const response = await getAuthors({
     page: Number(searchParams.page),
     limit: Number(searchParams.limit),
-    filter_name: searchParams.name,
-    filter_slug: searchParams.slug,
+    name: searchParams.name,
+    slug: searchParams.slug,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: {
-        list: normalizeForList(response.data.list),
-        total: response.data.total,
-      },
+  const processedResponse: GetAuthorsResponse = {
+    success: response.success,
+    message: response.error,
+    data: {
+      list: normalizeForList(response.data.list),
+      total: response.data.total,
     },
-    { status: 200 }
-  );
+  };
+
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function addAuthor(req: NextRequest) {
@@ -76,21 +77,14 @@ export async function addAuthor(req: NextRequest) {
     },
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: response.error,
-        data: { fields: response.fields },
-      },
-      { status: response.status }
-    );
-  }
+  const processedResponse: AddAuthorResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeOne(response.data),
+    fields: response.fields,
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }
 
 export async function retrieveAuthorsAsOptions(req: NextRequest) {
@@ -100,17 +94,16 @@ export async function retrieveAuthorsAsOptions(req: NextRequest) {
 
   const response = await getAuthorOptions({
     name: searchParams.name,
+    page: 0,
+    limit: 100,
+    slug: null,
   });
 
-  if (response.error) {
-    return NextResponse.json(
-      { success: false, message: response.error },
-      { status: response.status }
-    );
-  }
+  const processedResponse: GetAuthorOptionsResponse = {
+    success: response.success,
+    message: response.error,
+    data: normalizeForOption(response.data),
+  };
 
-  return NextResponse.json(
-    { success: true, data: response.data },
-    { status: 200 }
-  );
+  return NextResponse.json(processedResponse, { status: response.status });
 }

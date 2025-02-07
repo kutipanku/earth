@@ -1,11 +1,19 @@
-import type { Profession } from '@backend/entity/profession/type';
-import type { GetProfession, GetProfessions } from './contract';
+import type {
+  Profession,
+  ProfessionSimplified,
+} from '@backend/entity/profession/type';
+import type {
+  GetProfession,
+  GetProfessions,
+  GetProfessionOptions,
+} from './contract';
 
 type ResponseGetProfession = GetProfession['response']['data'];
 type ResponseGetProfessions = GetProfessions['response']['data']['list'];
+type ResponseGetProfessionOptions = GetProfessionOptions['response']['data'];
 
 export const normalizeOne = (item: Profession | null) => {
-  if (item === null) return [];
+  if (item === null) return null;
 
   const normalizedItem: ResponseGetProfession = {
     id: item.id,
@@ -37,6 +45,17 @@ export const normalizeForList = (items: Profession[] | null) => {
       ind: item.name.ind,
     },
     icon: item.icon,
+  }));
+
+  return normalizedItem;
+};
+
+export const normalizeForOption = (items: ProfessionSimplified[] | null) => {
+  if (items === null) return [];
+
+  const normalizedItem: ResponseGetProfessionOptions = items.map((item) => ({
+    id: item.id,
+    name: item.name.eng ?? '',
   }));
 
   return normalizedItem;

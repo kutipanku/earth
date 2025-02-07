@@ -1,18 +1,9 @@
 import { finOne } from '@backend/repository/database/profession';
+import type { Find } from '@backend/entity/profession/type';
 
-interface Props {
-  id: string;
-}
-
-const getProfessionById = async (props: Props) => {
-  const { id } = props;
-  const result = await finOne({
-    where: {
-      id,
-    },
-  });
-
-  return { data: result.data, error: null, status: 200 };
+const getProfessionById = async (props: Find) => {
+  // Begin profession collection
+  return finOne(props);
 };
 
 export default getProfessionById;
