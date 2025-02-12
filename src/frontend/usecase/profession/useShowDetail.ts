@@ -1,21 +1,40 @@
 import { getProfessionDetail } from '@frontend/repository/api/profession';
-import type { ProfessionDetail } from '@frontend/entity/profession/types';
+
+import type { ProfessionVariable } from '@frontend/entity/profession/types';
 
 interface Props {
   id: string;
-  doSetLoading: (value: boolean) => void;
-  doSetDetail: (detail: ProfessionDetail) => void;
+  openNotification: (
+    severity: 'success' | 'info' | 'warning' | 'error',
+    message: string
+  ) => void;
+  setLoading: (value: boolean) => void;
+  setDetail: (detail: ProfessionVariable) => void;
 }
 
-const useShowDetail = ({ id, doSetLoading, doSetDetail }: Props) => {
+const useShowDetail = ({
+  id,
+  openNotification,
+  setLoading,
+  setDetail,
+}: Props) => {
   const handleGetDetail = () => {
     if (id) {
-      getProfessionDetail({ id }).then((responseObject) => {
-        doSetDetail(responseObject.data);
-        doSetLoading(false);
+      getProfessionDetail(id).then((responseObject) => {
+        if (!responseObject.success || responseObject.data === null) {
+          openNotification(
+            'error',
+            `Failed to get profession, error: ${responseObject.message}`
+          );
+          setLoading(false);
+          return;
+        }
+
+        setDetail(responseObject.data);
+        setLoading(false);
       });
     } else {
-      doSetLoading(false);
+      setLoading(false);
     }
   };
 

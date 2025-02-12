@@ -1,29 +1,32 @@
-import { createAPI } from '../shared/fetcher';
-import { normalizeInput, normalizeOutput } from './normalizer';
-import type { ReponseAPI } from '../shared/types';
-import type {
-  ProfessionVariables,
-  ProfessionAddInputAPI,
-  ProfessionResponseAPI,
-} from './types';
+import { PAGE_TYPE } from '@frontend/entity/profession/constants';
+import { createData } from '../shared/fetcher';
+import {
+  constructExternalBodyPayload,
+  constructOwnSystemData,
+} from './normalizer';
 
-type Reponse = ReponseAPI<ProfessionResponseAPI>;
-interface Props {
-  data: ProfessionVariables;
-}
+import type { Profession } from '@frontend/entity/profession/types';
+import type { AddProfession } from './types';
+
+type AddProfessionResponse = AddProfession['response'];
+type AddProfessionRequestBody = AddProfession['request']['body'];
 
 /**
- * Add data to relative module's data source.
+ * This function is responsible to make a network call to create new profession.
+ * Both the input and output data must be Profession type
  */
-const addProfession = async ({ data }: Props) => {
-  const response = await createAPI<ProfessionAddInputAPI, Reponse>({
+const addProfession = async (profession: Profession) => {
+  const response = await createData<
+    AddProfessionRequestBody,
+    AddProfessionResponse
+  >({
     identifier: 'profession',
-    body: normalizeInput(data),
+    body: constructExternalBodyPayload(profession),
   });
 
   return {
     ...response,
-    data: normalizeOutput(response.data),
+    data: constructOwnSystemData(response.data),
   };
 };
 

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { getServerAuthSession } from '@/lib/auth';
-import DashboardLayout from '@/frontend/delivery/layout/DashboardLayout';
+import DashboardLayout from '@/frontend/delivery/layout/Dashboard';
 
 const AuthSessionLayout = async ({ children }: PropsWithChildren) => {
   const authSession = await getServerAuthSession();

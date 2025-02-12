@@ -1,26 +1,33 @@
-import { readDetailAPI } from '../shared/fetcher';
-import { normalizeOutputForField } from './normalizer';
-import type { ReponseAPI } from '../shared/types';
-import type { ProfessionResponseAPI } from './types';
+import { PAGE_TYPE } from '@frontend/entity/profession/constants';
+import { readDetailData } from '../shared/fetcher';
+import { constructOwnSystemFieldData } from './normalizer';
 
-type Reponse = ReponseAPI<ProfessionResponseAPI>;
-interface Props {
-  id: string;
-}
+import type { GetProfession } from './types';
+
+type GetProfessionResponse = GetProfession['response'];
 
 /**
  * Read detailed data to relative module's data source.
  */
-const getProfessionDetail = async ({ id }: Props) => {
-  const response = await readDetailAPI<string, Reponse>({
-    identifier: 'profession',
-    id,
-  });
+const getProfessionDetail = async (id: string) => {
+  try {
+    const response = await readDetailData<GetProfessionResponse>({
+      identifier: PAGE_TYPE,
+      id,
+    });
 
-  return {
-    ...response,
-    data: normalizeOutputForField(response.data),
-  };
+    return {
+      success: response.success,
+      data: constructOwnSystemFieldData(response.data),
+      message: response.message,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error,
+    };
+  }
 };
 
 export default getProfessionDetail;

@@ -1,4 +1,5 @@
 import { getNationalityDetail } from '@frontend/repository/api/nationality';
+
 import type { NationalityVariable } from '@frontend/entity/nationality/types';
 
 interface Props {

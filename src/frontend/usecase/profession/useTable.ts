@@ -1,70 +1,71 @@
 import { removeProfession } from '@frontend/repository/api/profession';
+
 import type { TableRowProps } from '@/frontend/entity/shared/types';
-import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
+import type { Profession } from '@frontend/entity/profession/types';
 
 interface Props {
-  selectedRow: ProfessionListItem | null;
-  doSetSelectedRow: (value: ProfessionListItem | null) => void;
-  doReplaceState: (value: string) => void;
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  selectedRow: Profession | null;
+  setSelectedRow: (value: Profession | null) => void;
+  replaceState: (value: string) => void;
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doSetLoading: (value: boolean) => void;
-  doSetDeleteDialogOpen: (value: boolean) => void;
-  doGetList: (value?: string) => void;
+  setLoading: (value: boolean) => void;
+  setDeleteDialogOpen: (value: boolean) => void;
+  getList: (value?: string) => void;
 }
 
 const useTable = ({
   selectedRow,
-  doNavigate,
-  doReplaceState,
-  doOpenNotification,
-  doSetSelectedRow,
-  doSetLoading,
-  doSetDeleteDialogOpen,
-  doGetList,
+  navigateTo,
+  replaceState,
+  openNotification,
+  setSelectedRow,
+  setLoading,
+  setDeleteDialogOpen,
+  getList,
 }: Props) => {
   const handleOnDelete = () => {
     if (selectedRow !== null) {
-      removeProfession({ id: selectedRow?.id }).then(() => {
-        doSetDeleteDialogOpen(false);
-        doOpenNotification(
+      removeProfession(selectedRow?.id).then(() => {
+        setDeleteDialogOpen(false);
+        openNotification(
           'success',
           `Successfully delete profession with name: ${selectedRow?.name.eng}`
         );
-        doSetSelectedRow(null);
+        setSelectedRow(null);
 
-        doSetLoading(true);
+        setLoading(true);
 
-        doGetList();
+        getList();
       });
     }
   };
 
   const handleTriggerAction = (
     type: string,
-    rowData: TableRowProps<ProfessionListItem>
+    rowData: TableRowProps<Profession>
   ) => {
     if (type === 'view') {
-      doNavigate(`/dashboard/profession/${rowData.row.id}`);
+      navigateTo(`/dashboard/profession/${rowData.row.id}`);
     } else if (type === 'edit') {
-      doNavigate(`/dashboard/profession/${rowData.row.id}/edit`);
+      navigateTo(`/dashboard/profession/${rowData.row.id}/edit`);
     } else {
-      doSetSelectedRow(rowData.row);
-      doSetDeleteDialogOpen(true);
+      setSelectedRow(rowData.row);
+      setDeleteDialogOpen(true);
     }
   };
 
   const handleApplyFilter = (joinedFilter: string) => {
-    doSetLoading(true);
-    doReplaceState(joinedFilter);
-    doGetList(joinedFilter);
+    setLoading(true);
+    replaceState(joinedFilter);
+    getList(joinedFilter);
   };
 
   const handleRedirectToAddPage = () => {
-    doNavigate(`/dashboard/profession/add`);
+    navigateTo(`/dashboard/profession/add`);
   };
 
   return {

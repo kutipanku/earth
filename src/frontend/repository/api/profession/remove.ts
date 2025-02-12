@@ -1,26 +1,33 @@
-import { deleteAPI } from '../shared/fetcher';
-import type { ReponseAPI } from '../shared/types';
-import { normalizeOutput } from './normalizer';
-import type { ProfessionResponseAPI } from './types';
+import { PAGE_TYPE } from '@frontend/entity/profession/constants';
+import { deleteData } from '../shared/fetcher';
+import { constructOwnSystemData } from './normalizer';
 
-type Reponse = ReponseAPI<ProfessionResponseAPI>;
-interface Props {
-  id: string;
-}
+import type { RemoveProfession } from './types';
+
+type RemoveProfessionResponse = RemoveProfession['response'];
 
 /**
- * Remove data to relative module's data source.
+ * This function is responsible to make a network call to remove profession.
  */
-const removeProfession = async ({ id }: Props) => {
-  const response = await deleteAPI<string, Reponse>({
-    identifier: 'profession',
-    id,
-  });
+const removeProfession = async (id: string) => {
+  try {
+    const response = await deleteData<RemoveProfessionResponse>({
+      identifier: PAGE_TYPE,
+      id,
+    });
 
-  return {
-    ...response,
-    data: normalizeOutput(response.data),
-  };
+    return {
+      success: response.success,
+      message: response.message,
+      data: constructOwnSystemData(response.data),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error,
+    };
+  }
 };
 
 export default removeProfession;

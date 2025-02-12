@@ -1,40 +1,45 @@
-import { updateAPI } from '../shared/fetcher';
-import { normalizeInput, normalizeOutput } from './normalizer';
-import type { ReponseAPI } from '../shared/types';
-import type {
-  ProfessionVariables,
-  ProfessionAddInputAPI,
-  ProfessionResponseAPI,
-} from './types';
+import { PAGE_TYPE } from '@frontend/entity/profession/constants';
+import { updateData } from '../shared/fetcher';
+import {
+  constructExternalBodyPayload,
+  constructOwnSystemData,
+} from './normalizer';
 
-interface EditResponse {
-  old: ProfessionResponseAPI;
-  new: ProfessionResponseAPI;
-}
+import type { Profession } from '@frontend/entity/profession/types';
+import type { EditProfession } from './types';
 
-type Reponse = ReponseAPI<EditResponse>;
-interface Props {
-  id: string;
-  data: ProfessionVariables;
-}
+type EditProfessionResponse = EditProfession['response'];
+type EditProfessionRequestBody = EditProfession['request']['body'];
 
 /**
- * Edit data to relative module's data source.
+ * This function is responsible to make a network call to edit profession.
+ * Both the input and output data must be Profession type
  */
-const editProfession = async ({ id, data }: Props) => {
-  const response = await updateAPI<ProfessionAddInputAPI, Reponse>({
-    identifier: 'profession',
-    body: normalizeInput(data),
-    id,
-  });
+const editProfession = async (profession: Profession) => {
+  try {
+    const response = await updateData<
+      EditProfessionRequestBody,
+      EditProfessionResponse
+    >({
+      identifier: PAGE_TYPE,
+      id: profession.id,
+      body: constructExternalBodyPayload(profession),
+    });
 
-  return {
-    ...response,
-    data: {
-      old: normalizeOutput(response.data.old),
-      new: normalizeOutput(response.data.new),
-    },
-  };
+    return {
+      success: response.success,
+      message: response.message,
+      fields: response.fields,
+      data: constructOwnSystemData(response.data),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      fields: [],
+      message: error,
+    };
+  }
 };
 
 export default editProfession;

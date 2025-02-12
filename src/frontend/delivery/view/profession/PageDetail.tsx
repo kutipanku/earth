@@ -3,10 +3,11 @@
 import {
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
-  DETAIL_PLACEHOLDER,
+  VALUE_PLACEHOLDER,
 } from '@frontend/entity/profession/constants';
 import { useShowDetail } from '@frontend/usecase/profession';
 import { useEffect, useState } from '../../lib/react';
+import { useNotificationContext } from '../notification';
 import {
   UnifiedHeadTag,
   UnifiedHeaderDetail,
@@ -15,19 +16,28 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  ProfessionDetailField,
-  ProfessionDetail,
+  ProfessionField,
+  ProfessionVariable,
 } from '@frontend/entity/profession/types';
 
 const ProfessionDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<ProfessionDetail>();
+  const [detail, setDetail] = useState<ProfessionVariable>();
+  const [dispatch] = useNotificationContext();
 
   const { handleGetDetail } = useShowDetail({
     id,
-    doSetLoading: (value: boolean) => setLoading(value),
-    doSetDetail: (value: ProfessionDetail) => setDetail(value),
+    openNotification: (severity, message) =>
+      dispatch({
+        type: 'OPEN_NOTIFICATION',
+        payload: {
+          message,
+          severity,
+        },
+      }),
+    setLoading: (value: boolean) => setLoading(value),
+    setDetail: (value: ProfessionVariable) => setDetail(value),
   });
 
   useEffect(() => {
@@ -42,8 +52,8 @@ const ProfessionDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        <DynamicDetail<ProfessionDetail, ProfessionDetailField, 'key'>
-          data={detail || DETAIL_PLACEHOLDER}
+        <DynamicDetail<ProfessionVariable, ProfessionField, 'key'>
+          data={detail || VALUE_PLACEHOLDER}
           fields={DETAIL_FIELDS}
           property='key'
           isLoading={isLoading}

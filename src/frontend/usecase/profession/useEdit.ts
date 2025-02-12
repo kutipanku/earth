@@ -1,48 +1,49 @@
 import { editProfession } from '@frontend/repository/api/profession';
-import type { ProfessionVariables } from '@frontend/entity/profession/types';
+
+import type { Profession } from '@frontend/entity/profession/types';
 
 interface Props {
   id: string;
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doUpdateErrorRef: (body: string[] | null) => void;
-  doSetLoading: (value: boolean) => void;
+  updateErrorRef: (body: string[] | null) => void;
+  setLoading: (value: boolean) => void;
 }
 
 const useEdit = ({
   id,
-  doNavigate,
-  doOpenNotification,
-  doUpdateErrorRef,
-  doSetLoading,
+  navigateTo,
+  openNotification,
+  updateErrorRef,
+  setLoading,
 }: Props) => {
-  const handleSubmit = (body: ProfessionVariables) => {
-    doSetLoading(true);
-    editProfession({ id, data: body })
+  const handleSubmit = (body: Profession) => {
+    setLoading(true);
+    editProfession(body)
       .then((responseObject) => {
-        if (responseObject.error) {
-          doUpdateErrorRef(responseObject.fields || null);
-          doOpenNotification(
+        if (!responseObject.success) {
+          updateErrorRef(responseObject.fields || null);
+          openNotification(
             'error',
-            `Failed to edit profession, error: ${responseObject.error}`
+            `Failed to edit profession, error: ${responseObject.message}`
           );
-          doSetLoading(false);
+          setLoading(false);
           return;
         }
 
-        doNavigate(`/dashboard/profession`);
-        doUpdateErrorRef(null);
-        doOpenNotification(
+        navigateTo(`/dashboard/profession`);
+        updateErrorRef(null);
+        openNotification(
           'success',
-          `Successfully edited new profession: ${responseObject.data.old.name.eng} to ${responseObject.data.new.name.eng}`
+          `Successfully edited new profession: ${responseObject.data?.name.eng}`
         );
       })
       .catch((err) => {
-        doOpenNotification('error', `Failed to edit profession, error: ${err}`);
-        doSetLoading(false);
+        openNotification('error', `Failed to edit profession, error: ${err}`);
+        setLoading(false);
       });
   };
 

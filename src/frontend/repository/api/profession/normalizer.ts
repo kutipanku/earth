@@ -1,63 +1,110 @@
 import type {
   Profession,
-  ProfessionDetail,
-  ProfessionVariables,
-  ProfessionAddInputAPI,
-  ProfessionResponseAPI,
+  ProfessionOption,
+  ProfessionVariable,
+} from '@frontend/entity/profession/types';
+import type {
+  AddProfession,
+  GetProfession,
+  GetProfessions,
+  GetProfessionOptions,
 } from './types';
 
-/**
- * Convert internal own data type into acceptable data type on external source
- */
-const normalizeInput = (input: ProfessionVariables) => {
-  const output: ProfessionAddInputAPI = {};
-  if (input.icon) output.icon = input.icon;
-  if (input.slug) output.slug = input.slug;
-  if (input.nameEng || input.nameInd) {
-    output.name = {};
-    if (input.nameEng) output.name.eng = input.nameEng;
-    if (input.nameInd) output.name.ind = input.nameInd;
-  }
+type AddProfessionRequestBody = AddProfession['request']['body'];
+type GetProfessionResponseData = GetProfession['response']['data'];
+type GetProfessionOptionsResponseData =
+  GetProfessionOptions['response']['data'];
+type GetProfessionsResponseDataList =
+  GetProfessions['response']['data']['list'];
 
-  return output;
-};
-
-/**
- * Convert external data type into acceptable data type on internal own system
- */
-const normalizeOutput = (input: ProfessionResponseAPI) => {
-  const output: Profession = {
-    id: input.id,
-    icon: input.icon,
+export const constructExternalBodyPayload = (internalData: Profession) => {
+  const externalData: AddProfessionRequestBody = {
     name: {
-      eng: input.name.eng,
-      ind: input.name.ind,
+      eng: internalData.name.eng,
+      ind: internalData.name.ind,
     },
-    slug: input.slug,
+    slug: internalData.slug,
+    icon: internalData.icon,
+  };
+
+  return externalData;
+};
+
+export const constructOwnSystemData = (
+  externalData: GetProfessionResponseData
+) => {
+  if (externalData === null) return null;
+
+  const internalData: Profession = {
+    id: externalData.id,
+    icon: externalData.icon,
+    name: {
+      eng: externalData.name.eng ?? '',
+      ind: externalData.name.ind ?? '',
+    },
+    slug: externalData.slug,
     metadata: {
-      createdAt: input.metadata.created_at,
-      updatedAt: input.metadata.updated_at,
+      createdAt: externalData.metadata?.created_at || '',
+      updatedAt: externalData.metadata?.updated_at || '',
     },
   };
 
-  return output;
+  return internalData;
 };
 
-/**
- * Convert external data type into acceptable data type on internal own system
- */
-const normalizeOutputForField = (input: ProfessionResponseAPI) => {
-  const output: ProfessionDetail = {
-    id: input.id,
-    icon: input.icon,
-    slug: input.slug,
-    nameEng: input.name.eng,
-    nameInd: input.name.ind,
-    createdAt: input.metadata.created_at,
-    updatedAt: input.metadata.updated_at,
+export const constructOwnSystemFieldData = (
+  externalData: GetProfessionResponseData
+) => {
+  if (externalData === null) return null;
+
+  const internalData: ProfessionVariable = {
+    id: externalData.id,
+    icon: externalData.icon,
+    slug: externalData.slug,
+    nameEng: externalData.name.eng ?? '',
+    nameInd: externalData.name.ind ?? '',
+    createdAt: externalData.metadata?.created_at || '',
+    updatedAt: externalData.metadata?.updated_at || '',
   };
 
-  return output;
+  return internalData;
 };
 
-export { normalizeInput, normalizeOutput, normalizeOutputForField };
+export const constructOwnSystemRowData = (
+  externalDataItems: GetProfessionsResponseDataList
+) => {
+  const internalDataItems: Profession[] = externalDataItems.map(
+    (externalData) => {
+      return {
+        id: externalData.id,
+        slug: '',
+        name: {
+          eng: externalData.name.eng ?? '',
+          ind: externalData.name.ind ?? '',
+        },
+        icon: externalData.icon,
+        metadata: {
+          createdAt: '',
+          updatedAt: '',
+        },
+      };
+    }
+  );
+
+  return internalDataItems;
+};
+
+export const constructOwnSystemOptionData = (
+  externalDataItems: GetProfessionOptionsResponseData
+) => {
+  const internalDataItems: ProfessionOption[] = externalDataItems.map(
+    (externalData) => {
+      return {
+        id: externalData.id,
+        name: externalData.name,
+      };
+    }
+  );
+
+  return internalDataItems;
+};

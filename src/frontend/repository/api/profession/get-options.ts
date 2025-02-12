@@ -1,26 +1,52 @@
-import { readOptionsAPI } from '../shared/fetcher';
-import type { Pagination, ReponseAPI } from '../shared/types';
-import type { ProfessionOptionItem } from './types';
+import { PAGE_TYPE } from '@frontend/entity/profession/constants';
+import { readOptionsData } from '../shared/fetcher';
+import { constructOwnSystemOptionData } from './normalizer';
 
-type Response = ReponseAPI<ProfessionOptionItem[]>;
-interface Props extends Pagination {}
+import type { ProfessionFilter } from '@frontend/entity/profession/types';
+import type { GetProfessionOptions } from './types';
+
+type GetProfessionOptionsResponse = GetProfessionOptions['response'];
+
+interface Props {
+  page?: number;
+  rowPerPage?: number;
+  filter: ProfessionFilter;
+}
 
 /**
- * Read options data to relative module's data source.
+ * This function is responsible to make a network call to get profession as options.
  */
 const getProfessionOptions = async ({
-  page,
-  rowPerPage,
-  filterString,
+  page = 0,
+  rowPerPage = 100,
+  filter,
 }: Props) => {
-  const response = await readOptionsAPI<Response>({
-    identifier: 'profession',
-    page,
-    rowPerPage,
-    filterString,
-  });
+  const processedFilter = Object.fromEntries(
+    Object.entries(filter).filter(
+      ([_, value]) => value !== null && value !== undefined
+    )
+  );
 
-  return response.data;
+  try {
+    const response = await readOptionsData<GetProfessionOptionsResponse>({
+      identifier: PAGE_TYPE,
+      page,
+      rowPerPage,
+      filterString: new URLSearchParams(processedFilter).toString(),
+    });
+
+    return {
+      success: response.success,
+      data: constructOwnSystemOptionData(response.data),
+      message: response.message,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: [],
+      message: error,
+    };
+  }
 };
 
 export default getProfessionOptions;

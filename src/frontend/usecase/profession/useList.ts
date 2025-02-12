@@ -1,33 +1,36 @@
 import { getProfessionRows } from '@frontend/repository/api/profession';
-import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
+
+import type {
+  Profession,
+  ProfessionFilter,
+} from '@frontend/entity/profession/types';
 
 interface Props {
   page: number;
   rowPerPage: number;
-  filterString: string;
-  doSetCount: (count: number) => void;
-  doSetLoading: (value: boolean) => void;
-  doSetList: (list: ProfessionListItem[]) => void;
+  filter: ProfessionFilter;
+  setCount: (count: number) => void;
+  setLoading: (value: boolean) => void;
+  setList: (list: Profession[]) => void;
 }
 
 const useList = ({
   page,
   rowPerPage,
-  filterString,
-  doSetCount,
-  doSetLoading,
-  doSetList,
+  filter,
+  setCount,
+  setLoading,
+  setList,
 }: Props) => {
-  const handleGetList = (directFilterString?: string) => {
-    const currentFilterString = directFilterString || filterString;
+  const handleGetList = (directFilter?: ProfessionFilter) => {
     getProfessionRows({
       page,
       rowPerPage,
-      filterString: currentFilterString,
+      filter: directFilter || filter,
     }).then((responseObject) => {
-      doSetCount(responseObject.data.total);
-      doSetList(responseObject.data.list);
-      doSetLoading(false);
+      setCount(responseObject.data.total);
+      setList(responseObject.data.list);
+      setLoading(false);
     });
   };
 

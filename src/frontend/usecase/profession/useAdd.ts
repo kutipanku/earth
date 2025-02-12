@@ -1,50 +1,56 @@
+import { convertToVariable } from '@frontend/entity/profession/functions';
 import { addProfession } from '@frontend/repository/api/profession';
-import type { ProfessionVariables } from '@frontend/entity/profession/types';
+
+import type {
+  Profession,
+  ProfessionVariable,
+} from '@frontend/entity/profession/types';
 
 interface Props {
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doUpdateFormRef: (body: ProfessionVariables | null) => void;
-  doUpdateErrorRef: (body: string[] | null) => void;
-  doSetLoading: (value: boolean) => void;
+  updateFormRef: (body: ProfessionVariable | null) => void;
+  updateErrorRef: (body: string[] | null) => void;
+  setLoading: (value: boolean) => void;
 }
 
 const useAdd = ({
-  doNavigate,
-  doOpenNotification,
-  doUpdateFormRef,
-  doUpdateErrorRef,
-  doSetLoading,
+  navigateTo,
+  openNotification,
+  updateFormRef,
+  updateErrorRef,
+  setLoading,
 }: Props) => {
-  const handleSubmit = (body: ProfessionVariables) => {
-    doUpdateFormRef(body);
-    doSetLoading(true);
+  const handleSubmit = (body: Profession) => {
+    const modifiedVariables = convertToVariable(body);
+    updateFormRef(modifiedVariables);
+    setLoading(true);
 
-    addProfession({ data: body })
+    addProfession(body)
       .then((responseObject) => {
-        if (responseObject.error) {
-          doUpdateErrorRef(responseObject.fields || null);
-          doOpenNotification(
+        if (!responseObject.success) {
+          updateErrorRef(responseObject.fields || null);
+          openNotification(
             'error',
-            `Failed to add profession, error: ${responseObject.error}`
+            `Failed to add profession, error: ${responseObject.message}`
           );
-          doSetLoading(false);
+          setLoading(false);
           return;
         }
 
-        doNavigate('/dashboard/profession');
-        doUpdateFormRef(null);
-        doOpenNotification(
+        navigateTo('/dashboard/profession');
+        updateFormRef(null);
+        openNotification(
           'success',
-          `Successfully added new profession: ${responseObject.data.name.eng}`
+          `Successfully added new profession: ${responseObject.data?.name.eng}`
         );
       })
       .catch((err) => {
-        doOpenNotification('error', `Failed to add profession, error: ${err}`);
-        doSetLoading(false);
+        openNotification('error', `Failed to add profession, error: ${err}`);
+        setLoading(false);
       });
   };
 

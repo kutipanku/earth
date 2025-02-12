@@ -1,8 +1,8 @@
 import { getNationalityRows } from '@frontend/repository/api/nationality';
 
 import type {
-  NationalityFilter,
   Nationality,
+  NationalityFilter,
 } from '@frontend/entity/nationality/types';
 
 interface Props {

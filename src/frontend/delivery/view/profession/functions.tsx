@@ -6,20 +6,22 @@ import {
 } from '../../lib/mui-icons';
 
 import type { TableRowProps } from '@/frontend/entity/shared/types';
-import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
+import type { Profession } from '@frontend/entity/profession/types';
 
-export const TABLE_HEADER = (
-  callbackFunction: (
+interface Props {
+  triggerActionClick: (
     type: string,
-    dataRow: TableRowProps<ProfessionListItem>
-  ) => void
-) => [
+    dataRow: TableRowProps<Profession>
+  ) => void;
+}
+
+export const getTableHeader = ({ triggerActionClick }: Props) => [
   {
     field: 'nameEn',
     headerName: 'Name (EN)',
     width: 300,
     sortable: false,
-    renderCell: (params: TableRowProps<ProfessionListItem>) => (
+    renderCell: (params: TableRowProps<Profession>) => (
       <>{params.row.name.eng}</>
     ),
   },
@@ -28,7 +30,7 @@ export const TABLE_HEADER = (
     headerName: 'Name (ID)',
     width: 300,
     sortable: false,
-    renderCell: (params: TableRowProps<ProfessionListItem>) => (
+    renderCell: (params: TableRowProps<Profession>) => (
       <>{params.row.name.ind}</>
     ),
   },
@@ -37,16 +39,14 @@ export const TABLE_HEADER = (
     headerName: 'Slug',
     width: 300,
     sortable: false,
-    renderCell: (params: TableRowProps<ProfessionListItem>) => (
-      <>/{params.row.slug}</>
-    ),
+    renderCell: (params: TableRowProps<Profession>) => <>/{params.row.slug}</>,
   },
   {
     field: 'icon',
     headerName: 'Icon',
     width: 200,
     sortable: false,
-    renderCell: (params: TableRowProps<ProfessionListItem>) => {
+    renderCell: (params: TableRowProps<Profession>) => {
       if (params.row.icon) return <>/{params.row.icon}</>;
       return '-';
     },
@@ -56,22 +56,22 @@ export const TABLE_HEADER = (
     headerName: 'Actions',
     sortable: false,
     width: 370,
-    renderCell: (params: TableRowProps<ProfessionListItem>) => (
+    renderCell: (params: TableRowProps<Profession>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
-          onClick={() => callbackFunction('view', params)}
+          onClick={() => triggerActionClick('view', params)}
           startIcon={<VisibilityIcon />}
         >
           Detail
         </Button>
         <Button
-          onClick={() => callbackFunction('edit', params)}
+          onClick={() => triggerActionClick('edit', params)}
           startIcon={<EditIcon />}
         >
           Ubah
         </Button>
         <Button
-          onClick={() => callbackFunction('delete', params)}
+          onClick={() => triggerActionClick('delete', params)}
           startIcon={<DeleteForeverIcon />}
         >
           Hapus

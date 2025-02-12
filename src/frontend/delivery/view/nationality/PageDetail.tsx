@@ -16,8 +16,8 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  NationalityVariable,
   NationalityField,
+  NationalityVariable,
 } from '@frontend/entity/nationality/types';
 
 const NationalityDetailPage = ({ params }: { params: { id: string } }) => {

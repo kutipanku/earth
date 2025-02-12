@@ -15,15 +15,15 @@ type EditNationalityRequestBody = EditNationality['request']['body'];
  * This function is responsible to make a network call to edit nationality.
  * Both the input and output data must be Nationality type
  */
-const editNationality = async (props: Nationality) => {
+const editNationality = async (nationality: Nationality) => {
   try {
     const response = await updateData<
       EditNationalityRequestBody,
       EditNationalityResponse
     >({
       identifier: PAGE_TYPE,
-      id: props.id,
-      body: constructExternalBodyPayload(props),
+      id: nationality.id,
+      body: constructExternalBodyPayload(nationality),
     });
 
     return {
