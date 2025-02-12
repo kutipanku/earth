@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import cacheMiddleware from './redis';
+import cacheMiddleware from '../redis';
 
 declare const globalThis: {
   prismaGlobal: DBClient['prisma'];

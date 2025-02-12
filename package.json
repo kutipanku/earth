@@ -14,7 +14,8 @@
     "db:seed": "prisma db seed"
   },
   "prisma": {
-    "seed": "npx ts-node prisma/seed.ts"
+    "schema": "src/backend/repository/lib/prisma/schema.prisma",
+    "seed": "npx ts-node src/backend/repository/lib/prisma/seed.ts"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",

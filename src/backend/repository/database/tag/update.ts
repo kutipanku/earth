@@ -1,4 +1,4 @@
-import prisma from '../../lib/prisma';
+import prisma from '../../lib/prisma/prisma';
 import { normalizeForOne } from './normalizer';
 
 import type { Tag } from '@backend/entity/tag/type';

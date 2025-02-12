@@ -1,4 +1,4 @@
-import type { Prisma } from '../../lib/prisma-types';
+import type { Prisma } from '../../lib/prisma/types';
 
 //////////////////////////////////////////////////////////
 // Request

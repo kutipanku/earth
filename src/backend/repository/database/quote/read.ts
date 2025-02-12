@@ -1,4 +1,4 @@
-import prisma from '../../lib/prisma';
+import prisma from '../../lib/prisma/prisma';
 import { normalizeForOne, normalizeForList } from './normalizer';
 
 import type { Quote, Filter, Find } from '@backend/entity/quote/type';
