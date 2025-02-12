@@ -1,3 +1,3 @@
-import { retrieveCategoriesAsOptions } from '@/backend/delivery/api/category';
+import { retrieveCategoriesAsOptions } from '@beckend/delivery/api/category';
 
 export const GET = retrieveCategoriesAsOptions;

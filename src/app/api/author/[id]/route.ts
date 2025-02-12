@@ -2,7 +2,7 @@ import {
   retrieveAuthorById,
   changeAuthorDetail,
   removeAuthor,
-} from '@/backend/delivery/api/author';
+} from '@beckend/delivery/api/author';
 
 export const GET = retrieveAuthorById;
 export const PUT = changeAuthorDetail;

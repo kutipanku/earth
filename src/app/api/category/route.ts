@@ -1,7 +1,7 @@
 import {
   retrieveCategories,
   addCategory,
-} from '@/backend/delivery/api/category';
+} from '@beckend/delivery/api/category';
 
 export const GET = retrieveCategories;
 export const POST = addCategory;

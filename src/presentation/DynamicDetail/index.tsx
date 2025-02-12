@@ -3,13 +3,13 @@
 import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { DynamicField } from '@/frontend/entity/shared/types';
-import { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
+import { DynamicField } from '@frontend/entity/shared/types';
+import { NodeActionTimestamps } from '@frontend/entity/metadata/types';
 import { convertDateToLocaleString } from '@/lib/date';
 import DetailText from '@/presentation/DetailText';
 import DetailAutocomplete from '@/presentation/DetailAutocomplete';
 import DetailRichText from '@/presentation/DetailRichText';
-import type { StaticImageData } from '@/frontend/delivery/lib/next/types';
+import type { StaticImageData } from '@frontend/delivery/lib/next/types';
 
 interface Props<DataType, FieldType, Key extends keyof FieldType> {
   data: DataType;

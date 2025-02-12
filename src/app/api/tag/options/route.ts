@@ -1,3 +1,3 @@
-import { retrieveTagsAsOptions } from '@/backend/delivery/api/tag';
+import { retrieveTagsAsOptions } from '@beckend/delivery/api/tag';
 
 export const GET = retrieveTagsAsOptions;

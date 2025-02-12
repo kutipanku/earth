@@ -1,3 +1,3 @@
-import { retrieveAuthorsAsOptions } from '@/backend/delivery/api/author';
+import { retrieveAuthorsAsOptions } from '@beckend/delivery/api/author';
 
 export const GET = retrieveAuthorsAsOptions;

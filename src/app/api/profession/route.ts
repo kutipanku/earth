@@ -1,7 +1,7 @@
 import {
   retrieveProfessions,
   addProfession,
-} from '@/backend/delivery/api/profession';
+} from '@beckend/delivery/api/profession';
 
 export const GET = retrieveProfessions;
 export const POST = addProfession;
