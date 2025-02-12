@@ -1,3 +1,3 @@
-import RootLayout from '@frontend/delivery/layout/root';
+import RootLayout from '@/frontend/delivery/layout/Root';
 
 export default RootLayout;

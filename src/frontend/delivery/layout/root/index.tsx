@@ -1,5 +1,5 @@
 import { TITLE, DESCRIPTION } from '@/entity/meta/constant';
-import NotificationWrapper from '../notification-wrapper';
+import NotificationWrapper from '../NotificationWrapper';
 import SessionProvider from '@/repository/state/auth';
 import { AppRouterCacheProvider, ThemeProvider } from '../../lib/mui-systems';
 import { theme } from '../../lib/mui-systems';

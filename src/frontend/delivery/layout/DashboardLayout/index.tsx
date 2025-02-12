@@ -8,7 +8,7 @@ import { AppBar, Drawer } from '../../presentation';
 import { DrawerHeader } from './style';
 import type { FC, PropsWithChildren, MouseEvent } from '../../lib/react';
 
-const Dashboard: FC<
+const DashboardLayout: FC<
   PropsWithChildren<{ displayName: string; image: string }>
 > = ({ children, displayName, image }) => {
   const router = useRouter();
@@ -78,4 +78,4 @@ const Dashboard: FC<
   );
 };
 
-export default Dashboard;
+export default DashboardLayout;

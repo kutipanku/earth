@@ -6,6 +6,7 @@ export interface Log extends Omit<LogOnDB, 'created_at' | 'updated_at'> {
   updated_at: string;
   user: Admin;
 }
+
 export interface LogVariables
   extends Omit<
     LogOnDB,

@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { getServerAuthSession } from '@/lib/auth';
-import DashboardLayout from '@/frontend/delivery/layout/dashboard';
+import DashboardLayout from '@/frontend/delivery/layout/DashboardLayout';
 
-const AuthSession = async ({ children }: PropsWithChildren) => {
+const AuthSessionLayout = async ({ children }: PropsWithChildren) => {
   const authSession = await getServerAuthSession();
 
   return (
@@ -15,4 +15,4 @@ const AuthSession = async ({ children }: PropsWithChildren) => {
   );
 };
 
-export default AuthSession;
+export default AuthSessionLayout;
