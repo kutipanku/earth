@@ -1,7 +1,7 @@
-import { readRowsAPI } from '../core';
+import { readRowsAPI } from '../shared/fetcher';
 import { normalizeOutputRow } from './normalizer';
 
-import type { Pagination } from '../core/types';
+import type { Pagination } from '../shared/types';
 import type { AuthorListOutputAPI } from './types';
 
 interface Props extends Pagination {}

@@ -10,7 +10,7 @@ interface Props<Input> {
  * @param body as module's data id
  * @param body as module's payload
  */
-async function updateAPI<Input, Output>({
+async function updateData<Input, Output>({
   identifier,
   id,
   body,
@@ -23,4 +23,4 @@ async function updateAPI<Input, Output>({
   return response;
 }
 
-export default updateAPI;
+export default updateData;

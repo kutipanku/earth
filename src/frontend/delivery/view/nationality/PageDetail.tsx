@@ -3,10 +3,11 @@
 import {
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
-  DETAIL_PLACEHOLDER,
+  VALUE_PLACEHOLDER,
 } from '@frontend/entity/nationality/constants';
 import { useShowDetail } from '@frontend/usecase/nationality';
 import { useEffect, useState } from '../../lib/react';
+import { useNotificationContext } from '../notification';
 import {
   UnifiedHeadTag,
   UnifiedHeaderDetail,
@@ -15,19 +16,28 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  NationalityDetailField,
-  NationalityDetail,
+  NationalityVariable,
+  NationalityField,
 } from '@frontend/entity/nationality/types';
 
 const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<NationalityDetail>();
+  const [detail, setDetail] = useState<NationalityVariable>();
+  const [dispatch] = useNotificationContext();
 
   const { handleGetDetail } = useShowDetail({
     id,
-    doSetLoading: (value: boolean) => setLoading(value),
-    doSetDetail: (value: NationalityDetail) => setDetail(value),
+    openNotification: (severity, message) =>
+      dispatch({
+        type: 'OPEN_NOTIFICATION',
+        payload: {
+          message,
+          severity,
+        },
+      }),
+    setLoading: (value: boolean) => setLoading(value),
+    setDetail: (value: NationalityVariable) => setDetail(value),
   });
 
   useEffect(() => {
@@ -42,8 +52,8 @@ const NationalityDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        <DynamicDetail<NationalityDetail, NationalityDetailField, 'key'>
-          data={detail || DETAIL_PLACEHOLDER}
+        <DynamicDetail<NationalityVariable, NationalityField, 'key'>
+          data={detail || VALUE_PLACEHOLDER}
           fields={DETAIL_FIELDS}
           property='key'
           isLoading={isLoading}

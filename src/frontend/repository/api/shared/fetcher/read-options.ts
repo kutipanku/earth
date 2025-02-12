@@ -1,20 +1,18 @@
-import type { Pagination } from './types';
+import type { Pagination } from '../types';
 
 interface Props extends Pagination {
   identifier: string;
 }
 
-async function readOptionsAPI<Output>({
+async function readOptionsData<Output>({
   identifier,
   page,
   rowPerPage,
   filterString,
 }: Props) {
-  const response: Output = await fetch(
+  return fetch(
     `/api/${identifier}/options?page=${page}&limit=${rowPerPage}&${filterString}`
-  ).then((res) => res.json());
-
-  return response;
+  ).then((res) => res.json() as Output);
 }
 
-export default readOptionsAPI;
+export default readOptionsData;

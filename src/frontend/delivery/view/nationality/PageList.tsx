@@ -6,11 +6,11 @@ import {
   HOME_PAGE_REDIRECT_ADD,
 } from '@frontend/entity/nationality/constants';
 import { useList, useTable } from '@frontend/usecase/nationality';
-import { useEffect, useState, useMemo } from '../../lib/react';
+import { useEffect, useState } from '../../lib/react';
 import { useRouter, useSearchParams } from '../../lib/next';
 import { Box } from '../../lib/mui';
 import { DataGrid } from '../../lib/mui-x-date';
-import { useNotificationContext } from '../../view/notification';
+import { useNotificationContext } from '../notification';
 import {
   UnifiedHeadTag,
   UnifiedFilter,
@@ -18,9 +18,12 @@ import {
   DialogDelete,
 } from '../../presentation';
 import styles from '@/styles/Dashboard.module.css';
-import { TABLE_HEADER } from './constants';
+import { getTableHeader } from './functions';
 
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+import type {
+  Nationality,
+  NationalityFilter,
+} from '@frontend/entity/nationality/types';
 
 const NationalityPage = () => {
   const router = useRouter();
@@ -28,35 +31,37 @@ const NationalityPage = () => {
   const [dispatch] = useNotificationContext();
 
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<NationalityListItem[]>([]);
+  const [data, setData] = useState<Nationality[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(10);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<NationalityListItem | null>(
-    null
-  );
+  const [selectedRow, setSelectedRow] = useState<Nationality | null>(null);
 
-  const filterString = useMemo(() => {
-    const filterArray: string[] = [];
-    INITIAL_FILTER_STATE.forEach((filterKey) => {
-      const searchParam = searchParams.get(filterKey.key);
+  const getFilterObject = (searchParams: URLSearchParams) => {
+    const currentFilter: NationalityFilter = {
+      page:
+        searchParams.get('page') !== null
+          ? Number(searchParams.get('page'))
+          : null,
+      rowPerPage:
+        searchParams.get('rowPerPage') !== null
+          ? Number(searchParams.get('rowPerPage'))
+          : null,
+      name: searchParams.get('name'),
+      slug: searchParams.get('slug'),
+    };
 
-      if (searchParam) {
-        filterArray.push(filterKey.key + '=' + searchParam);
-      }
-    });
-
-    return filterArray.join('&');
-  }, [searchParams]);
+    return currentFilter;
+  };
 
   const { handleGetList } = useList({
     page,
     rowPerPage,
-    filterString,
-    doSetCount: (total) => setCount(total),
-    doSetLoading: (value) => setLoading(value),
-    doSetList: (list) => setData(list),
+    filter: getFilterObject(searchParams),
+    setCount: (total) => setCount(total),
+    setLoading: (value) => setLoading(value),
+    setList: (list) => setData(list),
   });
 
   const {
@@ -66,10 +71,10 @@ const NationalityPage = () => {
     handleApplyFilter,
   } = useTable({
     selectedRow,
-    doNavigate: (url) => router.push(url),
-    doReplaceState: (value: string) =>
+    navigateTo: (url) => router.push(url),
+    replaceState: (value: string) =>
       window.history.replaceState({}, '', `?${value}`),
-    doOpenNotification: (severity, message) =>
+    openNotification: (severity, message) =>
       dispatch({
         type: 'OPEN_NOTIFICATION',
         payload: {
@@ -77,11 +82,15 @@ const NationalityPage = () => {
           severity,
         },
       }),
-    doSetSelectedRow: (value: NationalityListItem | null) =>
-      setSelectedRow(value),
-    doSetLoading: (value: boolean) => setLoading(value),
-    doSetDeleteDialogOpen: (value: boolean) => setDeleteDialogOpen(value),
-    doGetList: handleGetList,
+    setSelectedRow: (value: Nationality | null) => setSelectedRow(value),
+    setLoading: (value: boolean) => setLoading(value),
+    setDeleteDialogOpen: (value: boolean) => setDeleteDialogOpen(value),
+    getList: (newFilter?: string) => {
+      const filterObject = getFilterObject(
+        new URLSearchParams(newFilter || '')
+      );
+      handleGetList(filterObject);
+    },
   });
 
   useEffect(() => {
@@ -109,7 +118,9 @@ const NationalityPage = () => {
           <DataGrid
             rows={data}
             rowCount={count}
-            columns={TABLE_HEADER(handleTriggerAction)}
+            columns={getTableHeader({
+              triggerActionClick: handleTriggerAction,
+            })}
             disableSelectionOnClick
             disableColumnMenu
             loading={isLoading}

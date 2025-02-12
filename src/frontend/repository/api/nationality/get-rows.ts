@@ -1,25 +1,61 @@
-import { readRowsAPI } from '../core';
-import type { Pagination } from '../core/types';
-import type { NationalityListOutputAPI } from './types';
+import { PAGE_TYPE } from '@frontend/entity/nationality/constants';
+import { readRowsData } from '../shared/fetcher';
+import { constructOwnSystemRowData } from './normalizer';
 
-interface Props extends Pagination {}
+import type {
+  Nationality,
+  NationalityFilter,
+} from '@frontend/entity/nationality/types';
+import type { GetNationalities } from './types';
+
+type GetNationalitiesResponse = GetNationalities['response'];
+
+interface Props {
+  page?: number;
+  rowPerPage?: number;
+  filter: NationalityFilter;
+}
 
 /**
- * Read rows data to relative module's data source.
+ * This function is responsible to make a network call to get nationality as rows.
  */
 const getNationalityRows = async ({
-  page,
-  rowPerPage,
-  filterString,
+  page = 0,
+  rowPerPage = 100,
+  filter,
 }: Props) => {
-  const response = await readRowsAPI<NationalityListOutputAPI>({
-    identifier: 'nationality',
-    page,
-    rowPerPage,
-    filterString,
-  });
+  const processedFilter = Object.fromEntries(
+    Object.entries(filter).filter(
+      ([_, value]) => value !== null && value !== undefined
+    )
+  );
 
-  return response;
+  try {
+    const response: GetNationalitiesResponse = await readRowsData({
+      identifier: PAGE_TYPE,
+      page,
+      rowPerPage,
+      filterString: new URLSearchParams(processedFilter).toString(),
+    });
+
+    return {
+      succsess: response.success,
+      message: null,
+      data: {
+        list: constructOwnSystemRowData(response.data.list),
+        total: response.data.total,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error,
+      data: {
+        list: [] as Nationality[],
+        total: 0,
+      },
+    };
+  }
 };
 
 export default getNationalityRows;

@@ -5,7 +5,7 @@ import {
   VisibilityIcon,
 } from '../../lib/mui-icons';
 
-import type { TableRowProps } from '@frontend/entity/core/types';
+import type { TableRowProps } from '@/frontend/entity/shared/types';
 import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
 
 export const TABLE_HEADER = (

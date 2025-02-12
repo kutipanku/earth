@@ -1,6 +1,6 @@
 export interface NodeActionTimestamps {
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 export interface NodeVariables extends NodeActionTimestamps {

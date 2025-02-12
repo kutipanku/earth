@@ -1,4 +1,4 @@
-import type { Filter } from '@/frontend/entity/core/types';
+import type { Filter } from '@/frontend/entity/shared/types';
 import type {
   Tag,
   TagDetailField,

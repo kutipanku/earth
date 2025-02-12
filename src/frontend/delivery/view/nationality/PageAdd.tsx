@@ -3,8 +3,9 @@
 import {
   ADD_PAGE_TITLE,
   INPUT_FIELDS,
-  INPUT_VARIABLE,
+  VALUE_PLACEHOLDER,
 } from '@frontend/entity/nationality/constants';
+import { convertFromVariable } from '@frontend/entity/nationality/functions';
 import { useAdd } from '@frontend/usecase/nationality';
 import {
   UnifiedHeaderDetail,
@@ -14,24 +15,24 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 import { useState, useRef } from '../../lib/react';
 import { useRouter } from '../../lib/next';
-import { useNotificationContext } from '../../view/notification';
+import { useNotificationContext } from '../notification';
 
 import type {
-  NationalityInputField,
-  NationalityVariables,
+  NationalityField,
+  NationalityVariable,
 } from '@frontend/entity/nationality/types';
 
 const AddNationalityPage = () => {
   const router = useRouter();
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const formRef = useRef<NationalityVariables | null>(null);
+  const formRef = useRef<NationalityVariable | null>(null);
   const errorRef = useRef<string[] | null>(null);
 
   const { handleSubmit } = useAdd({
-    doSetLoading: (value: boolean) => setLoading(value),
-    doNavigate: (url) => router.replace(url),
-    doOpenNotification: (severity, message) =>
+    setLoading: (value: boolean) => setLoading(value),
+    navigateTo: (url) => router.replace(url),
+    openNotification: (severity, message) =>
       dispatch({
         type: 'OPEN_NOTIFICATION',
         payload: {
@@ -39,8 +40,8 @@ const AddNationalityPage = () => {
           severity,
         },
       }),
-    doUpdateFormRef: (body) => (formRef.current = body),
-    doUpdateErrorRef: (body) => (errorRef.current = body),
+    updateFormRef: (body) => (formRef.current = body),
+    updateErrorRef: (body) => (errorRef.current = body),
   });
 
   return (
@@ -50,13 +51,16 @@ const AddNationalityPage = () => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={ADD_PAGE_TITLE} />
 
-        <DynamicInput<NationalityVariables, NationalityInputField, 'key'>
-          data={formRef.current || INPUT_VARIABLE}
-          fields={INPUT_FIELDS}
-          errors={errorRef.current ?? []}
+        <DynamicInput<NationalityVariable, NationalityField, 'key'>
           property='key'
           isLoading={isLoading}
-          onSubmit={handleSubmit}
+          data={formRef.current || VALUE_PLACEHOLDER}
+          fields={INPUT_FIELDS}
+          errors={errorRef.current ?? []}
+          onSubmit={(newVariables) => {
+            const newNationality = convertFromVariable(newVariables);
+            handleSubmit(newNationality);
+          }}
         />
       </main>
     </div>

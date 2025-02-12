@@ -1,26 +1,33 @@
-import { deleteAPI } from '../core';
-import type { ReponseAPI } from '../core/types';
-import { normalizeOutput } from './normalizer';
-import type { NationalityResponseAPI } from './types';
+import { PAGE_TYPE } from '@frontend/entity/nationality/constants';
+import { deleteData } from '../shared/fetcher';
+import { constructOwnSystemData } from './normalizer';
 
-type Reponse = ReponseAPI<NationalityResponseAPI>;
-interface Props {
-  id: string;
-}
+import type { RemoveNationality } from './types';
+
+type RemoveNationalityResponse = RemoveNationality['response'];
 
 /**
- * Remove data to relative module's data source.
+ * This function is responsible to make a network call to remove nationality.
  */
-const removeNationality = async ({ id }: Props) => {
-  const response = await deleteAPI<string, Reponse>({
-    identifier: 'nationality',
-    id,
-  });
+const removeNationality = async (id: string) => {
+  try {
+    const response = await deleteData<RemoveNationalityResponse>({
+      identifier: PAGE_TYPE,
+      id,
+    });
 
-  return {
-    ...response,
-    data: normalizeOutput(response.data),
-  };
+    return {
+      success: response.success,
+      message: response.message,
+      data: constructOwnSystemData(response.data),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error,
+    };
+  }
 };
 
 export default removeNationality;

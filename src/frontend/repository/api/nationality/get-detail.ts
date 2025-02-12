@@ -1,26 +1,33 @@
-import { readDetailAPI } from '../core';
-import { normalizeOutputForField } from './normalizer';
-import type { ReponseAPI } from '../core/types';
-import type { NationalityResponseAPI } from './types';
+import { PAGE_TYPE } from '@frontend/entity/nationality/constants';
+import { readDetailData } from '../shared/fetcher';
+import { constructOwnSystemFieldData } from './normalizer';
 
-type Reponse = ReponseAPI<NationalityResponseAPI>;
-interface Props {
-  id: string;
-}
+import type { GetNationality } from './types';
+
+type GetNationalityResponse = GetNationality['response'];
 
 /**
  * Read detailed data to relative module's data source.
  */
-const getNationalityDetail = async ({ id }: Props) => {
-  const response = await readDetailAPI<string, Reponse>({
-    identifier: 'nationality',
-    id,
-  });
+const getNationalityDetail = async (id: string) => {
+  try {
+    const response = await readDetailData<GetNationalityResponse>({
+      identifier: PAGE_TYPE,
+      id,
+    });
 
-  return {
-    ...response,
-    data: normalizeOutputForField(response.data),
-  };
+    return {
+      success: response.success,
+      data: constructOwnSystemFieldData(response.data),
+      message: response.message,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error,
+    };
+  }
 };
 
 export default getNationalityDetail;

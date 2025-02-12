@@ -1,6 +1,6 @@
-import { readOptionsAPI } from '../core';
+import { readOptionsAPI } from '../shared/fetcher';
 
-import type { Pagination, ReponseAPI } from '../core/types';
+import type { Pagination, ReponseAPI } from '../shared/types';
 import type { AuthorOptionItem } from './types';
 
 interface Props extends Pagination {}

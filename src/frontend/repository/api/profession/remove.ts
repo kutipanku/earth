@@ -1,5 +1,5 @@
-import { deleteAPI } from '../core';
-import type { ReponseAPI } from '../core/types';
+import { deleteAPI } from '../shared/fetcher';
+import type { ReponseAPI } from '../shared/types';
 import { normalizeOutput } from './normalizer';
 import type { ProfessionResponseAPI } from './types';
 

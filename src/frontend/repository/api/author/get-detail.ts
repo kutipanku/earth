@@ -1,7 +1,7 @@
-import { readDetailAPI } from '../core';
+import { readDetailAPI } from '../shared/fetcher';
 import { normalizeOutputForField } from './normalizer';
 
-import type { ReponseAPI } from '../core/types';
+import type { ReponseAPI } from '../shared/types';
 import type { AuthorResponseAPI } from './types';
 
 interface Props {

@@ -1,8 +1,8 @@
-import { updateAPI } from '../core';
+import { updateAPI } from '../shared/fetcher';
 import { normalizeInput, normalizeOutputForField } from './normalizer';
 
 import type { AuthorInput } from '@frontend/entity/author/types';
-import type { ReponseAPI } from '../core/types';
+import type { ReponseAPI } from '../shared/types';
 import type { AuthorAddInputAPI, AuthorResponseAPI } from './types';
 
 interface Props {

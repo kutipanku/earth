@@ -1,51 +1,47 @@
 import { editNationality } from '@frontend/repository/api/nationality';
-import type { NationalityVariables } from '@frontend/entity/nationality/types';
+
+import type { Nationality } from '@frontend/entity/nationality/types';
 
 interface Props {
-  id: string;
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doUpdateErrorRef: (body: string[] | null) => void;
-  doSetLoading: (value: boolean) => void;
+  updateErrorRef: (body: string[] | null) => void;
+  setLoading: (value: boolean) => void;
 }
 
 const useEdit = ({
-  id,
-  doNavigate,
-  doOpenNotification,
-  doUpdateErrorRef,
-  doSetLoading,
+  navigateTo,
+  openNotification,
+  updateErrorRef,
+  setLoading,
 }: Props) => {
-  const handleSubmit = (body: NationalityVariables) => {
-    doSetLoading(true);
-    editNationality({ id, data: body })
+  const handleSubmit = (body: Nationality) => {
+    setLoading(true);
+    editNationality(body)
       .then((responseObject) => {
-        if (responseObject.error) {
-          doUpdateErrorRef(responseObject.fields || null);
-          doOpenNotification(
+        if (!responseObject.success) {
+          updateErrorRef(responseObject.fields || null);
+          openNotification(
             'error',
-            `Failed to edit nationality, error: ${responseObject.error}`
+            `Failed to edit nationality, error: ${responseObject.message}`
           );
-          doSetLoading(false);
+          setLoading(false);
           return;
         }
 
-        doNavigate(`/dashboard/nationality`);
-        doUpdateErrorRef(null);
-        doOpenNotification(
+        navigateTo(`/dashboard/nationality`);
+        updateErrorRef(null);
+        openNotification(
           'success',
-          `Successfully edited new nationality: ${responseObject.data.old.name.eng} to ${responseObject.data.new.name.eng}`
+          `Successfully edited new nationality: ${responseObject.data?.name.eng}`
         );
       })
       .catch((err) => {
-        doOpenNotification(
-          'error',
-          `Failed to edit nationality, error: ${err}`
-        );
-        doSetLoading(false);
+        openNotification('error', `Failed to edit nationality, error: ${err}`);
+        setLoading(false);
       });
   };
 

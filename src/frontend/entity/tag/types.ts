@@ -1,5 +1,5 @@
 import type { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
-import type { DynamicField } from '@/frontend/entity/core/types';
+import type { DynamicField } from '@/frontend/entity/shared/types';
 
 export interface Tag extends NodeActionTimestamps {
   id: string;

@@ -1,5 +1,5 @@
 import { removeProfession } from '@frontend/repository/api/profession';
-import type { TableRowProps } from '@frontend/entity/core/types';
+import type { TableRowProps } from '@/frontend/entity/shared/types';
 import type { ProfessionListItem } from '@frontend/repository/api/profession/types';
 
 interface Props {

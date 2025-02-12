@@ -4,7 +4,7 @@ import {
   EditIcon,
   VisibilityIcon,
 } from '../../lib/mui-icons';
-import type { TableRowProps } from '@frontend/entity/core/types';
+import type { TableRowProps } from '@/frontend/entity/shared/types';
 import type { AuthorListItem } from '@frontend/repository/api/author/types';
 
 export const TABLE_HEADER = (

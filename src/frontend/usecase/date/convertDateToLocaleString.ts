@@ -3,7 +3,9 @@
  * @param "new Date('2023-05-14')"
  * @example "Minggu, 14 Mei 2023"
  */
-const convertDateToLocaleString = (date: string) => {
+const convertDateToLocaleString = (date: string | null) => {
+  if (date === null) return 'Invalid date';
+
   try {
     const dateObject = new Date(date);
     return dateObject.toLocaleDateString('en-EN', {

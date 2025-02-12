@@ -1,5 +1,5 @@
 import type { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
-import type { DynamicField } from '@/frontend/entity/core/types';
+import type { DynamicField } from '@/frontend/entity/shared/types';
 import type { Author } from '@/frontend/entity/author/types';
 import type { Category } from '@/frontend/entity/category/types';
 import type { Tag } from '@/frontend/entity/tag/types';

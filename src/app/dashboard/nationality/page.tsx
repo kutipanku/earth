@@ -1,5 +1,5 @@
 'use client';
 
-import NationalityPage from '@frontend/delivery/view/nationality/list';
+import NationalityPage from '@frontend/delivery/view/nationality/PageList';
 
 export default NationalityPage;

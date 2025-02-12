@@ -1,5 +1,5 @@
 import { removeAuthor } from '@frontend/repository/api/author';
-import type { TableRowProps } from '@frontend/entity/core/types';
+import type { TableRowProps } from '@/frontend/entity/shared/types';
 import type { AuthorListItem } from '@frontend/repository/api/author/types';
 
 interface Props {

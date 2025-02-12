@@ -1,4 +1,4 @@
-import type { DynamicField, GenericItem, Timestamp } from '../core/types';
+import type { DynamicField, GenericItem, Timestamp } from '../shared/types';
 
 /**
  * Used for Table

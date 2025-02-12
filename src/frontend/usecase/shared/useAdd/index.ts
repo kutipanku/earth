@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNotificationContext } from '@/repository/state/notification';
 import { useRouter } from 'next/navigation';
-import create from '@/frontend/repository/api/core/create';
+import create from '@/frontend/repository/api/shared/fetcher/create';
 
 interface Props<K, L> {
   name: string;

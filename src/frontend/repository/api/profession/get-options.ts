@@ -1,5 +1,5 @@
-import { readOptionsAPI } from '../core';
-import type { Pagination, ReponseAPI } from '../core/types';
+import { readOptionsAPI } from '../shared/fetcher';
+import type { Pagination, ReponseAPI } from '../shared/types';
 import type { ProfessionOptionItem } from './types';
 
 type Response = ReponseAPI<ProfessionOptionItem[]>;

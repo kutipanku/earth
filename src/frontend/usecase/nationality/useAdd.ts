@@ -1,50 +1,56 @@
+import { convertToVariable } from '@frontend/entity/nationality/functions';
 import { addNationality } from '@frontend/repository/api/nationality';
-import type { NationalityVariables } from '@frontend/entity/nationality/types';
+
+import type {
+  Nationality,
+  NationalityVariable,
+} from '@frontend/entity/nationality/types';
 
 interface Props {
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doUpdateFormRef: (body: NationalityVariables | null) => void;
-  doUpdateErrorRef: (body: string[] | null) => void;
-  doSetLoading: (value: boolean) => void;
+  updateFormRef: (body: NationalityVariable | null) => void;
+  updateErrorRef: (body: string[] | null) => void;
+  setLoading: (value: boolean) => void;
 }
 
 const useAdd = ({
-  doNavigate,
-  doOpenNotification,
-  doUpdateFormRef,
-  doUpdateErrorRef,
-  doSetLoading,
+  navigateTo,
+  openNotification,
+  updateFormRef,
+  updateErrorRef,
+  setLoading,
 }: Props) => {
-  const handleSubmit = (body: NationalityVariables) => {
-    doUpdateFormRef(body);
-    doSetLoading(true);
+  const handleSubmit = (body: Nationality) => {
+    const modifiedVariables = convertToVariable(body);
+    updateFormRef(modifiedVariables);
+    setLoading(true);
 
-    addNationality({ data: body })
+    addNationality(body)
       .then((responseObject) => {
-        if (responseObject.error) {
-          doUpdateErrorRef(responseObject.fields || null);
-          doOpenNotification(
+        if (!responseObject.success) {
+          updateErrorRef(responseObject.fields || null);
+          openNotification(
             'error',
-            `Failed to add nationality, error: ${responseObject.error}`
+            `Failed to add nationality, error: ${responseObject.message}`
           );
-          doSetLoading(false);
+          setLoading(false);
           return;
         }
 
-        doNavigate('/dashboard/nationality');
-        doUpdateFormRef(null);
-        doOpenNotification(
+        navigateTo('/dashboard/nationality');
+        updateFormRef(null);
+        openNotification(
           'success',
-          `Successfully added new nationality: ${responseObject.data.name.eng}`
+          `Successfully added new nationality: ${responseObject.data?.name.eng}`
         );
       })
       .catch((err) => {
-        doOpenNotification('error', `Failed to add nationality, error: ${err}`);
-        doSetLoading(false);
+        openNotification('error', `Failed to add nationality, error: ${err}`);
+        setLoading(false);
       });
   };
 

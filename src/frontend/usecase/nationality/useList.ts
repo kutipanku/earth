@@ -1,33 +1,36 @@
 import { getNationalityRows } from '@frontend/repository/api/nationality';
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+
+import type {
+  NationalityFilter,
+  Nationality,
+} from '@frontend/entity/nationality/types';
 
 interface Props {
   page: number;
   rowPerPage: number;
-  filterString: string;
-  doSetCount: (count: number) => void;
-  doSetLoading: (value: boolean) => void;
-  doSetList: (list: NationalityListItem[]) => void;
+  filter: NationalityFilter;
+  setCount: (count: number) => void;
+  setLoading: (value: boolean) => void;
+  setList: (list: Nationality[]) => void;
 }
 
 const useList = ({
   page,
   rowPerPage,
-  filterString,
-  doSetCount,
-  doSetLoading,
-  doSetList,
+  filter,
+  setCount,
+  setLoading,
+  setList,
 }: Props) => {
-  const handleGetList = (directFilterString?: string) => {
-    const currentFilterString = directFilterString || filterString;
+  const handleGetList = (directFilter?: NationalityFilter) => {
     getNationalityRows({
       page,
       rowPerPage,
-      filterString: currentFilterString,
+      filter: directFilter || filter,
     }).then((responseObject) => {
-      doSetCount(responseObject.data.total);
-      doSetList(responseObject.data.list);
-      doSetLoading(false);
+      setCount(responseObject.data.total);
+      setList(responseObject.data.list);
+      setLoading(false);
     });
   };
 

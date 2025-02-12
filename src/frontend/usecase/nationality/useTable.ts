@@ -1,70 +1,72 @@
 import { removeNationality } from '@frontend/repository/api/nationality';
-import type { TableRowProps } from '@frontend/entity/core/types';
-import type { NationalityListItem } from '@frontend/repository/api/nationality/types';
+
+import type { TableRowProps } from '@/frontend/entity/shared/types';
+import type { Nationality } from '@frontend/entity/nationality/types';
 
 interface Props {
-  selectedRow: NationalityListItem | null;
-  doSetSelectedRow: (value: NationalityListItem | null) => void;
-  doReplaceState: (value: string) => void;
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  selectedRow: Nationality | null;
+  setSelectedRow: (value: Nationality | null) => void;
+  replaceState: (value: string) => void;
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doSetLoading: (value: boolean) => void;
-  doSetDeleteDialogOpen: (value: boolean) => void;
-  doGetList: (value?: string) => void;
+  setLoading: (value: boolean) => void;
+  setDeleteDialogOpen: (value: boolean) => void;
+  getList: (value?: string) => void;
 }
 
 const useTable = ({
   selectedRow,
-  doNavigate,
-  doReplaceState,
-  doOpenNotification,
-  doSetSelectedRow,
-  doSetLoading,
-  doSetDeleteDialogOpen,
-  doGetList,
+  navigateTo,
+  replaceState,
+  openNotification,
+  setSelectedRow,
+  setLoading,
+  setDeleteDialogOpen,
+  getList,
 }: Props) => {
   const handleOnDelete = () => {
     if (selectedRow !== null) {
-      removeNationality({ id: selectedRow?.id }).then(() => {
-        doSetDeleteDialogOpen(false);
-        doOpenNotification(
+      removeNationality(selectedRow?.id).then(() => {
+        setDeleteDialogOpen(false);
+        openNotification(
           'success',
           `Successfully delete nationality with name: ${selectedRow?.name.eng}`
         );
-        doSetSelectedRow(null);
+        setSelectedRow(null);
 
-        doSetLoading(true);
+        setLoading(true);
 
-        doGetList();
+        getList();
       });
     }
   };
 
   const handleTriggerAction = (
     type: string,
-    rowData: TableRowProps<NationalityListItem>
+    rowData: TableRowProps<Nationality>
   ) => {
     if (type === 'view') {
-      doNavigate(`/dashboard/nationality/${rowData.row.id}`);
+      navigateTo(`/dashboard/nationality/${rowData.row.id}`);
     } else if (type === 'edit') {
-      doNavigate(`/dashboard/nationality/${rowData.row.id}/edit`);
+      navigateTo(`/dashboard/nationality/${rowData.row.id}/edit`);
     } else {
-      doSetSelectedRow(rowData.row);
-      doSetDeleteDialogOpen(true);
+      setSelectedRow(rowData.row);
+      setDeleteDialogOpen(true);
     }
   };
 
-  const handleApplyFilter = (joinedFilter: string) => {
-    doSetLoading(true);
-    doReplaceState(joinedFilter);
-    doGetList(joinedFilter);
+  const handleApplyFilter = (newFilter: string) => {
+    setLoading(true);
+    replaceState(newFilter);
+
+    getList(newFilter);
   };
 
   const handleRedirectToAddPage = () => {
-    doNavigate(`/dashboard/nationality/add`);
+    navigateTo(`/dashboard/nationality/add`);
   };
 
   return {

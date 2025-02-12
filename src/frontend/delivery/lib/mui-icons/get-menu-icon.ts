@@ -1,5 +1,5 @@
 import { dynamic } from '../../lib/next';
-import type { DrawerIcon } from '@frontend/entity/core/types';
+import type { DrawerIcon } from '@/frontend/entity/shared/types';
 
 const getMenuIcon = (name: DrawerIcon) => {
   switch (name) {

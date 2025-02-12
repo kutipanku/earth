@@ -3,7 +3,7 @@
 import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { DynamicField } from '@/frontend/entity/core/types';
+import { DynamicField } from '@/frontend/entity/shared/types';
 import { NodeActionTimestamps } from '@/frontend/entity/metadata/types';
 import { convertDateToLocaleString } from '@/lib/date';
 import DetailText from '@/presentation/DetailText';

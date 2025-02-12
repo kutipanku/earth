@@ -1,5 +1,5 @@
-import { readRowsAPI } from '../core';
-import type { Pagination } from '../core/types';
+import { readRowsAPI } from '../shared/fetcher';
+import type { Pagination } from '../shared/types';
 import type { ProfessionListOutputAPI } from './types';
 
 interface Props extends Pagination {}

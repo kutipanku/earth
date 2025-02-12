@@ -2,7 +2,7 @@ import type {
   DynamicField,
   MultilanguageContent,
   Timestamp,
-} from '../core/types';
+} from '../shared/types';
 
 export interface Profession {
   id: string;

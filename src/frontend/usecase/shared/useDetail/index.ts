@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import readDetail from '@/frontend/repository/api/core/read-detail';
+import readDetail from '@/frontend/repository/api/shared/fetcher/read-detail';
 
 interface Props {
   id: string;

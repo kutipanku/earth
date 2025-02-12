@@ -7,7 +7,7 @@ import type {
   Timestamp,
   MultilanguageContent,
   MultilanguageContentOptional,
-} from '../core/types';
+} from '../shared/types';
 
 export interface ProfessionResponseAPI {
   id: string;

@@ -1,5 +1,5 @@
-import type { GenericItem } from '@frontend/entity/core/types';
-import type { Timestamp, MultilanguageContentOptional } from '../core/types';
+import type { GenericItem } from '@/frontend/entity/shared/types';
+import type { Timestamp, MultilanguageContentOptional } from '../shared/types';
 
 export interface AuthorResponseAPI {
   id: string;

@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
-import readRows from '@/frontend/repository/api/core/read-rows';
-import deleteRow from '@/frontend/repository/api/core/delete';
-import type { Filter } from '@/frontend/entity/core/types';
+import readRows from '@/frontend/repository/api/shared/fetcher/read-rows';
+import deleteRow from '@/frontend/repository/api/shared/fetcher/delete';
+import type { Filter } from '@/frontend/entity/shared/types';
 import { useNotificationContext } from '@/repository/state/notification';
 interface Props {
   name: string;

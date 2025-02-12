@@ -1,21 +1,39 @@
 import { getNationalityDetail } from '@frontend/repository/api/nationality';
-import type { NationalityDetail } from '@frontend/entity/nationality/types';
+import type { NationalityVariable } from '@frontend/entity/nationality/types';
 
 interface Props {
   id: string;
-  doSetLoading: (value: boolean) => void;
-  doSetDetail: (detail: NationalityDetail) => void;
+  openNotification: (
+    severity: 'success' | 'info' | 'warning' | 'error',
+    message: string
+  ) => void;
+  setLoading: (value: boolean) => void;
+  setDetail: (detail: NationalityVariable) => void;
 }
 
-const useShowDetail = ({ id, doSetLoading, doSetDetail }: Props) => {
+const useShowDetail = ({
+  id,
+  openNotification,
+  setLoading,
+  setDetail,
+}: Props) => {
   const handleGetDetail = () => {
     if (id) {
-      getNationalityDetail({ id }).then((responseObject) => {
-        doSetDetail(responseObject.data);
-        doSetLoading(false);
+      getNationalityDetail(id).then((responseObject) => {
+        if (!responseObject.success || responseObject.data === null) {
+          openNotification(
+            'error',
+            `Failed to get nationality, error: ${responseObject.message}`
+          );
+          setLoading(false);
+          return;
+        }
+
+        setDetail(responseObject.data);
+        setLoading(false);
       });
     } else {
-      doSetLoading(false);
+      setLoading(false);
     }
   };
 

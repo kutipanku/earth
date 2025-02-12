@@ -1,45 +1,166 @@
-export type {
-  Nationality,
-  NationalityDetail,
-  NationalityVariables,
-} from '@frontend/entity/nationality/types';
-import type {
-  Timestamp,
-  MultilanguageContent,
-  MultilanguageContentOptional,
-} from '../core/types';
+import type { Timestamp, MultilingualContent } from '../shared/types';
 
-export interface NationalityResponseAPI {
-  id: string;
-  flag: string | null;
-  name: MultilanguageContent;
-  slug: string;
-  metadata: Timestamp;
+/**
+ * [GET] Get Nationality
+ * @description Retrieve detailed data of a nationality by it's ID
+ */
+export interface GetNationality {
+  request: {
+    params: {
+      id: string;
+    };
+    search_params: null;
+    body: null;
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      name: MultilingualContent;
+      slug: string;
+      flag: string | null;
+      metadata: Timestamp | null;
+    } | null;
+  };
 }
 
-export interface NationalityAddInputAPI {
-  name?: MultilanguageContentOptional;
-  flag?: string;
-  slug?: string;
+/**
+ * [GET] Get Nationalities
+ * @description Retrieve list of nationality
+ */
+export interface GetNationalities {
+  request: {
+    params: null;
+    search_params: {
+      page: string | null;
+      limit: string | null;
+      name: string | null;
+      slug: string | null;
+    };
+    body: null;
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      list: Array<{
+        id: string;
+        name: {
+          eng: string | null;
+          ind: string | null;
+        };
+        flag: string | null;
+      }>;
+      total: number;
+    };
+  };
 }
 
-export interface NationalityEditInputAPI extends NationalityAddInputAPI {
-  id: string;
+/**
+ * [GET] Get Nationality options
+ * @description Retrieve simpler list of nationality based on it's name
+ */
+export interface GetNationalityOptions {
+  request: {
+    params: null;
+    search_params: {
+      name: string | null;
+    };
+    body: null;
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: Array<{
+      id: string;
+      name: string;
+    }>;
+  };
 }
 
-export interface NationalityOptionItem {
-  id: string;
-  name: MultilanguageContent;
+/**
+ * [POST] Add Nationality
+ * @description Create new nationality according to request body
+ */
+export interface AddNationality {
+  request: {
+    params: null;
+    search_params: null;
+    body: {
+      name: {
+        eng: string;
+        ind: string;
+      };
+      slug: string;
+      flag: string | null;
+    };
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      name: MultilingualContent;
+      slug: string;
+      flag: string | null;
+      metadata: Timestamp | null;
+    } | null;
+    fields?: string[];
+  };
 }
 
-export interface NationalityListItem extends NationalityOptionItem {
-  slug: string;
-  flag?: string;
+/**
+ * [PUT] Edit Nationality
+ * @description Update nationality data according to request body
+ */
+export interface EditNationality {
+  request: {
+    params: {
+      id: string;
+    };
+    search_params: null;
+    body: {
+      name: MultilingualContent;
+      slug: string | null;
+      flag: string | null;
+    };
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      name: MultilingualContent;
+      slug: string;
+      flag: string | null;
+      metadata: Timestamp | null;
+    } | null;
+    fields?: string[];
+  };
 }
 
-export interface NationalityListOutputAPI {
-  data: {
-    list: NationalityListItem[];
-    total: number;
+/**
+ * [DELETE] Remove Nationality
+ * @description Delete nationality by it's ID
+ */
+export interface RemoveNationality {
+  request: {
+    params: {
+      id: string;
+    };
+    search_params: null;
+    body: null;
+  };
+  response: {
+    success: boolean;
+    message: string | null;
+    data: {
+      id: string;
+      name: MultilingualContent;
+      slug: string;
+      flag: string | null;
+      metadata: Timestamp | null;
+    } | null;
   };
 }

@@ -1,6 +1,6 @@
-import { createAPI } from '../core';
+import { createAPI } from '../shared/fetcher';
 import { normalizeInput, normalizeOutput } from './normalizer';
-import type { ReponseAPI } from '../core/types';
+import type { ReponseAPI } from '../shared/types';
 import type {
   ProfessionVariables,
   ProfessionAddInputAPI,
