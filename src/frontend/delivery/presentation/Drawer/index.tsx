@@ -1,7 +1,7 @@
 import {
   DRAWER_MENU_LIST,
   DRAWER_WIDTH,
-} from '@/frontend/entity/core/ui/constants';
+} from '@/frontend/entity/shared/ui/constants';
 import logo from '@public/logo.svg';
 import { Image } from '../../lib/next';
 import { styled } from '../../lib/mui-systems';

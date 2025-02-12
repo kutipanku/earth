@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from '../../lib/react';
 import { Autocomplete, Box, Skeleton, TextField } from '../../lib/mui';
-import type { SelectOption } from '@frontend/entity/core/types';
+import type { SelectOption } from '@/frontend/entity/shared/types';
 
 interface Props {
   index: number;

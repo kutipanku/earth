@@ -10,9 +10,9 @@ interface Props {
   style?: Record<string, unknown>;
 }
 
-const DetailRichText = ({ index, isLoading, label, value, style }: Props) => {
+const DetailRichText = ({ index, isLoading, label, value }: Props) => {
   return (
-    <Box key={index} sx={style}>
+    <Box key={index} sx={{ width: '100%', marginBottom: 2 }}>
       {!isLoading ? (
         <>
           <Typography

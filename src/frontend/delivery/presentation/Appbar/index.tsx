@@ -1,4 +1,4 @@
-import { TITLE, DRAWER_WIDTH } from '@/frontend/entity/core/ui/constants';
+import { TITLE, DRAWER_WIDTH } from '@/frontend/entity/shared/ui/constants';
 import {
   Box,
   MuiAppBar,

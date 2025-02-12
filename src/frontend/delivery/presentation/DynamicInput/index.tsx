@@ -1,6 +1,6 @@
 'use client';
 
-import { DynamicField } from '@frontend/entity/core/types';
+import { DynamicField } from '@/frontend/entity/shared/types';
 import { useRef } from '../../lib/react';
 import {
   InputText,
@@ -77,7 +77,6 @@ const DynamicInput = <
                     label={field.label}
                     value={value}
                     prefix={prefix}
-                    style={field.style}
                     isError={errors.includes(key)}
                     handleInputChange={handleInputChange}
                   />
@@ -92,7 +91,6 @@ const DynamicInput = <
                       isLoading={isLoading}
                       label={field.label}
                       value={value}
-                      style={field.style}
                       entity={
                         field.optionProps ? field.optionProps?.entity : ''
                       }
@@ -112,7 +110,6 @@ const DynamicInput = <
                     isLoading={isLoading}
                     label={field.label}
                     value={value}
-                    style={field.style}
                     entity={field.optionProps ? field.optionProps?.entity : ''}
                     optionLabel={
                       field.optionProps ? field.optionProps?.label : ''
@@ -129,7 +126,6 @@ const DynamicInput = <
                     isLoading={isLoading}
                     label={field.label}
                     value={value}
-                    style={field.style}
                     handleInputChange={handleInputChange}
                   />
                 );
@@ -142,7 +138,6 @@ const DynamicInput = <
                     isLoading={isLoading}
                     label={field.label}
                     value={value}
-                    style={field.style}
                     handleInputChange={handleInputChange}
                   />
                 );

@@ -22,7 +22,6 @@ const DetailAutocomplete = ({
   label,
   value,
   prefix,
-  style,
 }: Props) => {
   const router = useRouter();
   const name = value?.name || value?.name_en || '';
@@ -32,7 +31,7 @@ const DetailAutocomplete = ({
   };
 
   return (
-    <Box key={index} sx={style}>
+    <Box key={index} sx={{ width: '100%', marginBottom: 2 }}>
       {!isLoading ? (
         <>
           <Typography

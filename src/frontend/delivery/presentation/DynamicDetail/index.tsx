@@ -1,8 +1,8 @@
 'use client';
 
-import { DynamicField } from '@frontend/entity/core/types';
+import { DynamicField } from '@/frontend/entity/shared/types';
 import { NodeActionTimestamps } from '@frontend/entity/metadata/types';
-import convertDateToLocaleString from '@frontend/usecase/convertDateToLocaleString';
+import convertDateToLocaleString from '@/frontend/usecase/date/convertDateToLocaleString';
 import { Box, Container, Divider } from '../../lib/mui';
 import {
   DetailText,
@@ -54,7 +54,6 @@ const DynamicDetail = <
                   label={field.label}
                   value={value}
                   prefix={field.prefix}
-                  style={field.style}
                 />
               );
             case 'richtext':
@@ -65,7 +64,6 @@ const DynamicDetail = <
                   isLoading={isLoading}
                   label={field.label}
                   value={value}
-                  style={field.style}
                 />
               );
             case 'autocomplete':
@@ -78,7 +76,6 @@ const DynamicDetail = <
                   entity={key as string}
                   value={value}
                   prefix={field.prefix}
-                  style={field.style}
                 />
               );
             default:

@@ -87,7 +87,7 @@ const InputText = ({
   }, [prefix]);
 
   return (
-    <Box key={index} sx={style}>
+    <Box key={index} sx={{ width: '100%', marginBottom: 2 }}>
       {!isLoading ? (
         <TextField
           fullWidth

@@ -27,7 +27,6 @@ const InputText = ({
   label,
   keyName,
   value,
-  style,
   handleInputChange,
 }: Props) => {
   const [currentValue, setCurrentValue] = useState<DayJS | null>(null);
@@ -44,7 +43,7 @@ const InputText = ({
   }, [isLoading, value]);
 
   return (
-    <Box key={index} sx={style}>
+    <Box key={index} sx={{ width: '100%', marginBottom: 2 }}>
       {!isLoading ? (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker<DayJS>

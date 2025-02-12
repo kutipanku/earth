@@ -1,13 +1,7 @@
-export interface DynamicField<T, U> {
+export interface DynamicField<T, U = string> {
   label: string;
   key: T;
   type: 'text' | 'autocomplete' | 'richtext' | 'date';
-  style: {
-    width: string;
-    marginBottom?: number;
-    paddingLeft?: number;
-    paddingRight?: number;
-  };
   prefix?: string | U;
   required?: boolean;
   optionProps?: {
@@ -24,8 +18,8 @@ export interface SelectOption {
   name_id?: string;
 }
 
-export interface Filter {
+export interface Filter<InputVariable> {
   label: string;
-  key: string;
+  key: keyof InputVariable;
   value: string;
 }

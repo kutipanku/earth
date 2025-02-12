@@ -20,25 +20,25 @@ import {
   FilterHideIcon,
 } from '../../lib/mui-icons';
 import styles from '@/styles/Dashboard.module.css';
-import type { Filter } from '@frontend/entity/core/types';
+import type { Filter } from '@/frontend/entity/shared/types';
 
-interface Props {
+interface Props<FilterType> {
   isLoading: boolean;
-  initialFilterState: Filter[];
+  initialFilterState: Filter<FilterType>[];
   handleApplyFilter: (joinedFilter: string) => void;
 }
 
-const FilterPresentation = ({
+const FilterPresentation = <FilterType,>({
   isLoading,
   initialFilterState,
   handleApplyFilter,
-}: Props) => {
+}: Props<FilterType>) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
   const prefilledFilter = useMemo(() => {
     return initialFilterState.map((filterKey) => {
-      const searchParam = searchParams.get(filterKey.key);
+      const searchParam = searchParams.get(filterKey.key as string);
 
       filterKey.value = searchParam ?? '';
       return filterKey;
@@ -78,7 +78,7 @@ const FilterPresentation = ({
     const filterArray: string[] = [];
     values.forEach((filterObject) => {
       if (filterObject.value) {
-        filterArray.push(`${filterObject.key}=${filterObject.value}`);
+        filterArray.push(`${filterObject.key as string}=${filterObject.value}`);
       }
     });
 
@@ -114,15 +114,18 @@ const FilterPresentation = ({
           >
             {values.map((filter) => {
               return (
-                <Box key={filter.key} sx={{ width: '100%', marginTop: 2 }}>
+                <Box
+                  key={filter.key as string}
+                  sx={{ width: '100%', marginTop: 2 }}
+                >
                   <FormControl fullWidth>
                     <TextField
                       fullWidth
-                      id={`search-${filter.key}`}
+                      id={`search-${filter.key as string}`}
                       label={filter.label}
                       variant='outlined'
                       value={filter.value}
-                      onChange={handleFilterChange(filter.key)}
+                      onChange={handleFilterChange(filter.key as string)}
                     />
                   </FormControl>
                 </Box>
