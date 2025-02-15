@@ -3,12 +3,13 @@
 import {
   EDIT_PAGE_TITLE,
   INPUT_FIELDS,
-  INPUT_VARIABLE,
+  VALUE_PLACEHOLDER,
 } from '@frontend/entity/author/constants';
+import { convertFromVariable } from '@frontend/entity/author/functions';
 import { useEdit, useShowDetail } from '@frontend/usecase/author';
 import { useEffect, useState, useRef } from '../../lib/react';
 import { useRouter } from '../../lib/next';
-import { useNotificationContext } from '../../view/notification';
+import { useNotificationContext } from '../notification';
 import {
   UnifiedHeaderDetail,
   UnifiedHeadTag,
@@ -17,32 +18,33 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  AuthorDetail,
-  AuthorInputField,
-  AuthorInput,
+  AuthorField,
+  AuthorVariable,
 } from '@frontend/entity/author/types';
-
-interface AuthorVariablesForEdit extends AuthorInput {
-  id: string;
-}
 
 const EditAuthorPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<AuthorVariablesForEdit>();
+  const [detail, setDetail] = useState<AuthorVariable>();
   const errorRef = useRef<string[] | null>(null);
 
   const { handleGetDetail } = useShowDetail({
     id,
-    type: 'edit',
-    doSetLoading: (value: boolean) => setLoading(value),
-    doSetDetail: (value: AuthorDetail) => setDetail(value),
+    openNotification: (severity, message) =>
+      dispatch({
+        type: 'OPEN_NOTIFICATION',
+        payload: {
+          message,
+          severity,
+        },
+      }),
+    setLoading: (value: boolean) => setLoading(value),
+    setDetail: (value: AuthorVariable) => setDetail(value),
   });
 
   const { handleSubmit } = useEdit({
-    id,
     doNavigate: (url) => router.replace(url),
     doOpenNotification: (severity, message) =>
       dispatch({
@@ -68,13 +70,16 @@ const EditAuthorPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={EDIT_PAGE_TITLE} />
 
-        <DynamicInput<AuthorInput, AuthorInputField, 'key'>
-          data={detail || INPUT_VARIABLE}
+        <DynamicInput<AuthorVariable, AuthorField, 'key'>
+          data={detail || VALUE_PLACEHOLDER}
           fields={INPUT_FIELDS}
           errors={errorRef.current ?? []}
           property='key'
           isLoading={isLoading}
-          onSubmit={handleSubmit}
+          onSubmit={(modifiedVariables) => {
+            const modifiedAuthor = convertFromVariable(modifiedVariables);
+            handleSubmit(modifiedAuthor);
+          }}
         />
       </main>
     </div>

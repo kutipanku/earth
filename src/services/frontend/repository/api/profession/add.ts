@@ -20,7 +20,7 @@ const addProfession = async (profession: Profession) => {
     AddProfessionRequestBody,
     AddProfessionResponse
   >({
-    identifier: 'profession',
+    identifier: PAGE_TYPE,
     body: constructExternalBodyPayload(profession),
   });
 

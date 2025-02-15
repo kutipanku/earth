@@ -1,8 +1,8 @@
 import { editAuthor } from '@frontend/repository/api/author';
-import type { AuthorInput } from '@frontend/entity/author/types';
+
+import type { Author } from '@frontend/entity/author/types';
 
 interface Props {
-  id: string;
   doNavigate: (url: string) => void;
   doOpenNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
@@ -13,21 +13,20 @@ interface Props {
 }
 
 const useEdit = ({
-  id,
   doNavigate,
   doOpenNotification,
   doUpdateErrorRef,
   doSetLoading,
 }: Props) => {
-  const handleSubmit = (body: AuthorInput) => {
+  const handleSubmit = (body: Author) => {
     doSetLoading(true);
-    editAuthor({ id, data: body })
+    editAuthor(body)
       .then((responseObject) => {
-        if (responseObject.error) {
+        if (responseObject.message) {
           doUpdateErrorRef(responseObject.fields || null);
           doOpenNotification(
             'error',
-            `Failed to edit author, error: ${responseObject.error}`
+            `Failed to edit author, error: ${responseObject.message}`
           );
           doSetLoading(false);
           return;
@@ -37,7 +36,7 @@ const useEdit = ({
         doUpdateErrorRef(null);
         doOpenNotification(
           'success',
-          `Successfully edited new author: ${responseObject.data.name}`
+          `Successfully edited new author: ${responseObject.data?.name}`
         );
       })
       .catch((err) => {

@@ -7,12 +7,12 @@ import {
 } from '@frontend/entity/profession/constants';
 import { useShowDetail } from '@frontend/usecase/profession';
 import { useEffect, useState } from '../../lib/react';
-import { useNotificationContext } from '../notification';
 import {
   UnifiedHeadTag,
   UnifiedHeaderDetail,
   DynamicDetail,
 } from '../../presentation';
+import { useNotificationContext } from '../notification';
 import styles from '@/styles/Dashboard.module.css';
 
 import type {

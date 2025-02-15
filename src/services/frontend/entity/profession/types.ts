@@ -1,6 +1,6 @@
 import type {
   DynamicField,
-  MultilanguageContent,
+  MultilingualContent,
   Timestamp,
   GenericItem,
 } from '../shared/types';
@@ -12,7 +12,7 @@ import type {
 export interface Profession {
   id: string;
   slug: string;
-  name: MultilanguageContent;
+  name: MultilingualContent;
   icon: string | null;
   metadata: Timestamp;
 }

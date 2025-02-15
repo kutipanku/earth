@@ -1,75 +1,120 @@
 import type {
-  AuthorRow,
-  AuthorDetail,
-  AuthorInput,
+  Author,
+  AuthorOption,
+  AuthorVariable,
 } from '@frontend/entity/author/types';
-
 import type {
-  AuthorAddInputAPI,
-  AuthorResponseAPI,
-  AuthorListItem,
+  AddAuthor,
+  GetAuthor,
+  GetAuthors,
+  GetAuthorOptions,
 } from './types';
 
-/**
- * Convert internal own data type into acceptable data type on external source
- */
-export const normalizeInput = (input: AuthorDetail | AuthorInput) => {
-  const output: AuthorAddInputAPI = {
-    name: input.name,
-    slug: input.slug,
+type AddAuthorRequestBody = AddAuthor['request']['body'];
+type GetAuthorResponseData = GetAuthor['response']['data'];
+type GetAuthorOptionsResponseData = GetAuthorOptions['response']['data'];
+type GetAuthorsResponseDataList = GetAuthors['response']['data']['list'];
+
+export const constructExternalBodyPayload = (internalData: Author) => {
+  const externalData: AddAuthorRequestBody = {
+    name: internalData.name,
+    slug: internalData.slug,
+    description: {
+      eng: internalData.description.eng,
+      ind: internalData.description.ind,
+    },
+    nationality_id: internalData.nationality?.id,
+    profession_id: internalData.profession?.id,
+    ...(internalData.dob && { dob: internalData.dob }),
+    ...(internalData.pictureUrl && { picture_url: internalData.pictureUrl }),
   };
 
-  if (input.dob) output.dob = input.dob;
-  if (input.descriptionEng || input.descriptionInd) {
-    output.description = {};
-    if (input.descriptionInd) output.description.ind = input.descriptionInd;
-    if (input.descriptionEng) output.description.eng = input.descriptionEng;
-  }
-  if (input.pictureUrl) output.picture_url = input.pictureUrl;
-  if (input.nationality) output.nationality_id = input.nationality;
-  if (input.profession) output.profession_id = input.profession;
-
-  return output;
+  return externalData;
 };
 
-export const normalizeOutputRow = (input: AuthorListItem) => {
-  const output: AuthorRow = {
-    id: input.id,
-    name: input.name,
-    nationality: {
-      id: input.nationality?.id || '',
-      name: input.nationality?.name || '',
+export const constructOwnSystemData = (externalData: GetAuthorResponseData) => {
+  if (externalData === null) return null;
+
+  const internalData: Author = {
+    id: externalData.id ?? '',
+    slug: externalData.slug,
+    name: externalData.name,
+    description: {
+      ind: externalData.description.ind ?? '',
+      eng: externalData.description.eng ?? '',
     },
-    profession: {
-      id: input.profession?.id || '',
-      name: input.profession?.name || '',
+    nationality: externalData.nationality,
+    profession: externalData.profession,
+    dob: externalData.dob,
+    pictureUrl: externalData.picture_url,
+    metadata: {
+      createdAt: externalData.metadata?.created_at || '',
+      updatedAt: externalData.metadata?.updated_at || '',
     },
   };
 
-  return output;
+  return internalData;
 };
 
-/**
- * Convert external data type into acceptable data type on internal own system
- */
-export const normalizeOutputForField = (
-  input: AuthorResponseAPI,
-  type?: 'default' | 'edit'
+export const constructOwnSystemFieldData = (
+  externalData: GetAuthorResponseData
 ) => {
-  const key = type === 'edit' ? 'id' : 'name';
-  const output: AuthorDetail = {
-    id: input.id,
-    name: input.name,
-    slug: input.slug,
-    dob: input.dob,
-    descriptionEng: input.description.eng || '',
-    descriptionInd: input.description.ind || '',
-    pictureUrl: input.picture_url,
-    nationality: input.nationality?.[key] || '',
-    profession: input.profession?.[key] || '',
-    createdAt: input.metadata.created_at,
-    updatedAt: input.metadata.updated_at,
+  if (externalData === null) return null;
+
+  const internalData: AuthorVariable = {
+    id: externalData.id,
+    slug: externalData.slug,
+    name: externalData.name,
+    dob: externalData.dob,
+    pictureUrl: externalData.picture_url,
+    descriptionEng: externalData.description.eng,
+    descriptionInd: externalData.description.ind,
+    nationality: externalData.nationality?.id || null,
+    profession: externalData.profession?.id || null,
+    createdAt: externalData.metadata?.created_at || null,
+    updatedAt: externalData.metadata?.updated_at || null,
   };
 
-  return output;
+  return internalData;
+};
+
+export const constructOwnSystemRowData = (
+  externalDataItems: GetAuthorsResponseDataList
+) => {
+  const internalDataItems: Author[] = externalDataItems.map((externalData) => {
+    return {
+      id: externalData.id,
+      slug: '',
+      name: externalData.name,
+      description: {
+        ind: '',
+        eng: '',
+      },
+      dob: '',
+      pictureUrl: '',
+      metadata: {
+        createdAt: '',
+        updatedAt: '',
+      },
+      nationality: externalData.nationality,
+      profession: externalData.profession,
+    };
+  });
+
+  return internalDataItems;
+};
+
+export const constructOwnSystemOptionData = (
+  externalDataItems: GetAuthorOptionsResponseData
+) => {
+  const internalDataItems: AuthorOption[] = externalDataItems.map(
+    (externalData) => {
+      return {
+        id: externalData.id,
+        name: externalData.name,
+      };
+    }
+  );
+
+  return internalDataItems;
 };

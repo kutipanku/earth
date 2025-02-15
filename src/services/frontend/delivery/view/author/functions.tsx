@@ -4,22 +4,22 @@ import {
   EditIcon,
   VisibilityIcon,
 } from '../../lib/mui-icons';
-import type { TableRowProps } from '@frontend/entity/shared/types';
-import type { AuthorListItem } from '@frontend/repository/api/author/types';
 
-export const TABLE_HEADER = (
-  callbackFunction: (
-    type: string,
-    dataRow: TableRowProps<AuthorListItem>
-  ) => void
-) => [
+import type { TableRowProps } from '@frontend/entity/shared/types';
+import type { Author } from '@frontend/entity/author/types';
+
+interface Props {
+  triggerActionClick: (type: string, dataRow: TableRowProps<Author>) => void;
+}
+
+export const getTableHeader = ({ triggerActionClick }: Props) => [
   { field: 'name', headerName: 'Name', width: 300, sortable: false },
   {
     field: 'nationality',
     headerName: 'Nationality',
     width: 150,
     sortable: false,
-    renderCell: (params: TableRowProps<AuthorListItem>) => (
+    renderCell: (params: TableRowProps<Author>) => (
       <>{params.row.nationality?.name}</>
     ),
   },
@@ -28,7 +28,7 @@ export const TABLE_HEADER = (
     headerName: 'Profession',
     width: 150,
     sortable: false,
-    renderCell: (params: TableRowProps<AuthorListItem>) => (
+    renderCell: (params: TableRowProps<Author>) => (
       <>{params.row.profession?.name}</>
     ),
   },
@@ -37,22 +37,22 @@ export const TABLE_HEADER = (
     headerName: 'Actions',
     sortable: false,
     width: 370,
-    renderCell: (params: TableRowProps<AuthorListItem>) => (
+    renderCell: (params: TableRowProps<Author>) => (
       <ButtonGroup variant='outlined' aria-label='text button group'>
         <Button
-          onClick={() => callbackFunction('view', params)}
+          onClick={() => triggerActionClick('view', params)}
           startIcon={<VisibilityIcon />}
         >
           Detail
         </Button>
         <Button
-          onClick={() => callbackFunction('edit', params)}
+          onClick={() => triggerActionClick('edit', params)}
           startIcon={<EditIcon />}
         >
           Ubah
         </Button>
         <Button
-          onClick={() => callbackFunction('delete', params)}
+          onClick={() => triggerActionClick('delete', params)}
           startIcon={<DeleteForeverIcon />}
         >
           Hapus

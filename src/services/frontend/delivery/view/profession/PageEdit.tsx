@@ -45,7 +45,6 @@ const EditProfessionPage = ({ params }: { params: { id: string } }) => {
   });
 
   const { handleSubmit } = useEdit({
-    id,
     navigateTo: (url) => router.replace(url),
     openNotification: (severity, message) =>
       dispatch({

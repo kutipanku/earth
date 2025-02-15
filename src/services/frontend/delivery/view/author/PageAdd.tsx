@@ -3,8 +3,9 @@
 import {
   ADD_PAGE_TITLE,
   INPUT_FIELDS,
-  INPUT_VARIABLE,
+  VALUE_PLACEHOLDER,
 } from '@frontend/entity/author/constants';
+import { convertFromVariable } from '@frontend/entity/author/functions';
 import { useAdd } from '@frontend/usecase/author';
 import {
   UnifiedHeaderDetail,
@@ -14,18 +15,18 @@ import {
 import styles from '@/styles/Dashboard.module.css';
 import { useState, useRef } from '../../lib/react';
 import { useRouter } from '../../lib/next';
-import { useNotificationContext } from '../../view/notification';
+import { useNotificationContext } from '../notification';
 
 import type {
-  AuthorInputField,
-  AuthorInput,
+  AuthorField,
+  AuthorVariable,
 } from '@frontend/entity/author/types';
 
 const AddAuthorPage = () => {
   const router = useRouter();
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const formRef = useRef<AuthorInput | null>(null);
+  const formRef = useRef<AuthorVariable | null>(null);
   const errorRef = useRef<string[] | null>(null);
 
   const { handleSubmit } = useAdd({
@@ -50,13 +51,16 @@ const AddAuthorPage = () => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={ADD_PAGE_TITLE} />
 
-        <DynamicInput<AuthorInput, AuthorInputField, 'key'>
-          data={formRef.current || INPUT_VARIABLE}
+        <DynamicInput<AuthorVariable, AuthorField, 'key'>
+          data={formRef.current || VALUE_PLACEHOLDER}
           fields={INPUT_FIELDS}
           errors={errorRef.current ?? []}
           property='key'
           isLoading={isLoading}
-          onSubmit={handleSubmit}
+          onSubmit={(newVariables) => {
+            const newAuthor = convertFromVariable(newVariables);
+            handleSubmit(newAuthor);
+          }}
         />
       </main>
     </div>

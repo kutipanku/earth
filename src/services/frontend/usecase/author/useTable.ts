@@ -1,70 +1,71 @@
 import { removeAuthor } from '@frontend/repository/api/author';
+
 import type { TableRowProps } from '@frontend/entity/shared/types';
-import type { AuthorListItem } from '@frontend/repository/api/author/types';
+import type { Author } from '@frontend/entity/author/types';
 
 interface Props {
-  selectedRow: AuthorListItem | null;
-  doSetSelectedRow: (value: AuthorListItem | null) => void;
-  doReplaceState: (value: string) => void;
-  doNavigate: (url: string) => void;
-  doOpenNotification: (
+  selectedRow: Author | null;
+  setSelectedRow: (value: Author | null) => void;
+  replaceState: (value: string) => void;
+  navigateTo: (url: string) => void;
+  openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doSetLoading: (value: boolean) => void;
-  doSetDeleteDialogOpen: (value: boolean) => void;
-  doGetList: (value?: string) => void;
+  setLoading: (value: boolean) => void;
+  setDeleteDialogOpen: (value: boolean) => void;
+  getList: (value?: string) => void;
 }
 
 const useTable = ({
   selectedRow,
-  doNavigate,
-  doReplaceState,
-  doOpenNotification,
-  doSetSelectedRow,
-  doSetLoading,
-  doSetDeleteDialogOpen,
-  doGetList,
+  navigateTo,
+  replaceState,
+  openNotification,
+  setSelectedRow,
+  setLoading,
+  setDeleteDialogOpen,
+  getList,
 }: Props) => {
   const handleOnDelete = () => {
     if (selectedRow !== null) {
-      removeAuthor({ id: selectedRow?.id }).then(() => {
-        doSetDeleteDialogOpen(false);
-        doOpenNotification(
+      removeAuthor(selectedRow?.id).then(() => {
+        setDeleteDialogOpen(false);
+        openNotification(
           'success',
           `Successfully delete author with name: ${selectedRow?.name}`
         );
-        doSetSelectedRow(null);
+        setSelectedRow(null);
 
-        doSetLoading(true);
+        setLoading(true);
 
-        doGetList();
+        getList();
       });
     }
   };
 
   const handleTriggerAction = (
     type: string,
-    rowData: TableRowProps<AuthorListItem>
+    rowData: TableRowProps<Author>
   ) => {
     if (type === 'view') {
-      doNavigate(`/dashboard/author/${rowData.row.id}`);
+      navigateTo(`/dashboard/author/${rowData.row.id}`);
     } else if (type === 'edit') {
-      doNavigate(`/dashboard/author/${rowData.row.id}/edit`);
+      navigateTo(`/dashboard/author/${rowData.row.id}/edit`);
     } else {
-      doSetSelectedRow(rowData.row);
-      doSetDeleteDialogOpen(true);
+      setSelectedRow(rowData.row);
+      setDeleteDialogOpen(true);
     }
   };
 
   const handleApplyFilter = (joinedFilter: string) => {
-    doSetLoading(true);
-    doReplaceState(joinedFilter);
-    doGetList(joinedFilter);
+    setLoading(true);
+    replaceState(joinedFilter);
+    getList(joinedFilter);
   };
 
   const handleRedirectToAddPage = () => {
-    doNavigate(`/dashboard/author/add`);
+    navigateTo('/dashboard/author/add');
   };
 
   return {

@@ -1,26 +1,33 @@
-import { deleteAPI } from '../shared/fetcher';
-import { normalizeOutputForField } from './normalizer';
+import { PAGE_TYPE } from '@frontend/entity/author/constants';
+import { deleteData } from '../shared/fetcher';
+import { constructOwnSystemData } from './normalizer';
 
-import type { ReponseAPI } from '../shared/types';
-import type { AuthorResponseAPI } from './types';
+import type { RemoveAuthor } from './types';
 
-interface Props {
-  id: string;
-}
+type RemoveAuthorResponse = RemoveAuthor['response'];
 
 /**
- * Remove data to relative module's data source.
+ * This function is responsible to make a network call to remove author.
  */
-const removeAuthor = async ({ id }: Props) => {
-  const response = await deleteAPI<string, ReponseAPI<AuthorResponseAPI>>({
-    identifier: 'author',
-    id,
-  });
+const removeAuthor = async (id: string) => {
+  try {
+    const response = await deleteData<RemoveAuthorResponse>({
+      identifier: PAGE_TYPE,
+      id,
+    });
 
-  return {
-    ...response,
-    data: normalizeOutputForField(response.data),
-  };
+    return {
+      success: response.success,
+      message: response.message,
+      data: constructOwnSystemData(response.data),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error,
+    };
+  }
 };
 
 export default removeAuthor;

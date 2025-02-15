@@ -1,33 +1,33 @@
 import { getAuthorRows } from '@frontend/repository/api/author';
-import type { AuthorListItem } from '@frontend/repository/api/author/types';
+
+import type { Author, AuthorFilter } from '@frontend/entity/author/types';
 
 interface Props {
   page: number;
   rowPerPage: number;
-  filterString: string;
-  doSetCount: (count: number) => void;
-  doSetLoading: (value: boolean) => void;
-  doSetList: (list: AuthorListItem[]) => void;
+  filter: AuthorFilter;
+  setCount: (count: number) => void;
+  setLoading: (value: boolean) => void;
+  setList: (list: Author[]) => void;
 }
 
 const useList = ({
   page,
   rowPerPage,
-  filterString,
-  doSetCount,
-  doSetLoading,
-  doSetList,
+  filter,
+  setCount,
+  setLoading,
+  setList,
 }: Props) => {
-  const handleGetList = (directFilterString?: string) => {
-    const currentFilterString = directFilterString || filterString;
+  const handleGetList = (directFilterString?: AuthorFilter) => {
     getAuthorRows({
       page,
       rowPerPage,
-      filterString: currentFilterString,
+      filter: directFilterString || filter,
     }).then((responseObject) => {
-      doSetCount(responseObject.data.total);
-      doSetList(responseObject.data.list);
-      doSetLoading(false);
+      setCount(responseObject.data.total);
+      setList(responseObject.data.list);
+      setLoading(false);
     });
   };
 

@@ -3,7 +3,7 @@
 import {
   DETAIL_PAGE_TITLE,
   DETAIL_FIELDS,
-  DETAIL_PLACEHOLDER,
+  VALUE_PLACEHOLDER,
 } from '@frontend/entity/author/constants';
 import { useShowDetail } from '@frontend/usecase/author';
 import { useEffect, useState } from '../../lib/react';
@@ -12,22 +12,32 @@ import {
   UnifiedHeaderDetail,
   DynamicDetail,
 } from '../../presentation';
+import { useNotificationContext } from '../notification';
 import styles from '@/styles/Dashboard.module.css';
 
 import type {
-  AuthorDetailField,
-  AuthorDetail,
+  AuthorField,
+  AuthorVariable,
 } from '@frontend/entity/author/types';
 
-const AuthorDetailPage = ({ params }: { params: { id: string } }) => {
+const AuthorVariablePage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<AuthorDetail>();
+  const [detail, setDetail] = useState<AuthorVariable>();
+  const [dispatch] = useNotificationContext();
 
   const { handleGetDetail } = useShowDetail({
     id,
-    doSetLoading: (value: boolean) => setLoading(value),
-    doSetDetail: (value: AuthorDetail) => setDetail(value),
+    openNotification: (severity, message) =>
+      dispatch({
+        type: 'OPEN_NOTIFICATION',
+        payload: {
+          message,
+          severity,
+        },
+      }),
+    setLoading: (value: boolean) => setLoading(value),
+    setDetail: (value: AuthorVariable) => setDetail(value),
   });
 
   useEffect(() => {
@@ -42,8 +52,8 @@ const AuthorDetailPage = ({ params }: { params: { id: string } }) => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={DETAIL_PAGE_TITLE} />
 
-        <DynamicDetail<AuthorDetail, AuthorDetailField, 'key'>
-          data={detail || DETAIL_PLACEHOLDER}
+        <DynamicDetail<AuthorVariable, AuthorField, 'key'>
+          data={detail || VALUE_PLACEHOLDER}
           fields={DETAIL_FIELDS}
           property='key'
           isLoading={isLoading}
@@ -53,4 +63,4 @@ const AuthorDetailPage = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default AuthorDetailPage;
+export default AuthorVariablePage;

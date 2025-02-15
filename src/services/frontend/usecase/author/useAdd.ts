@@ -1,5 +1,7 @@
+import { convertToVariable } from '@frontend/entity/author/functions';
 import { addAuthor } from '@frontend/repository/api/author';
-import type { AuthorInput } from '@frontend/entity/author/types';
+
+import type { Author, AuthorVariable } from '@frontend/entity/author/types';
 
 interface Props {
   doNavigate: (url: string) => void;
@@ -7,7 +9,7 @@ interface Props {
     severity: 'success' | 'info' | 'warning' | 'error',
     message: string
   ) => void;
-  doUpdateFormRef: (body: AuthorInput | null) => void;
+  doUpdateFormRef: (body: AuthorVariable | null) => void;
   doUpdateErrorRef: (body: string[] | null) => void;
   doSetLoading: (value: boolean) => void;
 }
@@ -19,17 +21,18 @@ const useAdd = ({
   doUpdateErrorRef,
   doSetLoading,
 }: Props) => {
-  const handleSubmit = (body: AuthorInput) => {
-    doUpdateFormRef(body);
+  const handleSubmit = (body: Author) => {
+    const modifiedVariables = convertToVariable(body);
+    doUpdateFormRef(modifiedVariables);
     doSetLoading(true);
 
-    addAuthor({ data: body })
+    addAuthor(body)
       .then((responseObject) => {
-        if (responseObject.error) {
+        if (responseObject.message) {
           doUpdateErrorRef(responseObject.fields || null);
           doOpenNotification(
             'error',
-            `Failed to add author, error: ${responseObject.error}`
+            `Failed to add author, error: ${responseObject.message}`
           );
           doSetLoading(false);
           return;
@@ -39,7 +42,7 @@ const useAdd = ({
         doUpdateFormRef(null);
         doOpenNotification(
           'success',
-          `Successfully added new author: ${responseObject.data.name}`
+          `Successfully added new author: ${responseObject.data?.name}`
         );
       })
       .catch((err) => {

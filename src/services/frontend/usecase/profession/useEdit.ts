@@ -3,7 +3,6 @@ import { editProfession } from '@frontend/repository/api/profession';
 import type { Profession } from '@frontend/entity/profession/types';
 
 interface Props {
-  id: string;
   navigateTo: (url: string) => void;
   openNotification: (
     severity: 'success' | 'info' | 'warning' | 'error',
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const useEdit = ({
-  id,
   navigateTo,
   openNotification,
   updateErrorRef,

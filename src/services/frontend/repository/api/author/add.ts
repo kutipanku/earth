@@ -1,29 +1,29 @@
-import { createAPI } from '../shared/fetcher';
-import { normalizeInput, normalizeOutputForField } from './normalizer';
+import { PAGE_TYPE } from '@frontend/entity/author/constants';
+import { createData } from '../shared/fetcher';
+import {
+  constructExternalBodyPayload,
+  constructOwnSystemData,
+} from './normalizer';
 
-import type { AuthorInput } from '@frontend/entity/author/types';
-import type { ReponseAPI } from '../shared/types';
-import type { AuthorAddInputAPI, AuthorResponseAPI } from './types';
+import type { Author } from '@frontend/entity/author/types';
+import type { AddAuthor } from './types';
 
-interface Props {
-  data: AuthorInput;
-}
+type AddAuthorResponse = AddAuthor['response'];
+type AddAuthorRequestBody = AddAuthor['request']['body'];
 
 /**
- * Add data to relative module's data source.
+ * This function is responsible to make a network call to create new author.
+ * Both the input and output data must be Author type
  */
-const addAuthor = async ({ data }: Props) => {
-  const response = await createAPI<
-    AuthorAddInputAPI,
-    ReponseAPI<AuthorResponseAPI>
-  >({
-    identifier: 'author',
-    body: normalizeInput(data),
+const addAuthor = async (author: Author) => {
+  const response = await createData<AddAuthorRequestBody, AddAuthorResponse>({
+    identifier: PAGE_TYPE,
+    body: constructExternalBodyPayload(author),
   });
 
   return {
     ...response,
-    data: normalizeOutputForField(response.data),
+    data: constructOwnSystemData(response.data),
   };
 };
 

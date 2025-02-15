@@ -1,27 +1,40 @@
 import { getAuthorDetail } from '@frontend/repository/api/author';
-import type { AuthorDetail } from '@frontend/entity/author/types';
+
+import type { AuthorVariable } from '@frontend/entity/author/types';
 
 interface Props {
   id: string;
-  type?: 'default' | 'edit';
-  doSetLoading: (value: boolean) => void;
-  doSetDetail: (detail: AuthorDetail) => void;
+  openNotification: (
+    severity: 'success' | 'info' | 'warning' | 'error',
+    message: string
+  ) => void;
+  setLoading: (value: boolean) => void;
+  setDetail: (detail: AuthorVariable) => void;
 }
 
 const useShowDetail = ({
   id,
-  type = 'default',
-  doSetLoading,
-  doSetDetail,
+  openNotification,
+  setLoading,
+  setDetail,
 }: Props) => {
   const handleGetDetail = () => {
     if (id) {
-      getAuthorDetail({ id, type }).then((responseObject) => {
-        doSetDetail(responseObject.data);
-        doSetLoading(false);
+      getAuthorDetail(id).then((responseObject) => {
+        if (!responseObject.success || responseObject.data === null) {
+          openNotification(
+            'error',
+            `Failed to get author, error: ${responseObject.message}`
+          );
+          setLoading(false);
+          return;
+        }
+
+        setDetail(responseObject.data);
+        setLoading(false);
       });
     } else {
-      doSetLoading(false);
+      setLoading(false);
     }
   };
 

@@ -65,7 +65,7 @@ const useTable = ({
   };
 
   const handleRedirectToAddPage = () => {
-    navigateTo(`/dashboard/profession/add`);
+    navigateTo('/dashboard/profession/add');
   };
 
   return {

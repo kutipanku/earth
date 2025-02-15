@@ -1,27 +1,33 @@
-import { readDetailAPI } from '../shared/fetcher';
-import { normalizeOutputForField } from './normalizer';
+import { PAGE_TYPE } from '@frontend/entity/author/constants';
+import { readDetailData } from '../shared/fetcher';
+import { constructOwnSystemFieldData } from './normalizer';
 
-import type { ReponseAPI } from '../shared/types';
-import type { AuthorResponseAPI } from './types';
+import type { GetAuthor } from './types';
 
-interface Props {
-  id: string;
-  type?: 'default' | 'edit';
-}
+type GetAuthorResponse = GetAuthor['response'];
 
 /**
  * Read detailed data to relative module's data source.
  */
-const getAuthorDetail = async ({ id, type = 'default' }: Props) => {
-  const response = await readDetailAPI<string, ReponseAPI<AuthorResponseAPI>>({
-    identifier: 'author',
-    id,
-  });
+const getAuthorDetail = async (id: string) => {
+  try {
+    const response = await readDetailData<GetAuthorResponse>({
+      identifier: PAGE_TYPE,
+      id,
+    });
 
-  return {
-    ...response,
-    data: normalizeOutputForField(response.data, type),
-  };
+    return {
+      success: response.success,
+      data: constructOwnSystemFieldData(response.data),
+      message: response.message,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error,
+    };
+  }
 };
 
 export default getAuthorDetail;

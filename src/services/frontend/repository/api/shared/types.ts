@@ -1,3 +1,7 @@
+export interface GenericItem {
+  id: string;
+  name: string;
+}
 export interface MultilingualContent {
   eng: string | null;
   ind: string | null;

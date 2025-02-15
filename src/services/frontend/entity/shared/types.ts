@@ -3,7 +3,7 @@ export interface Timestamp {
   updatedAt: string;
 }
 
-export interface MultilanguageContent {
+export interface MultilingualContent {
   eng: string;
   ind: string;
 }
