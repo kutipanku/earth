@@ -1,4 +1,4 @@
-import { createOne } from '@backend/repository/database/category';
+import { createOne } from '@backend/repository/database/tag';
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';
 

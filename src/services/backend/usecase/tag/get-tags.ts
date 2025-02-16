@@ -1,4 +1,4 @@
-import { findMany } from '@backend/repository/database/category';
+import { findMany } from '@backend/repository/database/tag';
 import type { Filter } from '@backend/entity/tag/type';
 
 const getTags = async (props: Filter) => {
