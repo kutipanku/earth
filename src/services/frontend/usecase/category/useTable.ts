@@ -1,11 +1,11 @@
-import { removeNationality } from '@frontend/repository/api/nationality';
+import { removeCategory } from '@frontend/repository/api/category';
 
 import type { TableRowProps } from '@frontend/entity/shared/types';
-import type { Nationality } from '@frontend/entity/nationality/types';
+import type { Category } from '@frontend/entity/category/types';
 
 interface Props {
-  selectedRow: Nationality | null;
-  setSelectedRow: (value: Nationality | null) => void;
+  selectedRow: Category | null;
+  setSelectedRow: (value: Category | null) => void;
   replaceState: (value: string) => void;
   navigateTo: (url: string) => void;
   openNotification: (
@@ -29,11 +29,11 @@ const useTable = ({
 }: Props) => {
   const handleOnDelete = () => {
     if (selectedRow !== null) {
-      removeNationality(selectedRow?.id).then(() => {
+      removeCategory(selectedRow?.id).then(() => {
         setDeleteDialogOpen(false);
         openNotification(
           'success',
-          `Successfully delete nationality with name: ${selectedRow?.name.eng}`
+          `Successfully delete category with name: ${selectedRow?.name.eng}`
         );
         setSelectedRow(null);
 
@@ -46,12 +46,12 @@ const useTable = ({
 
   const handleTriggerAction = (
     type: string,
-    rowData: TableRowProps<Nationality>
+    rowData: TableRowProps<Category>
   ) => {
     if (type === 'view') {
-      navigateTo(`/dashboard/nationality/${rowData.row.id}`);
+      navigateTo(`/dashboard/category/${rowData.row.id}`);
     } else if (type === 'edit') {
-      navigateTo(`/dashboard/nationality/${rowData.row.id}/edit`);
+      navigateTo(`/dashboard/category/${rowData.row.id}/edit`);
     } else {
       setSelectedRow(rowData.row);
       setDeleteDialogOpen(true);
@@ -66,7 +66,7 @@ const useTable = ({
   };
 
   const handleRedirectToAddPage = () => {
-    navigateTo('/dashboard/nationality/add');
+    navigateTo('/dashboard/category/add');
   };
 
   return {

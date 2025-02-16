@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma/prisma';
 import { normalizeForOne } from './normalizer';
 
-import type { Tag, Find } from '@beckend/entity/tag/type';
+import type { Tag, Find } from '@backend/entity/tag/type';
 import type { ResultOne } from '../types';
 import type { InputTagDelete, ResponseTag } from './types';
 

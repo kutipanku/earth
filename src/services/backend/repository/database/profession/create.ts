@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma/prisma';
 import { normalizeForOne } from './normalizer';
 
-import type { Profession } from '@beckend/entity/profession/type';
+import type { Profession } from '@backend/entity/profession/type';
 import type { ResultOne } from '../types';
 import type { InputProfessionCreate, ResponseProfession } from './types';
 

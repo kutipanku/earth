@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from '../../lib/next';
-import { addNewQuote, getQuotes } from '@beckend/usecase/quote';
+import { addNewQuote, getQuotes } from '@backend/usecase/quote';
 import { normalizeForList, normalizeOne } from './normalizer';
 
 import type { AddQuote, GetQuotes } from './contract';

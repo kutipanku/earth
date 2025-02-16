@@ -1,4 +1,4 @@
-import { deleteOne } from '@beckend/repository/database/quote/delete';
+import { deleteOne } from '@backend/repository/database/quote/delete';
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';
 

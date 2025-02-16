@@ -1,4 +1,4 @@
-import { findOptions } from '@beckend/repository/database/profession';
+import { findOptions } from '@backend/repository/database/profession';
 import type { Filter } from '@backend/entity/profession/type';
 
 const getProfessionOptions = async (props: Filter) => {

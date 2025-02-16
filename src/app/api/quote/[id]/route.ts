@@ -2,7 +2,7 @@ import {
   retrieveQuoteById,
   changeQuoteDetail,
   removeQuote,
-} from '@beckend/delivery/api/quote';
+} from '@backend/delivery/api/quote';
 
 export const GET = retrieveQuoteById;
 export const PUT = changeQuoteDetail;

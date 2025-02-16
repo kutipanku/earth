@@ -1,6 +1,6 @@
-import { editNationality } from '@frontend/repository/api/nationality';
+import { editCategory } from '@frontend/repository/api/category';
 
-import type { Nationality } from '@frontend/entity/nationality/types';
+import type { Category } from '@frontend/entity/category/types';
 
 interface Props {
   navigateTo: (url: string) => void;
@@ -18,29 +18,29 @@ const useEdit = ({
   updateErrorRef,
   setLoading,
 }: Props) => {
-  const handleSubmit = (body: Nationality) => {
+  const handleSubmit = (body: Category) => {
     setLoading(true);
-    editNationality(body)
+    editCategory(body)
       .then((responseObject) => {
         if (!responseObject.success) {
           updateErrorRef(responseObject.fields || null);
           openNotification(
             'error',
-            `Failed to edit nationality, error: ${responseObject.message}`
+            `Failed to edit category, error: ${responseObject.message}`
           );
           setLoading(false);
           return;
         }
 
-        navigateTo('/dashboard/nationality');
+        navigateTo('/dashboard/category');
         updateErrorRef(null);
         openNotification(
           'success',
-          `Successfully edited new nationality: ${responseObject.data?.name.eng}`
+          `Successfully edited new category: ${responseObject.data?.name.eng}`
         );
       })
       .catch((err) => {
-        openNotification('error', `Failed to edit nationality, error: ${err}`);
+        openNotification('error', `Failed to edit category, error: ${err}`);
         setLoading(false);
       });
   };

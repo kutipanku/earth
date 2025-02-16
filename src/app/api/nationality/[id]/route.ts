@@ -2,7 +2,7 @@ import {
   retrieveNationalityById,
   changeNationalityDetail,
   removeNationality,
-} from '@beckend/delivery/api/nationality';
+} from '@backend/delivery/api/nationality';
 
 export const GET = retrieveNationalityById;
 export const PUT = changeNationalityDetail;

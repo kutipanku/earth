@@ -1,17 +1,55 @@
-import type { NodeActionTimestamps } from '@frontend/entity/metadata/types';
-import type { DynamicField } from '@frontend/entity/shared/types';
+import type {
+  DynamicField,
+  GenericItem,
+  MultilingualContent,
+  Timestamp,
+} from '../shared/types';
 
-export interface Category extends NodeActionTimestamps {
+/**
+ * Universal currency for processing category inside the entire system
+ * Should be used in all usecase possible
+ */
+export interface Category {
   id: string;
   slug: string;
-  nameEn: string;
-  nameId: string;
-  descriptionId: string | null;
-  descriptionEn: string | null;
+  name: MultilingualContent;
+  description: MultilingualContent;
+  metadata: Timestamp;
 }
 
-export type CategoryDetailField = DynamicField<keyof Category, string>;
-export interface CategoryVariables
-  extends Omit<Category, 'id' | 'createdAt' | 'updatedAt'> {}
+/**
+ * Universal currency for processing category as options
+ * Should be used in select and autocomplete
+ */
+export type CategoryOption = GenericItem;
 
-export type CategoryInputFIeld = DynamicField<keyof CategoryVariables, string>;
+/**
+ * Local currency for available input variables
+ * Should be used in category detail, creation and modification fields
+ */
+export interface CategoryVariable {
+  slug: string;
+  nameEng: string;
+  nameInd: string;
+  id: string | null;
+  descriptionEng: string | null;
+  descriptionInd: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+}
+
+/**
+ * Local currency for available filter parameters
+ */
+export interface CategoryFilter {
+  page: number | null;
+  rowPerPage: number | null;
+  name: string | null;
+  slug: string | null;
+}
+
+/**
+ * Local currency for available fields extending available input variables
+ * Should be used as dynamic field parameters
+ */
+export type CategoryField = DynamicField<keyof CategoryVariable>;

@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma/prisma';
 import { normalizeForOne } from './normalizer';
 
-import type { Nationality, Find } from '@beckend/entity/nationality/type';
+import type { Nationality, Find } from '@backend/entity/nationality/type';
 import type { ResultOne } from '../types';
 import type { InputNationalityDelete, ResponseNationality } from './types';
 

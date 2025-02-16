@@ -32,7 +32,7 @@ const useEdit = ({
           return;
         }
 
-        doNavigate(`/dashboard/author`);
+        doNavigate('/dashboard/author');
         doUpdateErrorRef(null);
         doOpenNotification(
           'success',

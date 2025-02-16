@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma/prisma';
 import { normalizeForOne } from './normalizer';
 
-import type { Category } from '@beckend/entity/category/type';
+import type { Category } from '@backend/entity/category/type';
 import type { ResultOne } from '../types';
 import type { InputCategoryUpdate, ResponseCategory } from './types';
 

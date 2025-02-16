@@ -2,7 +2,7 @@ import {
   retrieveCategoryById,
   changeCategoryDetail,
   removeCategory,
-} from '@beckend/delivery/api/category';
+} from '@backend/delivery/api/category';
 
 export const GET = retrieveCategoryById;
 export const PUT = changeCategoryDetail;

@@ -1,4 +1,4 @@
-import { finOne, updateOne } from '@beckend/repository/database/category';
+import { finOne, updateOne } from '@backend/repository/database/category';
 import saveToLog from '../logger/save-to-log';
 import getAuthStatus from '../auth/get-auth-status';
 

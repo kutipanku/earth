@@ -1,3 +1,3 @@
-import { retrieveProfessionsAsOptions } from '@beckend/delivery/api/profession';
+import { retrieveProfessionsAsOptions } from '@backend/delivery/api/profession';
 
 export const GET = retrieveProfessionsAsOptions;
