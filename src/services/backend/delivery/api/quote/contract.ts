@@ -71,6 +71,7 @@ export interface GetQuotes {
     data: {
       list: Array<{
         id: string;
+        slug: string;
         content: {
           ind: string | null;
           eng: string | null;
@@ -113,7 +114,7 @@ export interface AddQuote {
       };
       author_id?: string;
       category_id?: string;
-      tags_id?: string;
+      tags_id?: string[];
     };
   };
   response: {
@@ -177,7 +178,7 @@ export interface EditQuote {
       };
       author_id?: string;
       category_id?: string;
-      tags_id?: string;
+      tags_id?: string[];
     };
   };
   response: {

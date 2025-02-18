@@ -59,7 +59,7 @@ export async function changeQuoteDetail(
       ids: {
         author_id: body.author_id,
         category_id: body.category_id,
-        tags_id: JSON.parse(body.tags_id || '[]'),
+        tags_id: body.tags_id,
       },
       url: {
         eng: null,
