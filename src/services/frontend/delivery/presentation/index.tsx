@@ -1,4 +1,5 @@
 export { default as AppBar } from './Appbar';
+export { default as ActionType } from './ActionType';
 export { default as CustomEditor } from './CustomEditor';
 export { default as DetailAutocomplete } from './DetailAutocomplete';
 export { default as DetailRichText } from './DetailRichText';

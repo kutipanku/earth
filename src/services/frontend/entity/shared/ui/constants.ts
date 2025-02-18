@@ -34,21 +34,21 @@ export const DRAWER_MENU_LIST: DrawerItem[] = [
     icon: 'quote',
     path: '/dashboard/quote',
   },
-  {
-    text: 'Products',
-    icon: 'paid',
-    path: '/dashboard/product',
-  },
-  {
-    text: 'Books',
-    icon: 'book',
-    path: '/dashboard/book',
-  },
-  {
-    text: 'Media',
-    icon: 'multimedia',
-    path: '/dashboard/media',
-  },
+  // {
+  //   text: 'Products',
+  //   icon: 'paid',
+  //   path: '/dashboard/product',
+  // },
+  // {
+  //   text: 'Books',
+  //   icon: 'book',
+  //   path: '/dashboard/book',
+  // },
+  // {
+  //   text: 'Media',
+  //   icon: 'multimedia',
+  //   path: '/dashboard/media',
+  // },
   {
     text: 'Log Histories',
     icon: 'log',

@@ -3,9 +3,8 @@
 import {
   INITIAL_FILTER_STATE,
   HOME_PAGE_TITLE,
-  HOME_PAGE_REDIRECT_ADD,
-} from '@frontend/entity/author/constants';
-import { useList, useTable } from '@frontend/usecase/author';
+} from '@frontend/entity/log/constants';
+import { useList, useTable } from '@frontend/usecase/log';
 import { useEffect, useState } from '../../lib/react';
 import { useRouter, useSearchParams } from '../../lib/next';
 import { Box } from '../../lib/mui';
@@ -14,29 +13,24 @@ import {
   UnifiedHeadTag,
   UnifiedFilter,
   UnifiedHeaderHome,
-  DialogDelete,
 } from '../../presentation';
-import { useNotificationContext } from '../notification';
 import styles from '@/styles/Dashboard.module.css';
 import { getTableHeader } from './functions';
 
-import type { Author, AuthorFilter } from '@frontend/entity/author/types';
+import type { Log, LogFilter } from '@frontend/entity/log/types';
 
-const AuthorPage = () => {
+const LogPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [dispatch] = useNotificationContext();
 
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<Author[]>([]);
+  const [data, setData] = useState<Log[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(10);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<Author | null>(null);
 
   const getFilterObject = (searchParams: URLSearchParams) => {
-    const currentFilter: AuthorFilter = {
+    const currentFilter: LogFilter = {
       page:
         searchParams.get('page') !== null
           ? Number(searchParams.get('page'))
@@ -45,8 +39,9 @@ const AuthorPage = () => {
         searchParams.get('rowPerPage') !== null
           ? Number(searchParams.get('rowPerPage'))
           : null,
-      name: searchParams.get('name'),
-      slug: searchParams.get('slug'),
+      admin: searchParams.get('admin'),
+      action: searchParams.get('action'),
+      entity: searchParams.get('entity'),
     };
 
     return currentFilter;
@@ -61,27 +56,11 @@ const AuthorPage = () => {
     setList: (list) => setData(list),
   });
 
-  const {
-    handleTriggerAction,
-    handleOnDelete,
-    handleRedirectToAddPage,
-    handleApplyFilter,
-  } = useTable({
-    selectedRow,
+  const { handleTriggerAction, handleApplyFilter } = useTable({
     navigateTo: (url) => router.push(url),
     replaceState: (value: string) =>
       window.history.replaceState({}, '', `?${value}`),
-    openNotification: (severity, message) =>
-      dispatch({
-        type: 'OPEN_NOTIFICATION',
-        payload: {
-          message,
-          severity,
-        },
-      }),
-    setSelectedRow: (value: Author | null) => setSelectedRow(value),
     setLoading: (value: boolean) => setLoading(value),
-    setDeleteDialogOpen: (value: boolean) => setDeleteDialogOpen(value),
     getList: (newFilter?: string) => {
       const filterObject = getFilterObject(
         new URLSearchParams(newFilter || '')
@@ -102,9 +81,9 @@ const AuthorPage = () => {
       <main className={styles.main}>
         <UnifiedHeaderHome
           title={HOME_PAGE_TITLE}
-          actAdd={HOME_PAGE_REDIRECT_ADD}
+          actAdd={''}
           isLoading={isLoading}
-          actAddFunction={handleRedirectToAddPage}
+          actAddFunction={() => {}}
         />
         <UnifiedFilter
           isLoading={isLoading}
@@ -130,15 +109,9 @@ const AuthorPage = () => {
             onPageSizeChange={setRowPerPage}
           />
         </Box>
-        <DialogDelete
-          isOpen={deleteDialogOpen}
-          onClose={() => setDeleteDialogOpen(false)}
-          onConfirm={handleOnDelete}
-          identifier={selectedRow?.name || ''}
-        />
       </main>
     </div>
   );
 };
 
-export default AuthorPage;
+export default LogPage;
