@@ -3,7 +3,8 @@ import type { Admin } from '../admin/type';
 
 export interface Log {
   id: string;
-  user: Admin;
+  admin: Admin;
+  data_id: string;
   action: string;
   entity: string;
   data: {
@@ -11,4 +12,16 @@ export interface Log {
     new: string;
   };
   metadata: Metadata;
+}
+
+export interface Filter {
+  page: number;
+  limit: number;
+  admin: string | null;
+  action: string | null;
+  entity: string | null;
+}
+
+export interface Find {
+  id?: string;
 }
