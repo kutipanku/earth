@@ -20,7 +20,7 @@ export const DRAWER_MENU_LIST: DrawerItem[] = [
     path: '/dashboard/author',
   },
   {
-    text: 'Category',
+    text: 'Categories',
     icon: 'category',
     path: '/dashboard/category',
   },

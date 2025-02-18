@@ -17,7 +17,7 @@ import {
   DialogDelete,
 } from '../../presentation';
 import { useNotificationContext } from '../notification';
-import styles from '@/styles/Dashboard.module.css';
+import styles from '../shared/Dashboard.module.css';
 import { getTableHeader } from './functions';
 
 import type { Quote, QuoteFilter } from '@frontend/entity/quote/types';

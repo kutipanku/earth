@@ -1,22 +1,22 @@
-import { PAGE_TYPE } from '@frontend/entity/author/constants';
+import { PAGE_TYPE } from '@frontend/entity/admin/constants';
 import { readRowsData } from '../shared/fetcher';
 import { constructOwnSystemRowData } from './normalizer';
 
-import type { Author, AuthorFilter } from '@frontend/entity/author/types';
-import type { GetAuthors } from './types';
+import type { Admin, AdminFilter } from '@frontend/entity/admin/types';
+import type { GetAdmins } from './types';
 
-type GetAuthorsResponse = GetAuthors['response'];
+type GetAdminsResponse = GetAdmins['response'];
 
 interface Props {
   page?: number;
   rowPerPage?: number;
-  filter: AuthorFilter;
+  filter: AdminFilter;
 }
 
 /**
  * Read rows data to relative module's data source.
  */
-const getAuthorRows = async ({ page = 0, rowPerPage = 100, filter }: Props) => {
+const getAdminRows = async ({ page = 0, rowPerPage = 100, filter }: Props) => {
   const processedFilter = Object.fromEntries(
     Object.entries(filter).filter(
       ([_, value]) => value !== null && value !== undefined
@@ -24,7 +24,7 @@ const getAuthorRows = async ({ page = 0, rowPerPage = 100, filter }: Props) => {
   );
 
   try {
-    const response = await readRowsData<GetAuthorsResponse>({
+    const response = await readRowsData<GetAdminsResponse>({
       identifier: PAGE_TYPE,
       page,
       rowPerPage,
@@ -44,11 +44,11 @@ const getAuthorRows = async ({ page = 0, rowPerPage = 100, filter }: Props) => {
       success: false,
       message: error,
       data: {
-        list: [] as Author[],
+        list: [] as Admin[],
         total: 0,
       },
     };
   }
 };
 
-export default getAuthorRows;
+export default getAdminRows;

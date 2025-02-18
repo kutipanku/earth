@@ -1,23 +1,5 @@
-import Head from 'next/head';
-import styles from '@/styles/Home.module.css';
+'use client';
 
-const Home = () => {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Kutipanku App | Login</title>
-        <meta name='description' content='Aplikasi Kutipan Terlengkap' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+import AuthorPage from '@frontend/delivery/view/author/PageList';
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Selamat datang di <a href='https://nextjs.org'>Kutipanku</a> Dashboard
-          App
-        </h1>
-      </main>
-    </div>
-  );
-};
-
-export default Home;
+export default AuthorPage;

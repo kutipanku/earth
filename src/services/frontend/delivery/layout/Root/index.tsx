@@ -1,10 +1,10 @@
-import { TITLE, DESCRIPTION } from '@/entity/meta/constant';
-import NotificationWrapper from '../NotificationWrapper';
-import SessionProvider from '@/repository/state/auth';
+import { TITLE, DESCRIPTION } from '@frontend/entity/shared/constants';
 import { AppRouterCacheProvider, ThemeProvider } from '../../lib/mui-systems';
 import { theme } from '../../lib/mui-systems';
-import type { Metadata } from '../../lib/next';
+import AuthWrapperLayout from '../AuthWrapper';
+import NotificationWrapper from '../NotificationWrapper';
 
+import type { Metadata } from '../../lib/next';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,11 +21,11 @@ export default function RootLayout({
     <html lang='en'>
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
-          <SessionProvider>
+          <AuthWrapperLayout>
             <NotificationWrapper>
               <body>{children}</body>
             </NotificationWrapper>
-          </SessionProvider>
+          </AuthWrapperLayout>
         </ThemeProvider>
       </AppRouterCacheProvider>
     </html>

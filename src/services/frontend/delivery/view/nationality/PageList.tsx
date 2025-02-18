@@ -17,7 +17,7 @@ import {
   UnifiedHeaderHome,
   DialogDelete,
 } from '../../presentation';
-import styles from '@/styles/Dashboard.module.css';
+import styles from '../shared/Dashboard.module.css';
 import { getTableHeader } from './functions';
 
 import type {

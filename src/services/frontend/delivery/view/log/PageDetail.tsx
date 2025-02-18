@@ -13,7 +13,7 @@ import {
   DynamicDetail,
 } from '../../presentation';
 import { useNotificationContext } from '../notification';
-import styles from '@/styles/Dashboard.module.css';
+import styles from '../shared/Dashboard.module.css';
 
 import type { LogField, LogVariable } from '@frontend/entity/log/types';
 

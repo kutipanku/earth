@@ -1,5 +1,2 @@
-import NextAuth from 'next-auth';
-import { authOptions } from '@/lib/auth';
-
-const handler = NextAuth(authOptions);
+import handler from '@backend/delivery/api/auth';
 export { handler as GET, handler as POST };

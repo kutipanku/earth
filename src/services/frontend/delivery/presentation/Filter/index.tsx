@@ -19,7 +19,7 @@ import {
   FilterShowIcon,
   FilterHideIcon,
 } from '../../lib/mui-icons';
-import styles from '@/styles/Dashboard.module.css';
+import styles from '../../view/shared/Dashboard.module.css';
 import type { Filter } from '@frontend/entity/shared/types';
 
 interface Props<FilterType> {

@@ -12,7 +12,7 @@ import {
   UnifiedHeadTag,
   DynamicInput,
 } from '../../presentation';
-import styles from '@/styles/Dashboard.module.css';
+import styles from '../shared/Dashboard.module.css';
 import { useState, useRef } from '../../lib/react';
 import { useRouter } from '../../lib/next';
 import { useNotificationContext } from '../notification';

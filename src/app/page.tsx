@@ -1,3 +1,3 @@
-import Home from '@frontend/delivery/view/dashboard';
+import Home from '@/services/frontend/delivery/view/dashboard/Home';
 
 export default Home;
