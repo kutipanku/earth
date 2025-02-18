@@ -17,7 +17,7 @@ export async function retrieveQuotes(req: NextRequest) {
     author: req.nextUrl.searchParams.get('author'),
     content: req.nextUrl.searchParams.get('content'),
     category: req.nextUrl.searchParams.get('category'),
-    tags: JSON.stringify(
+    tags: JSON.parse(
       req.nextUrl.searchParams.get('tags') ?? '[]'
     ) as unknown as string[],
   };
@@ -66,7 +66,7 @@ export async function addQuote(req: NextRequest) {
       ids: {
         author_id: body.author_id,
         category_id: body.category_id,
-        tags_id: JSON.parse(body.tags_id || '[]'),
+        tags_id: body.tags_id,
       },
       url: {
         eng: null,

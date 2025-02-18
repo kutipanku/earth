@@ -41,7 +41,7 @@ const InputAutocomplete = ({
           optionsRef.current = options.data.map((option: any) => {
             return {
               id: option.id,
-              name_en: option.name.eng,
+              name: option.name,
             };
           });
           setIsLoadingField(false);
@@ -67,7 +67,7 @@ const InputAutocomplete = ({
   };
 
   return (
-    <Box key={index} sx={style}>
+    <Box key={index} sx={{ width: '100%', marginBottom: 2, ...style }}>
       {!isLoading && !isLoadingValue && !isLoadingField ? (
         <Autocomplete
           fullWidth

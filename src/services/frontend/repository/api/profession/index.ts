@@ -4,4 +4,3 @@ export { default as getProfessionDetail } from './get-detail';
 export { default as getProfessionOptions } from './get-options';
 export { default as getProfessionRows } from './get-rows';
 export { default as removeProfession } from './remove';
-export { normalizeInput, normalizeOutput } from './normalizer';

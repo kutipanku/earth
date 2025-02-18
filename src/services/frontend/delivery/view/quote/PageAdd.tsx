@@ -4,9 +4,9 @@ import {
   ADD_PAGE_TITLE,
   INPUT_FIELDS,
   VALUE_PLACEHOLDER,
-} from '@frontend/entity/category/constants';
-import { convertFromVariable } from '@frontend/entity/category/functions';
-import { useAdd } from '@frontend/usecase/category';
+} from '@frontend/entity/quote/constants';
+import { convertFromVariable } from '@frontend/entity/quote/functions';
+import { useAdd } from '@frontend/usecase/quote';
 import {
   UnifiedHeaderDetail,
   UnifiedHeadTag,
@@ -17,22 +17,19 @@ import { useState, useRef } from '../../lib/react';
 import { useRouter } from '../../lib/next';
 import { useNotificationContext } from '../notification';
 
-import type {
-  CategoryField,
-  CategoryVariable,
-} from '@frontend/entity/category/types';
+import type { QuoteField, QuoteVariable } from '@frontend/entity/quote/types';
 
-const AddCategoryPage = () => {
+const AddQuotePage = () => {
   const router = useRouter();
   const [dispatch] = useNotificationContext();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const formRef = useRef<CategoryVariable | null>(null);
+  const formRef = useRef<QuoteVariable | null>(null);
   const errorRef = useRef<string[] | null>(null);
 
   const { handleSubmit } = useAdd({
-    setLoading: (value: boolean) => setLoading(value),
-    navigateTo: (url) => router.replace(url),
-    openNotification: (severity, message) =>
+    doSetLoading: (value: boolean) => setLoading(value),
+    doNavigate: (url) => router.replace(url),
+    doOpenNotification: (severity, message) =>
       dispatch({
         type: 'OPEN_NOTIFICATION',
         payload: {
@@ -40,8 +37,8 @@ const AddCategoryPage = () => {
           severity,
         },
       }),
-    updateFormRef: (body) => (formRef.current = body),
-    updateErrorRef: (body) => (errorRef.current = body),
+    doUpdateFormRef: (body) => (formRef.current = body),
+    doUpdateErrorRef: (body) => (errorRef.current = body),
   });
 
   return (
@@ -51,15 +48,15 @@ const AddCategoryPage = () => {
       <main className={styles.main}>
         <UnifiedHeaderDetail title={ADD_PAGE_TITLE} />
 
-        <DynamicInput<CategoryVariable, CategoryField, 'key'>
-          property='key'
-          isLoading={isLoading}
+        <DynamicInput<QuoteVariable, QuoteField, 'key'>
           data={formRef.current || VALUE_PLACEHOLDER}
           fields={INPUT_FIELDS}
           errors={errorRef.current ?? []}
+          property='key'
+          isLoading={isLoading}
           onSubmit={(newVariables) => {
-            const newCategory = convertFromVariable(newVariables);
-            handleSubmit(newCategory);
+            const newQuote = convertFromVariable(newVariables);
+            handleSubmit(newQuote);
           }}
         />
       </main>
@@ -67,4 +64,4 @@ const AddCategoryPage = () => {
   );
 };
 
-export default AddCategoryPage;
+export default AddQuotePage;

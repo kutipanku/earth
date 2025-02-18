@@ -44,7 +44,7 @@ const InputAutocomplete = ({
 
     if (!isLoadingField && value) {
       const defaultCurrentValue = optionsRef.current.filter(
-        (option: { id: string }) => option.id === value
+        (option: { id: string }) => value.includes(option.id)
       );
 
       setCurrentValue(defaultCurrentValue);
@@ -63,7 +63,7 @@ const InputAutocomplete = ({
   };
 
   return (
-    <Box key={index} sx={style}>
+    <Box key={index} sx={{ width: '100%', marginBottom: 2, ...style }}>
       {!isLoading && !isLoadingValue && !isLoadingField ? (
         <Autocomplete
           fullWidth

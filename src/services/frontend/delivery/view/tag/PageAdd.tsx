@@ -55,7 +55,6 @@ const AddTagPage = () => {
           fields={INPUT_FIELDS}
           errors={errorRef.current ?? []}
           onSubmit={(newVariables) => {
-            console.warn('[DEBUG] newVariables', newVariables);
             const newTag = convertFromVariable(newVariables);
             handleSubmit(newTag);
           }}

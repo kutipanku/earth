@@ -24,7 +24,7 @@ export const updateOne = async (props: Quote): Promise<QuoteResultOne> => {
       ...(props.ids?.category_id && { category_id: props.ids.category_id }),
       ...(props.ids?.tags_id && {
         tags: {
-          connect: props.ids.tags_id.map((tag_id) => ({ id: tag_id })),
+          set: props.ids.tags_id.map((tag_id) => ({ id: tag_id })),
         },
       }),
     },
