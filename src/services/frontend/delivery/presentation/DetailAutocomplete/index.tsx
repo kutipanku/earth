@@ -2,7 +2,7 @@
 
 import { useRouter } from '../../lib/next';
 import { Box, Button, Typography, Skeleton } from '../../lib/mui';
-import type { SelectOption } from '@/entity/ui/types';
+import type { SelectOption } from '@frontend/entity/shared/types';
 import type { StaticImageData } from '../../lib/next';
 
 interface Props {

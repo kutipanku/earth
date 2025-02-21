@@ -1,6 +1,5 @@
 export { default as AppBar } from './Appbar';
 export { default as ActionType } from './ActionType';
-export { default as CustomEditor } from './CustomEditor';
 export { default as DetailAutocomplete } from './DetailAutocomplete';
 export { default as DetailRichText } from './DetailRichText';
 export { default as DetailText } from './DetailText';
@@ -15,5 +14,4 @@ export { default as UnifiedHeaderHome } from './HeaderHome';
 export { default as InputAutocomplete } from './InputAutocomplete';
 export { default as InputAutocompleteMultiple } from './InputAutocompleteMultiple';
 export { default as InputDate } from './InputDate';
-export { default as InputRichText } from './InputRichText';
 export { default as InputText } from './InputText';
