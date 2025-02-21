@@ -45,6 +45,8 @@ interface Props {
   value?: string;
   prefix?: string | StaticImageData;
   style?: Record<string, unknown>;
+  isMultiline?: boolean;
+  lineCount?: 4;
   handleInputChange: (keyName: string, value: string) => void;
 }
 
@@ -58,6 +60,8 @@ const InputText = ({
   value,
   prefix,
   style,
+  isMultiline = false,
+  lineCount = 4,
   handleInputChange,
 }: Props) => {
   const [currentValue, setCurrentValue] = useState(value || '');
@@ -102,6 +106,8 @@ const InputText = ({
           InputLabelProps={{
             shrink: true,
           }}
+          multiline={isMultiline}
+          minRows={lineCount}
           InputProps={{
             startAdornment: prefix && (
               <InputAdornment position='start'>

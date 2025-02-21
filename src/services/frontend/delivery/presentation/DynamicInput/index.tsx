@@ -6,7 +6,6 @@ import {
   InputText,
   InputAutocomplete,
   InputAutocompleteMultiple,
-  InputRichText,
   InputDate,
 } from '../../presentation';
 import { Box, Button, Container, Divider, FormControl } from '../../lib/mui';
@@ -119,14 +118,19 @@ const DynamicInput = <
                 );
               case 'richtext':
                 return (
-                  <InputRichText
+                  <InputText
                     key={key}
                     keyName={key}
                     index={index}
+                    isRequired={!!field.required}
                     isLoading={isLoading}
                     label={field.label}
                     value={value}
+                    prefix={prefix}
+                    isError={errors.includes(key)}
                     handleInputChange={handleInputChange}
+                    isMultiline={true}
+                    lineCount={4}
                   />
                 );
               case 'date':
