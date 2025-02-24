@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '../../lib/mui';
+import { useEffect, useState } from '../../lib/react';
 import { getMenuIcon } from '../../lib/mui-icons';
 import { DrawerHeader, closedMixin, openedMixin } from './styles';
 import type { DrapwerProps } from './types';
@@ -41,8 +42,19 @@ const CustomizedDrawer = styled(MuiDrawer, {
 }));
 
 const Drawer = ({ open, redirectTo, isSelected }: DrapwerProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth < 480) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, []);
+
+  const Component = isMobile ? MuiDrawer : CustomizedDrawer;
   return (
-    <CustomizedDrawer variant='permanent' open={open}>
+    <Component variant={isMobile ? undefined : 'permanent'} open={open}>
       <DrawerHeader></DrawerHeader>
       <Divider />
       <List>
@@ -92,7 +104,7 @@ const Drawer = ({ open, redirectTo, isSelected }: DrapwerProps) => {
           </ListItem>
         ))}
       </List>
-    </CustomizedDrawer>
+    </Component>
   );
 };
 
