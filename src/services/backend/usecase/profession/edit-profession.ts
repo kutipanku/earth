@@ -12,7 +12,7 @@ interface Props {
 
 const editProfession = async (props: Props) => {
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -54,7 +54,7 @@ const editProfession = async (props: Props) => {
     saveToLog({
       action: 'update',
       entity: 'profession',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(profession.data),

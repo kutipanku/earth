@@ -34,8 +34,8 @@ export const findMany = async (
     where: {
       ...(props.name && {
         OR: [
-          { name_en: { contains: props.name, mode: 'insensitive' } },
-          { name_id: { contains: props.name, mode: 'insensitive' } },
+          { name_eng: { contains: props.name, mode: 'insensitive' } },
+          { name_ind: { contains: props.name, mode: 'insensitive' } },
         ],
       }),
       ...(props.slug && {
@@ -102,14 +102,14 @@ export const findOptions = async (
   props: Filter
 ): Promise<ProfessionResultManyOptions> => {
   const payload: InputProfessionGetMany = {
-    orderBy: [{ name_en: 'asc' }, { name_id: 'asc' }],
+    orderBy: [{ name_eng: 'asc' }, { name_ind: 'asc' }],
     skip: props.page * props.limit,
     take: props.limit,
     where: {
       ...(props.name && {
         OR: [
-          { name_en: { contains: props.name, mode: 'insensitive' } },
-          { name_id: { contains: props.name, mode: 'insensitive' } },
+          { name_eng: { contains: props.name, mode: 'insensitive' } },
+          { name_ind: { contains: props.name, mode: 'insensitive' } },
         ],
       }),
     },

@@ -12,7 +12,7 @@ interface Props {
 
 const editQuote = async (props: Props) => {
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -60,7 +60,7 @@ const editQuote = async (props: Props) => {
     saveToLog({
       action: 'update',
       entity: 'quote',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(quote.data),

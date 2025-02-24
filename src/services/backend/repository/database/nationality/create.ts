@@ -13,8 +13,8 @@ export const createOne = async (
   const payload: InputNationalityCreate = {
     data: {
       slug: props.slug,
-      name_en: props.name.eng ?? '',
-      name_id: props.name.ind ?? '',
+      name_eng: props.name.eng ?? '',
+      name_ind: props.name.ind ?? '',
       ...(props.flag && { flag: props.flag }),
     },
   };

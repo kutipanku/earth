@@ -16,7 +16,7 @@ export type ResponseNationality = Prisma.NationalityGetPayload<{}>;
 export type ResponseNationalitySimplified = Prisma.NationalityGetPayload<{
   select: {
     id: true;
-    name_en: true;
-    name_id: true;
+    name_eng: true;
+    name_ind: true;
   };
 }>;

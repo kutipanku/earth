@@ -11,12 +11,12 @@ export const createOne = async (props: Quote): Promise<QuoteResultOne> => {
   const payload: InputQuoteCreate = {
     data: {
       slug: props.slug,
-      content_en: props.content.eng,
-      content_id: props.content.ind,
-      description_en: props.description.eng,
-      description_id: props.description.ind,
-      image_en_url: props.url.eng,
-      image_id_url: props.url.ind,
+      content_eng: props.content.eng,
+      content_ind: props.content.ind,
+      description_eng: props.description.eng,
+      description_ind: props.description.ind,
+      image_url_eng: props.url.eng,
+      image_url_ind: props.url.ind,
       ...(props.ids?.author_id && { author_id: props.ids.author_id }),
       ...(props.ids?.category_id && { category_id: props.ids.category_id }),
       ...(props.ids?.tags_id && {

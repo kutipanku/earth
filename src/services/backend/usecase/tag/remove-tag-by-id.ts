@@ -9,7 +9,7 @@ interface Props {
 
 const removeTagById = async (props: Props) => {
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -41,7 +41,7 @@ const removeTagById = async (props: Props) => {
     saveToLog({
       action: 'delete',
       entity: 'tag',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify({}),
       oldData: JSON.stringify(result.data),

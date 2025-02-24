@@ -24,7 +24,7 @@ const DetailAutocomplete = ({
   prefix,
 }: Props) => {
   const router = useRouter();
-  const name = value?.name || value?.name_en || '';
+  const name = value?.name || value?.name_eng || '';
 
   const redirectTo = () => {
     router.push(`/dashboard/${entity}/${value?.id}`);

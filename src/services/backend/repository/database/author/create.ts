@@ -13,8 +13,8 @@ export const createOne = async (props: Author): Promise<AuthorResultOne> => {
       name: props.name,
       slug: props.slug,
       ...(props.dob && { dob: props.dob.toISOString() }),
-      ...(props.description.eng && { description_en: props.description.eng }),
-      ...(props.description.ind && { description_id: props.description.ind }),
+      ...(props.description.eng && { description_eng: props.description.eng }),
+      ...(props.description.ind && { description_ind: props.description.ind }),
       ...(props.picture_url && { picture_url: props.picture_url }),
       ...(props.ids?.profession_id && {
         profession_id: props.ids.profession_id,

@@ -24,9 +24,9 @@ export const findMany = async (props: Filter): Promise<AdminResultMany> => {
   };
 
   try {
-    const admins: ResponseAdmin[] = await prisma.superUser.findMany(payload);
+    const admins: ResponseAdmin[] = await prisma.admin.findMany(payload);
 
-    const count = await prisma.superUser.count({
+    const count = await prisma.admin.count({
       where: payload.where,
     });
 
@@ -54,8 +54,7 @@ export const finOne = async (props: Find): Promise<AdminResultOne> => {
   };
 
   try {
-    const admin: ResponseAdmin | null =
-      await prisma.superUser.findFirst(payload);
+    const admin: ResponseAdmin | null = await prisma.admin.findFirst(payload);
 
     if (admin === null) {
       return { success: false, status: 404, data: null, error: 'Not found' };

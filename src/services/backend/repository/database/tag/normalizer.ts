@@ -7,13 +7,13 @@ export const normalizeForOne = (itemOnDB: ResponseTag | null) => {
   const normalizedItem: Tag = {
     id: itemOnDB.id,
     name: {
-      ind: itemOnDB.name_id || '',
-      eng: itemOnDB.name_en || '',
+      ind: itemOnDB.name_ind || '',
+      eng: itemOnDB.name_eng || '',
     },
     slug: itemOnDB.slug,
     description: {
-      ind: itemOnDB.description_id || '',
-      eng: itemOnDB.description_en || '',
+      ind: itemOnDB.description_ind || '',
+      eng: itemOnDB.description_eng || '',
     },
     metadata: {
       created_at: new Date(itemOnDB.created_at),
@@ -32,12 +32,12 @@ export const normalizeFoList = (itemsOnDB: ResponseTag[] | null) => {
     id: item.id,
     slug: item.slug,
     name: {
-      ind: item.name_id || '',
-      eng: item.name_en || '',
+      ind: item.name_ind || '',
+      eng: item.name_eng || '',
     },
     description: {
-      ind: item.description_id || '',
-      eng: item.description_en || '',
+      ind: item.description_ind || '',
+      eng: item.description_eng || '',
     },
     metadata: {
       created_at: item.created_at,
@@ -56,8 +56,8 @@ export const normalizeForOption = (
   const normalizedItem: TagSimplified[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      ind: item.name_id || '',
-      eng: item.name_en || '',
+      ind: item.name_ind || '',
+      eng: item.name_eng || '',
     },
   }));
 

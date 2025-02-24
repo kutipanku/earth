@@ -36,13 +36,13 @@ export type ResponseQuoteSimplified = Prisma.QuoteGetPayload<{
     category: {
       select: {
         id: true;
-        name_en: true;
+        name_eng: true;
       };
     };
     tags: {
       select: {
         id: true;
-        name_en: true;
+        name_eng: true;
       };
     };
   };

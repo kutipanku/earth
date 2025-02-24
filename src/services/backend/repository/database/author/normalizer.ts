@@ -12,8 +12,8 @@ export const normalizeForOne = (itemOnDB: ResponseAuthorExtended | null) => {
     name: itemOnDB.name,
     slug: itemOnDB.slug,
     description: {
-      ind: itemOnDB.description_id || '',
-      eng: itemOnDB.description_en || '',
+      ind: itemOnDB.description_ind || '',
+      eng: itemOnDB.description_eng || '',
     },
     dob: itemOnDB.dob === null ? null : new Date(itemOnDB.dob),
     nationality: normalizeForOneNationality(itemOnDB.nationality),
@@ -37,8 +37,8 @@ export const normalizeFoList = (itemsOnDB: ResponseAuthorExtended[] | null) => {
     name: item.name,
     slug: item.slug,
     description: {
-      eng: item.description_en,
-      ind: item.description_id,
+      eng: item.description_eng,
+      ind: item.description_ind,
     },
     dob: item.dob,
     nationality: normalizeForOneNationality(item.nationality),

@@ -42,8 +42,8 @@ export const findMany = async (props: Filter): Promise<QuoteResultMany> => {
         }),
       ...(props.content && {
         OR: [
-          { content_en: { contains: props.content, mode: 'insensitive' } },
-          { content_id: { contains: props.content, mode: 'insensitive' } },
+          { content_eng: { contains: props.content, mode: 'insensitive' } },
+          { content_ind: { contains: props.content, mode: 'insensitive' } },
         ],
       }),
     },

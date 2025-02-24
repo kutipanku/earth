@@ -11,19 +11,19 @@ export interface CreateOneProps {
     | 'product'
     | 'media'
     | 'category';
-  userId: string;
+  adminId: string;
   dataId: string;
   newData: string;
   oldData: string;
 }
 
 export const createOne = async (props: CreateOneProps) => {
-  const { action, entity, userId, dataId, newData, oldData } = props;
+  const { action, entity, adminId, dataId, newData, oldData } = props;
 
   await prisma.log.capture({
     action,
     entity,
-    userId,
+    adminId,
     dataId,
     data: newData,
     dataOld: oldData,
