@@ -20,11 +20,11 @@ export const findMany = async (props: Filter): Promise<LogResultMany> => {
       created_at: 'desc',
     },
     include: {
-      user: true,
+      admin: true,
     },
     where: {
       ...(props.admin && {
-        user: {
+        admin: {
           name: { contains: props.admin, mode: 'insensitive' },
         },
       }),
@@ -41,7 +41,7 @@ export const findMany = async (props: Filter): Promise<LogResultMany> => {
     const logs: ResponseLogExtended[] = await prisma.log.findMany({
       ...payload,
       include: {
-        user: true,
+        admin: true,
       },
     });
 
@@ -76,7 +76,7 @@ export const finOne = async (props: Find): Promise<LogResultOne> => {
     const log: ResponseLogExtended | null = await prisma.log.findFirst({
       ...payload,
       include: {
-        user: true,
+        admin: true,
       },
     });
 

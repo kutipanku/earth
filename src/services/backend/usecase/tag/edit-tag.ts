@@ -12,7 +12,7 @@ interface Props {
 
 const editTag = async (props: Props) => {
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -58,7 +58,7 @@ const editTag = async (props: Props) => {
     saveToLog({
       action: 'update',
       entity: 'tag',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(tag.data),

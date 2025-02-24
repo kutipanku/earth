@@ -12,7 +12,7 @@ interface Props {
 
 const editCategory = async (props: Props) => {
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -59,7 +59,7 @@ const editCategory = async (props: Props) => {
     saveToLog({
       action: 'update',
       entity: 'category',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(category.data),

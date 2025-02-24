@@ -16,10 +16,10 @@ export const updateOne = async (
     },
     data: {
       slug: props.slug,
-      name_en: props.name.eng ?? '',
-      name_id: props.name.ind ?? '',
-      description_en: props.description.eng ?? '',
-      description_id: props.description.ind ?? '',
+      name_eng: props.name.eng ?? '',
+      name_ind: props.name.ind ?? '',
+      description_eng: props.description.eng ?? '',
+      description_ind: props.description.ind ?? '',
     },
   };
 

@@ -16,7 +16,7 @@ export type ResponseCategory = Prisma.CategoryGetPayload<{}>;
 export type ResponseCategorySimplified = Prisma.CategoryGetPayload<{
   select: {
     id: true;
-    name_en: true;
-    name_id: true;
+    name_eng: true;
+    name_ind: true;
   };
 }>;

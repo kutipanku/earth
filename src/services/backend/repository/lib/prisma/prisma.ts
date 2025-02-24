@@ -22,14 +22,14 @@ class DBClient {
             async capture({
               action,
               entity,
-              userId,
+              adminId,
               data,
               dataId,
               dataOld,
             }: {
               action: string;
               entity: string;
-              userId: string;
+              adminId: string;
               data: string;
               dataId: string;
               dataOld: string;
@@ -38,7 +38,7 @@ class DBClient {
                 data: {
                   action,
                   entity,
-                  user_id: userId,
+                  admin_id: adminId,
                   data,
                   data_old: dataOld,
                   data_id: dataId,

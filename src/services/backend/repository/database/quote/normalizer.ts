@@ -15,16 +15,16 @@ export const normalizeForOne = (itemOnDB: ResponseQuote | null) => {
     id: itemOnDB.id,
     slug: itemOnDB.slug,
     content: {
-      ind: itemOnDB.content_id || LEAVE_EMPTY,
-      eng: itemOnDB.content_en || LEAVE_EMPTY,
+      ind: itemOnDB.content_ind || LEAVE_EMPTY,
+      eng: itemOnDB.content_eng || LEAVE_EMPTY,
     },
     description: {
-      ind: itemOnDB.description_id || LEAVE_EMPTY,
-      eng: itemOnDB.description_en || LEAVE_EMPTY,
+      ind: itemOnDB.description_ind || LEAVE_EMPTY,
+      eng: itemOnDB.description_eng || LEAVE_EMPTY,
     },
     url: {
-      ind: itemOnDB.image_id_url || LEAVE_EMPTY,
-      eng: itemOnDB.image_en_url || LEAVE_EMPTY,
+      ind: itemOnDB.image_url_ind || LEAVE_EMPTY,
+      eng: itemOnDB.image_url_eng || LEAVE_EMPTY,
     },
     author: normalizeAuthor(itemOnDB.author),
     category: normalizeCategory(itemOnDB.category),
@@ -50,8 +50,8 @@ export const normalizeForList = (
     id: item.id,
     slug: item.slug,
     content: {
-      ind: item.content_id || LEAVE_EMPTY,
-      eng: item.content_en || LEAVE_EMPTY,
+      ind: item.content_ind || LEAVE_EMPTY,
+      eng: item.content_eng || LEAVE_EMPTY,
     },
     description: {
       ind: LEAVE_EMPTY,
@@ -73,8 +73,8 @@ export const normalizeForList = (
         slug: LEAVE_EMPTY,
         dob: null,
         picture_url: null,
-        description_id: null,
-        description_en: null,
+        description_ind: null,
+        description_eng: null,
         nationality_id: null,
         profession_id: null,
         nationality: null,
@@ -86,11 +86,11 @@ export const normalizeForList = (
       item.category &&
       normalizeCategory({
         id: item.category.id,
-        name_en: item.category.name_en,
+        name_eng: item.category.name_eng,
         slug: LEAVE_EMPTY,
-        name_id: LEAVE_EMPTY,
-        description_en: null,
-        description_id: null,
+        name_ind: LEAVE_EMPTY,
+        description_eng: null,
+        description_ind: null,
         created_at: DUMMY_DATE,
         updated_at: DUMMY_DATE,
       }),
@@ -101,11 +101,11 @@ export const normalizeForList = (
         .map((tag) =>
           normalizeTag({
             id: tag.id,
-            name_en: tag.name_en,
-            name_id: LEAVE_EMPTY,
+            name_eng: tag.name_eng,
+            name_ind: LEAVE_EMPTY,
             slug: LEAVE_EMPTY,
-            description_en: null,
-            description_id: null,
+            description_eng: null,
+            description_ind: null,
             created_at: DUMMY_DATE,
             updated_at: DUMMY_DATE,
           })

@@ -10,7 +10,7 @@ interface Props {
 
 const removeNationalityById = async (props: Props) => {
   // Check for authorization
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -32,7 +32,7 @@ const removeNationalityById = async (props: Props) => {
     saveToLog({
       action: 'delete',
       entity: 'nationality',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify({}),
       oldData: JSON.stringify(result.data),

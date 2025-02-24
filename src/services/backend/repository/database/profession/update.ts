@@ -16,8 +16,8 @@ export const updateOne = async (
     },
     data: {
       slug: props.slug,
-      name_en: props.name.eng ?? '',
-      name_id: props.name.ind ?? '',
+      name_eng: props.name.eng ?? '',
+      name_ind: props.name.ind ?? '',
       ...(props.icon && { icon: props.icon }),
     },
   };

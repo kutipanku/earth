@@ -13,6 +13,6 @@ export type InputLogGetOne = Prisma.LogFindFirstArgs;
 export type ResponseLog = Prisma.LogGetPayload<{}>;
 export type ResponseLogExtended = Prisma.LogGetPayload<{
   include: {
-    user: true;
+    admin: true;
   };
 }>;

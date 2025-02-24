@@ -13,8 +13,8 @@ export const normalizeForOne = (itemOnDB: ResponseNationality | null) => {
   const normalizedItem: Nationality = {
     id: itemOnDB.id,
     name: {
-      ind: itemOnDB.name_id,
-      eng: itemOnDB.name_en,
+      ind: itemOnDB.name_ind,
+      eng: itemOnDB.name_eng,
     },
     slug: itemOnDB.slug,
     flag: itemOnDB.flag,
@@ -34,8 +34,8 @@ export const normalizeFoList = (itemsOnDB: ResponseNationality[] | null) => {
   const normalizedItem: Nationality[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      ind: item.name_id,
-      eng: item.name_en,
+      ind: item.name_ind,
+      eng: item.name_eng,
     },
     slug: item.slug,
     flag: item.flag,
@@ -56,8 +56,8 @@ export const normalizeForOption = (
   const normalizedItem: NationalitySimplified[] = itemsOnDB.map((item) => ({
     id: item.id,
     name: {
-      ind: item.name_id,
-      eng: item.name_en,
+      ind: item.name_ind,
+      eng: item.name_eng,
     },
   }));
 

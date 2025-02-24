@@ -17,7 +17,7 @@ export const normalizeForOne = (itemOnDB: ResponseLogExtended | null) => {
       created_at: new Date(itemOnDB.created_at),
       updated_at: null,
     },
-    admin: itemOnDB.user,
+    admin: itemOnDB.admin,
   };
 
   return normalizedItem;
@@ -39,7 +39,7 @@ export const normalizeFoList = (itemsOnDB: ResponseLogExtended[] | null) => {
       created_at: new Date(item.created_at),
       updated_at: null,
     },
-    admin: item.user,
+    admin: item.admin,
   }));
 
   return normalizedItem;

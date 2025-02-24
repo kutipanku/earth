@@ -8,29 +8,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  email       String   @unique
-  phone       String?  @unique
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  picture_url String?
-  likes       Quote[]  @relation("QuoteToUser")
-}
-
-model SuperUser {
-  id    String @id @default(uuid())
-  name  String @unique
-  email String @unique
-  logs  Log[]
-}
-
 model Nationality {
   id         String   @id @default(uuid())
   flag       String?
-  name_en    String   @unique
-  name_id    String   @unique
+  name_eng   String
+  name_ind   String
   slug       String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -40,8 +22,8 @@ model Nationality {
 model Profession {
   id         String   @id @default(uuid())
   icon       String?
-  name_en    String   @unique
-  name_id    String   @unique
+  name_eng   String
+  name_ind   String
   slug       String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -49,74 +31,74 @@ model Profession {
 }
 
 model Author {
-  id             String       @id @default(uuid())
-  name           String       @unique
-  dob            DateTime?
-  nationality_id String?
-  profession_id  String?
-  description_en String?
-  description_id String?
-  picture_url    String?
-  slug           String       @unique
-  created_at     DateTime     @default(now())
-  updated_at     DateTime     @updatedAt
-  nationality    Nationality? @relation(fields: [nationality_id], references: [id])
-  profession     Profession?  @relation(fields: [profession_id], references: [id])
-  quotes         Quote[]
-}
-
-model Quote {
-  id             String    @id @default(uuid())
-  content_id     String?
-  content_en     String?
-  image_id_url   String?
-  image_en_url   String?
-  author_id      String?
-  description_en String?
-  description_id String?
-  slug           String    @unique
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  category_id    String?
-  author         Author?   @relation(fields: [author_id], references: [id])
-  category       Category? @relation(fields: [category_id], references: [id])
-  tags           Tag[]     @relation("QuoteToTag")
-  likes          User[]    @relation("QuoteToUser")
+  id              String       @id @default(uuid())
+  name            String
+  dob             DateTime?
+  nationality_id  String?
+  profession_id   String?
+  description_eng String?
+  description_ind String?
+  picture_url     String?
+  slug            String       @unique
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+  nationality     Nationality? @relation(fields: [nationality_id], references: [id])
+  profession      Profession?  @relation(fields: [profession_id], references: [id])
+  quotes          Quote[]
 }
 
 model Category {
-  id             String   @id @default(uuid())
-  name_en        String   @unique
-  name_id        String   @unique
-  description_en String?
-  description_id String?
-  slug           String   @unique
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  quotes         Quote[]
+  id              String   @id @default(uuid())
+  name_eng        String
+  name_ind        String
+  description_eng String?
+  description_ind String?
+  slug            String   @unique
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  quotes          Quote[]
 }
 
 model Tag {
-  id             String   @id @default(uuid())
-  name_en        String   @unique
-  name_id        String   @unique
-  description_en String?
-  description_id String?
-  slug           String   @unique
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  quotes         Quote[]  @relation("QuoteToTag")
+  id              String   @id @default(uuid())
+  name_eng        String
+  name_ind        String
+  description_eng String?
+  description_ind String?
+  slug            String   @unique
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  quotes          Quote[]  @relation("QuoteToTag")
+}
+
+model Quote {
+  id              String    @id @default(uuid())
+  content_ind     String?
+  image_url_ind   String?
+  image_url_eng   String?
+  author_id       String?
+  description_eng String?
+  description_ind String?
+  slug            String    @unique
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  category_id     String?
+  content_eng     String?
+  author          Author?   @relation(fields: [author_id], references: [id])
+  category        Category? @relation(fields: [category_id], references: [id])
+  tags            Tag[]     @relation("QuoteToTag")
+  likes           User[]    @relation("QuoteToUser")
 }
 
 model Product {
   id                      String   @id @default(uuid())
   slug                    String   @unique
-  name_en                 String   @unique
-  name_id                 String   @unique
-  description_en          String?
-  description_id          String?
-  affiliate_tokopedia_url String?
-  affiliate_shopee_url    String?
+  name_eng                String
+  name_ind                String
+  description_eng         String?
+  description_ind         String?
+  affiliate_url_tokopedia String?
+  affiliate_url_shopee    String?
   created_at              DateTime @default(now())
   updated_at              DateTime @updatedAt
   media_attachments       Media[]
@@ -131,14 +113,33 @@ model Media {
   product    Product? @relation(fields: [product_id], references: [id])
 }
 
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  phone       String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  picture_url String?
+  slug        String   @unique
+  likes       Quote[]  @relation("QuoteToUser")
+}
+
+model Admin {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+  logs  Log[]
+}
+
 model Log {
-  id         String    @id @default(uuid())
+  id         String   @id @default(uuid())
   action     String
-  user_id    String
-  created_at DateTime  @default(now())
+  admin_id   String
+  created_at DateTime @default(now())
   entity     String
   data       String
   data_id    String
   data_old   String
-  user       SuperUser @relation(fields: [user_id], references: [id])
+  admin      Admin    @relation(fields: [admin_id], references: [id])
 }

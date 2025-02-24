@@ -14,8 +14,8 @@ export interface DynamicField<T, U = string> {
 export interface SelectOption {
   id: string;
   name?: string;
-  name_en?: string;
-  name_id?: string;
+  name_eng?: string;
+  name_ind?: string;
 }
 
 export interface Filter<InputVariable> {

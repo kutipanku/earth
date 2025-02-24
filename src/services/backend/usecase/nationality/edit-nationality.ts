@@ -12,7 +12,7 @@ interface Props {
 
 const editNationality = async (props: Props) => {
   // Check for authorized account
-  const { isAuthorized, userId } = await getAuthStatus({
+  const { isAuthorized, userId: adminId } = await getAuthStatus({
     sessionToken: props.sessionToken,
   });
   if (!isAuthorized) {
@@ -54,7 +54,7 @@ const editNationality = async (props: Props) => {
     saveToLog({
       action: 'update',
       entity: 'nationality',
-      userId,
+      adminId,
       dataId: props.id,
       newData: JSON.stringify(result.data),
       oldData: JSON.stringify(nationality.data),
