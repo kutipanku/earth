@@ -46,6 +46,7 @@ export interface GetCategories {
     data: {
       list: Array<{
         id: string;
+        slug: string;
         name: MultilingualContent;
       }>;
       total: number;

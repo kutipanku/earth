@@ -50,6 +50,7 @@ export interface GetProfessions {
     data: {
       list: Array<{
         id: string;
+        slug: string;
         name: {
           eng: string | null;
           ind: string | null;

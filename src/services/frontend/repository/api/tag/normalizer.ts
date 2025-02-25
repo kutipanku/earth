@@ -70,7 +70,7 @@ export const constructOwnSystemRowData = (
   const internalDataItems: Tag[] = externalDataItems.map((externalData) => {
     return {
       id: externalData.id,
-      slug: '',
+      slug: externalData.slug,
       name: {
         eng: externalData.name.eng ?? '',
         ind: externalData.name.ind ?? '',

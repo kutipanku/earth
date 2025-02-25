@@ -45,6 +45,7 @@ export interface GetProfessions {
     message: string | null;
     data: {
       list: Array<{
+        slug: string;
         id: string;
         name: {
           eng: string | null;
