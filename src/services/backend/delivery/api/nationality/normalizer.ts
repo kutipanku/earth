@@ -40,6 +40,7 @@ export const normalizeForList = (items: Nationality[] | null) => {
 
   const normalizedItem: ResponseGetNationalities = items.map((item) => ({
     id: item.id,
+    slug: item.slug,
     name: {
       eng: item.name.eng,
       ind: item.name.ind,

@@ -36,6 +36,7 @@ export const normalizeForList = (items: Tag[] | null) => {
 
   const normalizedItem: ResponseGetTags = items.map((item) => ({
     id: item.id,
+    slug: item.slug,
     name: {
       eng: item.name.eng,
       ind: item.name.ind,

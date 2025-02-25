@@ -50,6 +50,7 @@ export interface GetNationalities {
           eng: string | null;
           ind: string | null;
         };
+        slug: string;
         flag: string | null;
       }>;
       total: number;

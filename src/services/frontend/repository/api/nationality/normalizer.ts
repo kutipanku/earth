@@ -77,7 +77,7 @@ export const constructOwnSystemRowData = (
     (externalData) => {
       return {
         id: externalData.id,
-        slug: '',
+        slug: externalData.slug,
         name: {
           eng: externalData.name.eng ?? '',
           ind: externalData.name.ind ?? '',
