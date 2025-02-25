@@ -75,7 +75,7 @@ const InputAutocomplete = ({
           value={currentValue}
           options={optionsRef.current}
           // @ts-expect-error need to overide options typed objec
-          getOptionLabel={(option) => option[optionLabel]}
+          getOptionLabel={(option) => option.name}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={(_, value) =>
             handleChange(value as unknown as SelectOption)
