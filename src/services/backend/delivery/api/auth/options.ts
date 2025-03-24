@@ -13,6 +13,13 @@ export const authOptions: NextAuthOptions = {
         const email = token.email;
         const userOnDb = await finOne({ email });
 
+        // DEBUGGER
+        if (process.env.CONSTANT_BACKEND_IS_DEBUG)
+          console.log(
+            '[DEBUG] authOption | userOnDb',
+            JSON.stringify(userOnDb)
+          );
+
         token.id = userOnDb.data?.id || '';
       }
       return token;

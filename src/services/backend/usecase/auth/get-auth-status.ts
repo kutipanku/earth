@@ -10,6 +10,13 @@ const getAuthStatus = async ({ sessionToken }: Props) => {
     secret: process.env.NEXTAUTH_SECRET || '',
   });
 
+  // DEBUGGER
+  if (process.env.CONSTANT_BACKEND_IS_DEBUG)
+    console.log(
+      '[DEBUG] getAuthStatus | currentAccount',
+      JSON.stringify(currentAccount)
+    );
+
   if (!currentAccount?.id || currentAccount === null) {
     return {
       userId: '',
