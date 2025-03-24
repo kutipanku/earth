@@ -1,5 +1,5 @@
 import { getToken } from 'next-auth/jwt';
-import { NextFetchEvent, NextRequest, NextResponse } from '../../lib/next';
+import { NextRequest, NextResponse } from '../../lib/next';
 
 import type { MiddlewareFactory } from '../type';
 
@@ -9,7 +9,7 @@ const nextRegex = new RegExp('/_next*');
 const authRegex = new RegExp('/auth*');
 
 const routeGuard: MiddlewareFactory = (_) => {
-  return async (request: NextRequest, _next: NextFetchEvent) => {
+  return async (request: NextRequest) => {
     const path = request.nextUrl.pathname;
 
     if (nextRegex.test(path) || authRegex.test(path) || loginRegex.test(path)) {
