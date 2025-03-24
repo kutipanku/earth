@@ -3,10 +3,7 @@ import prismaCache from '@yxx4c/prisma-redis-cache';
 import { createCache } from 'async-cache-dedupe';
 
 // Create a Redis client
-const redis = new Redis({
-  host: process.env.REDIS_URL,
-  port: Number(process.env.REDIS_PORT),
-});
+const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 redis.setex;
 
 // Craete a pino logger instance for logging
