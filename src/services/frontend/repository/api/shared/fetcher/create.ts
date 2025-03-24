@@ -11,6 +11,7 @@ interface Props<Input> {
 async function createData<Input, Output>({ identifier, body }: Props<Input>) {
   return fetch(`/api/${identifier}`, {
     method: 'POST',
+    credentials: 'include',
     body: JSON.stringify(body),
   }).then((res) => res.json() as Output);
 }
