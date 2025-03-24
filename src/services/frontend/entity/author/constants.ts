@@ -89,7 +89,7 @@ export const INPUT_FIELDS: AuthorField[] = [
     type: 'autocomplete',
     optionProps: {
       entity: 'nationality',
-      label: 'name_eng',
+      label: 'name',
     },
   },
   {
@@ -98,7 +98,7 @@ export const INPUT_FIELDS: AuthorField[] = [
     type: 'autocomplete',
     optionProps: {
       entity: 'profession',
-      label: 'name_eng',
+      label: 'name',
     },
   },
   {
