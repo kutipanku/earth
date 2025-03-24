@@ -1,4 +1,5 @@
 import { TITLE, DRAWER_WIDTH } from '@frontend/entity/shared/ui/constants';
+import { useEffect, useState } from '../../lib/react';
 import {
   Box,
   MuiAppBar,
@@ -58,6 +59,16 @@ const AppBar = ({
   handleDrawerClose,
   handleLogout,
 }: AppBarProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth < 480) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <CustomizedAppBar
       position='fixed'
@@ -94,9 +105,11 @@ const AppBar = ({
           {TITLE}
         </Typography>
         <Box sx={{ flexGrow: 0, display: 'flex' }}>
-          <Typography variant='caption' sx={{ alignSelf: 'center', mr: 2 }}>
-            {displayName}
-          </Typography>
+          {!isMobile && (
+            <Typography variant='caption' sx={{ alignSelf: 'center', mr: 2 }}>
+              {displayName}
+            </Typography>
+          )}
           <Tooltip title='Open settings'>
             <IconButton onClick={handleClick} sx={{ p: 0 }}>
               <Avatar alt={displayName} src={image}>

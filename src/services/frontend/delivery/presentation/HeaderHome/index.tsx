@@ -43,7 +43,13 @@ const HeaderHomePresentation = ({
             variant='contained'
             onClick={actAddFunction}
             disabled={isLoading}
-            sx={{ marginBottom: '24px' }}
+            sx={{
+              marginBottom: '24px',
+              display: '-webkit-box',
+              '-webkit-box-orient': 'vertical',
+              '-webkit-line-clamp': '1',
+              overflow: 'hidden',
+            }}
           >
             {actAdd}
           </Button>

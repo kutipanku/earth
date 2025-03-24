@@ -63,8 +63,13 @@ const DashboardLayout: FC<
         handleDrawerClose={handleDrawerClose}
         handleLogout={handleLogout}
       />
-      <Drawer open={open} redirectTo={redirectTo} isSelected={isSelected} />
-      <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+      <Drawer
+        open={open}
+        redirectTo={redirectTo}
+        isSelected={isSelected}
+        onMobileCallback={() => handleDrawerClose()}
+      />
+      <Box component='main' sx={{ flexGrow: 1, p: 0 }}>
         <DrawerHeader />
         <Container
           maxWidth={false}

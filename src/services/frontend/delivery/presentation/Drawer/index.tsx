@@ -41,15 +41,22 @@ const CustomizedDrawer = styled(MuiDrawer, {
   }),
 }));
 
-const Drawer = ({ open, redirectTo, isSelected }: DrapwerProps) => {
+const Drawer = ({
+  open,
+  redirectTo,
+  isSelected,
+  onMobileCallback,
+}: DrapwerProps) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 480) {
       setIsMobile(true);
+      onMobileCallback();
     } else {
       setIsMobile(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const Component = isMobile ? MuiDrawer : CustomizedDrawer;
