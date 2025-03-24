@@ -17,6 +17,7 @@ async function updateData<Input, Output>({
 }: Props<Input>) {
   const response: Output = await fetch(`/api/${identifier}/${id}`, {
     method: 'PUT',
+    credentials: 'include',
     body: JSON.stringify(body),
   }).then((res) => res.json());
 

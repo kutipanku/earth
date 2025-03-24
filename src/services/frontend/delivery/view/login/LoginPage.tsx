@@ -1,6 +1,5 @@
 'use client';
 
-import { useNotificationContext } from '@frontend/delivery/view/notification';
 import { useEffect } from '../../lib/react';
 import { Head, useRouter } from '../../lib/next';
 import { Button } from '../../lib/mui';
@@ -10,43 +9,8 @@ import styles from '../shared/Home.module.css';
 const LoginPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const [notificationDispatch] = useNotificationContext();
   const doLogin = async () => {
     await signIn('google', { callbackUrl: '/dashboard' }, { prompt: 'login' });
-  };
-
-  const doInit = () => {
-    fetch('/api/auth/init', { method: 'POST' })
-      .then((res) => res.json())
-      .then((responseObject) => {
-        if (responseObject.error) {
-          notificationDispatch({
-            type: 'OPEN_NOTIFICATION',
-            payload: {
-              message: `Failed init auth, error: ${responseObject.error}`,
-              severity: 'error',
-            },
-          });
-          return;
-        }
-
-        notificationDispatch({
-          type: 'OPEN_NOTIFICATION',
-          payload: {
-            message: `Success init auth!`,
-            severity: 'success',
-          },
-        });
-      })
-      .catch((err) => {
-        notificationDispatch({
-          type: 'OPEN_NOTIFICATION',
-          payload: {
-            message: `Failed init auth, error: ${err}`,
-            severity: 'error',
-          },
-        });
-      });
   };
 
   useEffect(() => {
@@ -74,9 +38,6 @@ const LoginPage = () => {
         </p>
         <Button variant='contained' onClick={doLogin}>
           Masuk
-        </Button>
-        <Button onClick={doInit} sx={{ marginTop: 8 }}>
-          Init
         </Button>
       </main>
     </div>

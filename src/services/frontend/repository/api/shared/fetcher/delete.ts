@@ -11,6 +11,7 @@ interface Props {
 async function deleteData<Output>({ identifier, id }: Props) {
   return fetch(`/api/${identifier}/${id}`, {
     method: 'DELETE',
+    credentials: 'include',
   }).then((res) => res.json() as Output);
 }
 
