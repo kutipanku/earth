@@ -1,3 +1,4 @@
+import { getToken } from 'next-auth/jwt';
 import {
   addNewProfession,
   getProfessions,
@@ -57,6 +58,18 @@ export async function addProfession(req: NextRequest) {
   const sessionToken = req.cookies.get(
     process.env.NEXTAUTH_SESSION_TOKEN_NAME || ''
   );
+
+  // DEBUGGER
+  if (process.env.CONSTANT_BACKEND_IS_DEBUG) {
+    const token = await getToken({ req });
+    console.log('JSON Web Token 1:', sessionToken);
+    console.log('JSON Web Token 2:', token);
+    console.log('[DEBUG] cookies', req.cookies.toString());
+    console.log(
+      '[DEBUG] NEXTAUTH_SESSION_TOKEN_NAME',
+      process.env.NEXTAUTH_SESSION_TOKEN_NAME
+    );
+  }
 
   const body: AddProfessionRequestBody = await req.json();
 
