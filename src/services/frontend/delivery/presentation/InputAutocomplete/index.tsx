@@ -27,18 +27,20 @@ const InputAutocomplete = ({
   style,
   handleInputChange,
 }: Props) => {
-  const optionsRef = useRef([]);
+  const initialOptionsRef = useRef([]);
   const [currentValue, setCurrentValue] = useState<SelectOption>();
+  const [options, setOptions] = useState<SelectOption[]>();
   const [isLoadingField, setIsLoadingField] = useState(true);
   const [isLoadingValue, setIsLoadingValue] = useState(true);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (currentValue) return;
-    if (!optionsRef.current.length) {
+    if (!initialOptionsRef.current.length) {
       fetch(`/api/${entity}/options`)
         .then((res) => res.json())
         .then((options) => {
-          optionsRef.current = options.data.map((option: any) => {
+          initialOptionsRef.current = options.data.map((option: any) => {
             return {
               id: option.id,
               name: option.name,
@@ -49,7 +51,7 @@ const InputAutocomplete = ({
     }
 
     if (!isLoadingField && value) {
-      const defaultCurrentValue = optionsRef.current.find(
+      const defaultCurrentValue = initialOptionsRef.current.find(
         (option: { id: string }) => option.id === value
       );
       setCurrentValue(defaultCurrentValue);
@@ -58,12 +60,38 @@ const InputAutocomplete = ({
     } else if (!isLoadingField && !isLoading && !value) {
       setIsLoadingValue(false);
     }
-  }, [entity, isLoading, isLoadingField, value, currentValue]);
+  }, [entity, isLoading, isLoadingField, value, currentValue, setCurrentValue]);
 
   const handleChange = (newValue: SelectOption | null) => {
     if (newValue === null) return;
     setCurrentValue(newValue);
     handleInputChange(keyName, newValue.id);
+  };
+
+  const handleFilter = (filterString: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      if (!filterString) {
+        setOptions(initialOptionsRef.current);
+        return;
+      }
+
+      fetch(`/api/${entity}/options?name=${filterString}`)
+        .then((res) => res.json())
+        .then((options) => {
+          setOptions(
+            options.data.map((option: any) => {
+              return {
+                id: option.id,
+                name: option.name,
+              };
+            })
+          );
+        });
+    }, 1000);
   };
 
   return (
@@ -73,14 +101,21 @@ const InputAutocomplete = ({
           fullWidth
           id={`approvers-${index}`}
           value={currentValue}
-          options={optionsRef.current}
+          options={options ? options : initialOptionsRef.current}
           // @ts-expect-error need to overide options typed objec
           getOptionLabel={(option) => option.name}
           isOptionEqualToValue={(option, value) => option.id === value.id}
+          filterOptions={(x) => x}
           onChange={(_, value) =>
             handleChange(value as unknown as SelectOption)
           }
-          renderInput={(params) => <TextField {...params} label={label} />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              onChange={(e) => handleFilter(e.target.value)}
+              label={label}
+            />
+          )}
         />
       ) : (
         <Skeleton variant='rounded' height={56} />
